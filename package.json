@@ -1,0 +1,24 @@
+{
+  "name": "languages",
+  "version": "1.0.0",
+  "description": "This is a general package that contains a web application for my internal language learning purposes. The ultimate goal is two-fold. 1) to use my personal base of experience in several languages as a fulcrum from which to develop an extensible application which can provide some novel use for a underserved use case in the language learning community. 2) Perform a feasibility study on the medium of a MEAN stackfor this application, specifically as opposed to a mobile environment for the use case which I eventually decide to serve.",
+  "main": "index.js",
+  "scripts": {
+    "test": "start-learning"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solejar/languages.git"
+  },
+  "keywords": [
+    "languages",
+    "russian",
+    "japanese"
+  ],
+  "author": "Sean Olejar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/solejar/languages/issues"
+  },
+  "homepage": "https://github.com/solejar/languages#readme"
+}
