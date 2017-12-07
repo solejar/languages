@@ -17,12 +17,12 @@
 
     <script type="text/javascript" src="./js/app.js"></script>
     <script type="text/javascript" src="./js/sharedProps.js"></script>
+    <script type="text/javascript" src="./js/endingCtrl.js"></script>
 
 </head>
 
 <body ng-controller="pageCtrl as page">
-    <div>
-        
+    <div id= "nav-bar">        
         <md-nav-bar  
         md-selected-nav-item="currentNavItem"
         nav-bar-aria-label="navigation links">
@@ -38,10 +38,64 @@
             <md-nav-item md-nav-click="page.changePage('spanish')" name="SpanishTab">
                 Espanol
             </md-nav-item>
-            <md-nav-item md-nav-click="page.changePage('about')" name="SpanishTab">
+            <md-nav-item md-nav-click="page.changePage('about')" name="aboutTab">
                 About
             </md-nav-item>
         </md-nav-bar>
+    </div>
+    <div ng-if="page.currPage=='home'">
+        Welcome to the home page of my application!
+
+        <br><br>
+        The goal of this language application is to incrementally add features which I find useful in language learning, which I hope will provide some use to other people down the road.
+        <br><br>
+
+        Feel free to fork on https://github.com/solejar/languages.git
+
+    </div>
+    <div ng-if="page.currPage=='russian'">
+        You are on the Russian page!
+        <div ng-controller="endingCtrl as ending">
+            <p>
+                Ending chart:
+            </p>
+            <md-input-container >
+                <label>Part of Speech</label>
+                <md-select ng-model="ending.currPoS">
+                    <md-option ng-repeat="part in ending.endingsDict.partOfSpeech" ng-value="part">
+                    {{part.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container ng-show="ending.currPoS.name=='noun'">
+                <label>Animate</label>
+                <md-select ng-model="ending.isAnimate">
+                    <md-option ng-repeat="animate in ending.currPoS.isAnimate" ng-value="animate">
+                    {{animate.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container ng-show="ending.isAnimate">
+                <label>Plurality (Number)</label>
+                <md-select ng-model="ending.number">
+                    <md-option ng-repeat="number in ending.isAnimate.number">
+                    {{number.name}}
+                </md-select>
+            </md-input-container>
+
+            {{ending.endingsDict.partOfSpeech[]}}
+                    
+        </div>
+        
+    </div>
+    <div ng-if="page.currPage=='japanese'">
+        You are on the Japanese page! This page is still under development. Come back later for more :3
+    </div>
+    <div ng-if="page.currPage=='spanish'">
+        You are on the Spanish page! This page is still under development. Come back later for more :3
+    </div>
+    <div ng-if="page.currPage=='about'">
+        You are on the about page! This page is still under development. Come back later for more :3
     </div>
     
 </body>

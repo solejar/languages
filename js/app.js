@@ -6,7 +6,8 @@
         this.pages = ['home','russian','japanese','spanish','about'];
 
         this.currPage = 'russian'
-        var changePage = function(newPage){
+
+        this.changePage = function(newPage){
             if (this.pages.includes(newPage)){
                 console.log(newPage);
                 this.currPage = newPage;
