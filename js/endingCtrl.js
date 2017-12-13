@@ -5,8 +5,19 @@ app.controller('endingCtrl',function(){
     this.genders = ['M','F','N','Plural']
     this.adjType = ['hard (-ый,ой,ии)','soft (-ний)','short (-в)']
     this.partsOfSpeech = ['предлогательное','существительное']
-    this.animate = ['yes','no']
+    this.animate = ['animate','inanimate']
 
+    this.getEndings = function(PoS,type,padex,animate,gender){
+        console.log(PoS)
+        console.log(this.endingsDict[PoS])
+        console.log(type)
+        if (padex=='внительный'){
+            return this.endingsDict[PoS][type][padex][animate][gender]
+        }else{
+
+            return this.endingsDict[PoS][type][padex][gender]
+        }
+    }
     this.endingsDict = {
         'предлогательное': {
             'hard (-ый,ой,ии)': {
@@ -25,7 +36,7 @@ app.controller('endingCtrl',function(){
                     'M': '-ому','F': '-ой','N': '-ому','Plural': '-ым'
                 },'творительный': {
                     'M': '-ым','F': '-ой','N': '-ым','Plural': '-ыми'
-                },'предлогательный': {
+                },'предлогжный': {
                     'M': '-ом','F': '-ой','N': '-ом','Plural': '-ых'
                 }
             },
@@ -42,8 +53,10 @@ app.controller('endingCtrl',function(){
                 },'родительный': {
                     'M': '-его','F': '-ей','N': '-его','Plural': '-их'
                 },'дательный': {
+                    'M': '-ему','F': '-ей','N': '-ему','Plural': '-им'
+                },'творительный': {
                     'M': '-им','F': '-ей/ею','N': '-им','Plural': '-ими'
-                },'предлогательный': {
+                },'предложный': {
                     'M': '-ем','F': '-ей','N': '-ем','Plural': '-их'
                 }
             },
@@ -52,8 +65,33 @@ app.controller('endingCtrl',function(){
             }
         },
         'существительное': {
-
+            'именительный': {
+                    'M': '-ий','F': '-яя','N': '-ее','Plural': '-ие'
+                },'внительный': {
+                    'inanimate': {
+                        'M': '-ий','F': '-юю','N': '-ее','Plural': '-ие'
+                    },
+                    'animate': {
+                        'M': '-его','F': '-юю','N': '-ее','Plural': '-их' 
+                    }
+                },'родительный': {
+                    'M': '-его','F': '-ей','N': '-его','Plural': '-их'
+                },'дательный': {
+                    'M': '-им', 'F': '-ей/ею','N': '-им','Plural': '-ими'
+                },'предлогательный': {
+                    'M': '-ем','F': '-ей','N': '-ем','Plural': '-их'
+                }
         }
     }
+
+    this.getEndingClass = function(padex,gender){
+        return 0;
+    }
+
+    this.getNounEndingAnimate = function(padex,gender){
+        return 0;
+    }
+
+        
     
 });

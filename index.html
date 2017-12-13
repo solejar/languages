@@ -56,34 +56,53 @@
     <div ng-if="page.currPage=='russian'">
         You are on the Russian page!
         <div ng-controller="endingCtrl as ending">
-            <p>
-                Ending chart:
-            </p>
             <md-input-container >
                 <label>Part of Speech</label>
                 <md-select ng-model="ending.currPoS">
-                    <md-option ng-repeat="part in ending.endingsDict.partOfSpeech" ng-value="part">
-                    {{part.name}}
+                    <md-option ng-repeat="part in ending.partsOfSpeech" ng-value="part">
+                    {{part}}
                     </md-option>
                 </md-select>
             </md-input-container>
-            <md-input-container ng-show="ending.currPoS.name=='noun'">
+            <md-input-container ng-if="ending.currPoS=='предлогательное'" >
+                <label>Adjective type</label>
+                <md-select ng-model="ending.currType">
+                    <md-option ng-repeat="type in ending.adjType" ng-value="type">
+                    {{type}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container ng-if="ending.currPoS">
+                <label>Case</label>
+                <md-select ng-model="ending.currCase">
+                    <md-option ng-repeat="case in ending.cases" ng-value="case">
+                    {{case}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container ng-if="ending.currCase=='внительный'" >
                 <label>Animate</label>
-                <md-select ng-model="ending.isAnimate">
-                    <md-option ng-repeat="animate in ending.currPoS.isAnimate" ng-value="animate">
-                    {{animate.name}}
+                <md-select ng-model="ending.currAnimate">
+                    <md-option ng-repeat="state in ending.animate"  ng-value="state">
+                    {{state}}
                     </md-option>
                 </md-select>
             </md-input-container>
-            <md-input-container ng-show="ending.isAnimate">
-                <label>Plurality (Number)</label>
-                <md-select ng-model="ending.number">
-                    <md-option ng-repeat="number in ending.isAnimate.number">
-                    {{number.name}}
+            <md-input-container ng-if="ending.currPoS">
+                <label>Gender/plurality</label>
+                <md-select ng-model="ending.currGender">
+                    <md-option ng-repeat="gender in ending.genders" ng-value="gender">
+                    {{gender}}
+                    </md-option>
                 </md-select>
             </md-input-container>
+            <div md-layout="column">
+                Ending chart:
+            </div>
+            <div ng-if="ending.currGender">{{ending.getEndings(ending.currPoS,ending.currType,ending.currCase,ending.currAnimate,ending.currGender)}}
+            </div>
 
-            {{ending.endingsDict.partOfSpeech[]}}
+            
                     
         </div>
         
