@@ -2,10 +2,13 @@ var app = angular.module('lang');
 
 app.controller('endingCtrl',function(){
     this.cases = ['именительный','внительный','родительный','дательный','предлогательный'];
-    this.genders = ['M','F','N','Plural']
+    this.adjGenders = ['M','F','N','Plural']
     this.adjType = ['hard (-ый,ой,ии)','soft (-ний)','short (-в)']
     this.partsOfSpeech = ['предлогательное','существительное']
     this.animate = ['animate','inanimate']
+
+    this.nounGenders = ['M','F','N']
+    this.pluralities = ['Single','Plural']
 
     this.getEndings = function(PoS,type,padex,animate,gender){
         console.log(PoS)
@@ -66,20 +69,26 @@ app.controller('endingCtrl',function(){
         },
         'существительное': {
             'именительный': {
-                    'M': '-ий','F': '-яя','N': '-ее','Plural': '-ие'
+                    'Single': {'M': {},'F': {},'N': {}},
+                    'Plural': {'M': {},'F': {},'N': {}}
                 },'внительный': {
                     'inanimate': {
-                        'M': '-ий','F': '-юю','N': '-ее','Plural': '-ие'
+                        'Single': {'M': {},'F': {},'N': {}},
+                        'Plural': {'M': {},'F': {},'N': {}}
                     },
                     'animate': {
-                        'M': '-его','F': '-юю','N': '-ее','Plural': '-их' 
+                        'Single': {'M': {},'F': {},'N': {}},
+                        'Plural': {'M': {},'F': {},'N': {}} 
                     }
                 },'родительный': {
-                    'M': '-его','F': '-ей','N': '-его','Plural': '-их'
+                    'Single': {'M': {},'F': {},'N': {}},
+                    'Plural': {'M': {},'F': {},'N': {}}
                 },'дательный': {
-                    'M': '-им', 'F': '-ей/ею','N': '-им','Plural': '-ими'
+                    'Single': {'M': {},'F': {},'N': {}},
+                    'Plural': {'M': {},'F': {},'N': {}}
                 },'предлогательный': {
-                    'M': '-ем','F': '-ей','N': '-ем','Plural': '-их'
+                    'Single': {'M': {},'F': {},'N': {}},
+                    'Plural': {'M': {},'F': {},'N': {}}
                 }
         }
     }

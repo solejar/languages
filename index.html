@@ -56,26 +56,30 @@
     <div ng-if="page.currPage=='russian'">
         You are on the Russian page!
         <div ng-controller="endingCtrl as ending">
-            <md-input-container >
-                <label>Part of Speech</label>
-                <md-select ng-model="ending.currPoS">
-                    <md-option ng-repeat="part in ending.partsOfSpeech" ng-value="part">
-                    {{part}}
+            <md-input-container>
+                <label>Preposition</label>
+                <md-select ng-model="ending.currPrep">
+                    <md-option ng-repeat="prep in ending.prepositions" ng-value="prep">
+                    {{prep}}
                     </md-option>
                 </md-select>
+            </md-input-container>            
+            <md-input-container>
+                <label>
+                Adjective
+                </label>
+                <input ng-mode="ending.currAdj">
             </md-input-container>
-            <md-input-container ng-if="ending.currPoS=='предлогательное'" >
-                <label>Adjective type</label>
-                <md-select ng-model="ending.currType">
-                    <md-option ng-repeat="type in ending.adjType" ng-value="type">
-                    {{type}}
-                    </md-option>
-                </md-select>
+            <md-input-container>
+                <label>
+                Noun
+                </label>
+                <input ng-mode="ending.currNoun">
             </md-input-container>
-            <md-input-container ng-if="ending.currPoS">
+            <md-input-container>
                 <label>Case</label>
                 <md-select ng-model="ending.currCase">
-                    <md-option ng-repeat="case in ending.cases" ng-value="case">
+                    <md-option ng-repeat="case in ending.getCases(ending.currPrep)" ng-value="case">
                     {{case}}
                     </md-option>
                 </md-select>
@@ -88,19 +92,26 @@
                     </md-option>
                 </md-select>
             </md-input-container>
-            <md-input-container ng-if="ending.currPoS">
-                <label>Gender/plurality</label>
+            <md-input-container >
+                <label>Gender</label>
                 <md-select ng-model="ending.currGender">
                     <md-option ng-repeat="gender in ending.genders" ng-value="gender">
                     {{gender}}
                     </md-option>
                 </md-select>
             </md-input-container>
-            <div md-layout="column">
-                Ending chart:
+            <md-input-container>
+                <label>Plurality</label>
+                <md-select ng-model="ending.currPlurality">
+                    <md-option ng-repeat="plurality in ending.pluralities" ng-value="plurality">
+                    {{plurality}}
+                    </md-option>
+                </md-select>
+            </md-input-container>    
+            
+            <div ng-if="ending.currAdjGender">{{ending.getEndings(ending.currPoS,ending.currType,ending.currCase,ending.currAnimate,ending.currAdjGender)}}
             </div>
-            <div ng-if="ending.currGender">{{ending.getEndings(ending.currPoS,ending.currType,ending.currCase,ending.currAnimate,ending.currGender)}}
-            </div>
+
 
             
                     
