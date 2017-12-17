@@ -3,7 +3,6 @@ var app = angular.module('lang');
 app.controller('endingCtrl',function(){
 
     //to do list:
-    //function to determine the declension for noun
     //function to check spelling rules before making a change
     //perhaps generalize dict, once we have spelling rules in place?
     //abstract data away into mongo collection
@@ -17,6 +16,7 @@ app.controller('endingCtrl',function(){
     this.pluralities = ['Single','Plural']
     this.consonants = ['б','в','г','д','ж','з','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ']
     this.vowels = ['а','э','ы','у','о','я','е','ё','ю','и']
+    this.exceptions = {}
 
     this.prepositions = [
         {
@@ -131,19 +131,16 @@ app.controller('endingCtrl',function(){
         this.currCase = caseArr[0];
     }
 
-    this.conjugAdj = function(){
+    this.declineAdj = function(){
         if (this.currAdj&&this.currCase&&this.currPlurality&&this.currGender){
             
             var plur = this.currPlurality;
             var gen = plur=='Single'? this.currGender: plur;
             var padex = this.currCase;
-            var newAdj = this.currAdj;
-            var length = newAdj.length;
+            var oldAdj = this.currAdj;
+            var length = oldAdj.length;
 
-            var adjType = this.getAdjType(newAdj);
-
-            var vals = [adjType,]
-            console.log()
+            var adjType = this.getAdjType(oldAdj);
 
             if(padex =='винительный'){
                 if(this.currAnimate){
@@ -151,27 +148,20 @@ app.controller('endingCtrl',function(){
                     var newEnding = this.endingsDict['предлогательное'][adjType][padex][anim][gen]
                 }
             }else{
-                newEnding = this.endingsDict['предлогательное'][adjType][padex][gen]
+                var newEnding = this.endingsDict['предлогательное'][adjType][padex][gen]
             }
             
-            if(adjType=='hard'){
+            /*if(adjType=='hard'){
+
                 newAdj = newAdj.substring(0,length-2) + newEnding;
             }else if(adjType=='soft'){
                 newAdj = newAdj.substring(0,length-3) + newEnding;
-            }
+            }*/
+            var stem = oldAdj.substring(0,length-2);
+            ruleAdjustedEnding = this.checkSpellingRules(stem,newEnding);
+            var newAdj = stem + ruleAdjustedEnding;
 
             return newAdj;
-        }else{
-            return '';
-        }
-    }
-
-    this.conjugNoun = function(){
-        if (this.currNoun){
-            var newNoun = this.currNoun;
-
-            var declensi
-            return newNoun;
         }else{
             return '';
         }
@@ -185,6 +175,114 @@ app.controller('endingCtrl',function(){
             return 'soft'
         }else{
             return 'hard'
+        }
+    }
+
+    this.declineNoun = function(){
+        if (this.currNoun&&this.currCase&&this.currPlurality&&this.currGender){
+            var oldNoun = this.currNoun;
+            var plur = this.currPlurality;
+            var gen = this.currGender;
+            var padex = this.currCase;
+            var length = oldNoun.length;
+
+            if(padex =='винительный'){
+                if(this.currAnimate){
+                    var anim = this.currAnimate;
+                    var possibleEndings = this.endingsDict['существительное'][padex][anim][plur][gen]
+                }
+            }else{
+                var possibleEndings = this.endingsDict['существительное'][padex][plur][gen]
+            }
+
+            console.log(possibleEndings)
+            console.log('word is: ' + oldNoun)
+
+            var lastLetter = oldNoun.substring(length-1,length);
+
+            var log = []
+            angular.forEach(possibleEndings,function(value,key){
+                if(key=='all'){
+                    var declensionObj = possibleEndings[key];
+                    console.log(declensionObj)
+                    this.push(declensionObj);
+
+                }else if(key=='consonant'){
+                    if(this.consonants.includes(lastLetter)){
+                        var declensionObj = possibleEndings['consonant'];
+                        console.log(declensionObj)
+                        this.push(declensionObj);
+                    }
+                }else{
+                    if(key==lastLetter){
+                        var declensionObj = possibleEndings[key];
+                        console.log(declensionObj)
+                        this.push(declensionObj);
+                    }
+                }
+            },log);
+
+            if(!log[0]){
+                var declensionObj = possibleEndings['else'];
+                console.log(declensionObj)
+            }else{
+                var declensionObj = log[0]
+            }
+
+            console.log(declensionObj);
+
+            var newNoun = this.applyEnding(oldNoun,declensionObj);
+            console.log(newNoun)
+            
+            return newNoun;
+        }else{
+            return '';
+        }
+    }
+
+    this.applyEnding = function(noun, declension){
+        console.log(declension)
+        var oper = declension['oper'];
+        if(oper=='none'){
+            return noun;
+        }else if(oper=='replace'){
+            var stem = noun.substring(0,noun.length-1)
+            var ending = declension['ending']
+            var ruleAdjustedEnding = this.checkSpellingRules(stem,ending);
+            return stem+ruleAdjustedEnding
+        }else if(oper=='drop'){
+            return noun.substring(0,noun.length-1)
+        }else if(oper=='add'){
+            var ending = declension['ending']
+            var ruleAdjustedEnding = this.checkSpellingRules(noun,ending)
+            return noun+ruleAdjustedEnding;
+        }else if(oper=='conditional'){
+            var cond = declension['condition']
+            var lastLetter = noun.substring(noun.length-1,noun.length)
+            if(cond=='consonant'){
+                if(this.consonants.includes(lastLetter)){
+                    var declensionObj = declension['true']
+                }else{
+                    var declensionObj = declension['false']
+                }                
+            }else if(cond==lastLetter){
+                var declensionObj = declension['true']
+            }else{
+                var declensionObj = declension['false']
+            }
+
+            return this.applyEnding(noun,declensionObj)
+        }
+    }
+
+    //this is just a bare prototype
+    this.checkSpellingRules = function(origWord, origEnding){
+        var compliesRules = true; //need to determine if this is true
+        if(compliesRules){
+            return origEnding;
+        }else{
+            var newEnding = origEnding;
+            return newEnding;
         }
     }
 
@@ -478,12 +576,6 @@ app.controller('endingCtrl',function(){
         }
     }        
    
-    this.declineNoun = function(declension){
-
-    }
-
-    this.checkSpellingRules = function(origWord, origEnding){
-   
-    }
+    
 
 });

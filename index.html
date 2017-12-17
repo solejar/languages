@@ -74,8 +74,8 @@
                 <div layout="row">
                     <md-input-container>
                         <label>Preposition</label>
-                        <md-select ng-model="ending.currCases" ng-change="ending.checkCaseCount(ending.currCases)">
-                            <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep.cases" >
+                        <md-select ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)">
+                            <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep" >
                             {{prep.name}}
                             </md-option>
                         </md-select>
@@ -83,7 +83,7 @@
                     <md-input-container>
                         <label>Case</label>
                         <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase">
-                            <md-option ng-repeat="case in ending.currCases" ng-value="case" >
+                            <md-option ng-repeat="case in ending.currPrep.cases" ng-value="case" >
                             {{case}}
                             </md-option>
                         </md-select>
@@ -114,7 +114,7 @@
                     </md-input-container>
                 </div>
                 <p>
-                    {{ending.currPrep+' ' +ending.conjugAdj() +' ' + ending.conjugNoun()}}
+                    {{ending.currPrep.name+' ' +ending.declineAdj() +' ' + ending.declineNoun()}}
                 </p>
             </div>    
         </div>
