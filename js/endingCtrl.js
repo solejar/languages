@@ -1,13 +1,23 @@
 var app = angular.module('lang');
 
 app.controller('endingCtrl',function(){
-    //this.adjType = ['hard (-ый,ой,ии)','soft (-ний)','short (-в)']
-    //this.partsOfSpeech = ['предлогательное','существительное']
-    
+
+    //to do list:
+    //function to determine the declension for noun
+    //function to check spelling rules before making a change
+    //perhaps generalize dict, once we have spelling rules in place?
+    //abstract data away into mongo collection
+    //  set up pipework for mongo interaction
+    //determine schema for 'exception' cases
+    //set up post request with noted inaccuracies
+    //move on to document reading (this is a big feature)
+        
     this.genders = ['M','F','N']    
     this.animate = ['Animate','Inanimate']
     this.pluralities = ['Single','Plural']
-    
+    this.consonants = ['б','в','г','д','ж','з','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ']
+    this.vowels = ['а','э','ы','у','о','я','е','ё','ю','и']
+
     this.prepositions = [
         {
             'name': 'none', 
@@ -35,7 +45,7 @@ app.controller('endingCtrl',function(){
                 ['винительный','предложный']
         },
         {
-            'name': 'с (со)', 
+            'name': 'с', 
             'cases':    
                 ['творительный','винительный','родительный']
         },
@@ -55,7 +65,7 @@ app.controller('endingCtrl',function(){
                 ['родительный']
         },
         {
-            'name': 'в (во)', 
+            'name': 'в', 
             'cases':    
                 ['винительный','предложный']
         },
@@ -75,7 +85,7 @@ app.controller('endingCtrl',function(){
                 ['родительный']
         },
         {
-            'name': 'к (ко)', 
+            'name': 'к', 
             'cases':    
                 ['дательный']
         },
@@ -159,6 +169,8 @@ app.controller('endingCtrl',function(){
     this.conjugNoun = function(){
         if (this.currNoun){
             var newNoun = this.currNoun;
+
+            var declensi
             return newNoun;
         }else{
             return '';
@@ -167,8 +179,8 @@ app.controller('endingCtrl',function(){
 
     this.getAdjType = function(adj){
         var length = adj.length;
-
         var ending = adj.substring(length-3,length);
+
         if(ending=='ний'||ending =='няя'||ending=='нее'){
             return 'soft'
         }else{
@@ -358,7 +370,7 @@ app.controller('endingCtrl',function(){
             },'дательный': {
                 'Single': {
                     'M': {
-                        'consonant': {},
+                        'consonant': {'oper': 'add','ending': 'у'},
                         'й': {'oper': 'replace','ending': 'ю'},
                         'ь': {'oper': 'replace','ending': 'ю'}
                     },
@@ -416,30 +428,62 @@ app.controller('endingCtrl',function(){
                 'Plural': {
                     'M': {
                         'consonant': {'oper': 'add','ending': 'ами'},
-                        'a': {'oper': 'replace','ending': 'ами'},
-                        'o': {'oper': 'replace','ending': 'ами'},
-                        
+                        'а': {'oper': 'replace','ending': 'ами'},
+                        'о': {'oper': 'replace','ending': 'ами'},
+                        'else': {'oper': 'replace', 'ending': 'ями'}
                     },
-                    'F': {},
-                    'N': {}
+                    'F': {
+                        'consonant': {'oper': 'add','ending': 'ами'},
+                        'а': {'oper': 'replace','ending': 'ами'},
+                        'о': {'oper': 'replace','ending': 'ами'},
+                        'else': {'oper': 'replace', 'ending': 'ями'}
+                    },
+                    'N': {
+                        'consonant': {'oper': 'add','ending': 'ами'},
+                        'а': {'oper': 'replace','ending': 'ами'},
+                        'о': {'oper': 'replace','ending': 'ами'},
+                        'else': {'oper': 'replace', 'ending': 'ями'}
+                    }
                 }
             },'предложный': {
                 'Single': {
-                    'M': {},
-                    'F': {},
-                    'N': {}
+                    'M': {'all': {'oper': 'add','ending': 'е'}},
+                    'F': {
+                        'а' : {'oper': 'replace','ending': 'e'},
+                        'я' : {'oper': 'replace','ending': 'e'},
+                        'ь' : {'oper': 'replace','ending': 'и'}
+                    },
+                    'N': {
+                        'о': {'oper': 'replace', 'ending': 'е'},
+                    }
                 },
                 'Plural': {
-                    'M': {},
-                    'F': {},
-                    'N': {}
+                    'M': {
+                        'а': {'oper': 'replace','ending': 'ax'},
+                        'о': {'oper': 'replace','ending': 'ах'},
+                        'else': {'oper': 'replace','ending': 'ях'}
+                    },
+                    'F': {
+                        'а': {'oper': 'replace','ending': 'ax'},
+                        'о': {'oper': 'replace','ending': 'ах'},
+                        'else': {'oper': 'replace','ending': 'ях'}
+                    },
+                    'N': {
+                        'а': {'oper': 'replace','ending': 'ax'},
+                        'о': {'oper': 'replace','ending': 'ах'},
+                        'else': {'oper': 'replace','ending': 'ях'}
+                    }
                 }
             }
         }
     }        
    
-   this.checkSpellingRules = function(){
+    this.declineNoun = function(declension){
 
-   }
+    }
+
+    this.checkSpellingRules = function(origWord, origEnding){
+   
+    }
 
 });
