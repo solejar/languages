@@ -36,7 +36,7 @@
                 日本語
             </md-nav-item>
             <md-nav-item md-nav-click="page.changePage('spanish')" name="SpanishTab">
-                Espanol
+                Español
             </md-nav-item>
             <md-nav-item md-nav-click="page.changePage('about')" name="aboutTab">
                 About
@@ -53,68 +53,70 @@
         Feel free to fork on https://github.com/solejar/languages.git
 
     </div>
-    <div ng-if="page.currPage=='russian'">
-        You are on the Russian page!
+    <div ng-if="page.currPage=='russian'">        
         <div ng-controller="endingCtrl as ending">
-            <md-input-container>
-                <label>Preposition</label>
-                <md-select ng-model="ending.currPrep">
-                    <md-option ng-repeat="prep in ending.prepositions" ng-value="prep">
-                    {{prep}}
-                    </md-option>
-                </md-select>
-            </md-input-container>            
-            <md-input-container>
-                <label>
-                Adjective
-                </label>
-                <input ng-mode="ending.currAdj">
-            </md-input-container>
-            <md-input-container>
-                <label>
-                Noun
-                </label>
-                <input ng-mode="ending.currNoun">
-            </md-input-container>
-            <md-input-container>
-                <label>Case</label>
-                <md-select ng-model="ending.currCase">
-                    <md-option ng-repeat="case in ending.getCases(ending.currPrep)" ng-value="case">
-                    {{case}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container ng-if="ending.currCase=='внительный'" >
-                <label>Animate</label>
-                <md-select ng-model="ending.currAnimate">
-                    <md-option ng-repeat="state in ending.animate"  ng-value="state">
-                    {{state}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container >
-                <label>Gender</label>
-                <md-select ng-model="ending.currGender">
-                    <md-option ng-repeat="gender in ending.genders" ng-value="gender">
-                    {{gender}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container>
-                <label>Plurality</label>
-                <md-select ng-model="ending.currPlurality">
-                    <md-option ng-repeat="plurality in ending.pluralities" ng-value="plurality">
-                    {{plurality}}
-                    </md-option>
-                </md-select>
-            </md-input-container>    
-            
-            <div ng-if="ending.currAdjGender">{{ending.getEndings(ending.currPoS,ending.currType,ending.currCase,ending.currAnimate,ending.currAdjGender)}}
-            </div>
+            <div layout="column">
+                <div layout="row">        
+                    <md-input-container>
+                        <label>
+                        Adjective
+                        </label>
+                        <input ng-model="ending.currAdj">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>
+                        Noun
+                        </label>
+                        <input ng-model="ending.currNoun">
+                    </md-input-container>
+                </div>
 
-
-            
-                    
+                <div layout="row">
+                    <md-input-container>
+                        <label>Preposition</label>
+                        <md-select ng-model="ending.currCases" ng-change="ending.checkCaseCount(ending.currCases)">
+                            <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep.cases" >
+                            {{prep.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>  
+                    <md-input-container>
+                        <label>Case</label>
+                        <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase">
+                            <md-option ng-repeat="case in ending.currCases" ng-value="case" >
+                            {{case}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container ng-if="ending.currCase=='винительный'" >
+                        <label>Animate</label>
+                        <md-select ng-model="ending.currAnimate">
+                            <md-option ng-repeat="state in ending.animate"  ng-value="state">
+                            {{state}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container >
+                        <label>Gender</label>
+                        <md-select ng-model="ending.currGender">
+                            <md-option ng-repeat="gender in ending.genders" ng-value="gender">
+                            {{gender}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Plurality</label>
+                        <md-select ng-model="ending.currPlurality">
+                            <md-option ng-repeat="plurality in ending.pluralities" ng-value="plurality">
+                            {{plurality}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <p>
+                    {{ending.conjugAdj() +' ' + ending.conjugNoun()}}
+                </p>
+            </div>    
         </div>
         
     </div>
