@@ -1,6 +1,6 @@
 var app = angular.module('lang');
 
-app.controller('endingCtrl',function(){
+app.controller('endingCtrl',function(sharedProps, $q){
 
     //to do list:
     //generalize adj changes to oper, so exceptions can work more fluidly (?)
@@ -20,7 +20,26 @@ app.controller('endingCtrl',function(){
 
     }
 
-    this.prepositions = [
+    this.getPrepositions = function(){
+
+        var options = {
+            url: '/getPrepositionList',
+            params: {},
+            method: 'GET',
+        }
+
+        var promises = [];
+
+        console.log('about to fetch prepositions')
+
+        promises.push(sharedProps.httpReq(options))
+
+        $q.all(promises).then(function(res){
+            this.prepositions = res[0].content.prepositions;
+        }.bind(this));
+        
+    }
+    this.prepositions = []/*
         {
             'name': '', 
             'cases':    
@@ -306,7 +325,7 @@ app.controller('endingCtrl',function(){
             'cases':    
                 ['дательный']
         }
-    ]
+    ]*/
 
     this.checkCaseCount = function(caseArr){
         if(caseArr.length == 1){

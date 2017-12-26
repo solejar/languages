@@ -72,7 +72,7 @@
                 </div>
 
                 <div layout="row">
-                    <md-input-container>
+                    <md-input-container ng-init="ending.getPrepositions()">
                         <label>Предлог</label>
                         <md-select ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)">
                             <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep" >
