@@ -3,13 +3,20 @@ var app = angular.module('lang');
 app.controller('endingCtrl',function(sharedProps, $q){
 
     //to do list:
-    //generalize adj changes to oper, so exceptions can work more fluidly (?)
-    //  worry about this more when you try to do exceptions
-    //abstract data away into mongo collection : 1
-    //  set up pipework for mongo interaction
-    //determine schema for 'exception' cases : 2 (gonna move on to next part first, then come back to exceptions)
-    //set up post request with noted inaccuracies : 5 this is like a prelease thing
-    //move on to document reading (this is a big feature)
+    //generalize adj changes to oper: 2
+    //finish abstracting data away into mongo collection : 3
+        //put endings in, make endpoint
+        //put exceptions in, make endpoint
+    //finish schema for 'exception' cases : 1
+        //add demonstratives
+        //add check to see if gender exists
+    //add gender suggestion: 4
+        //class change
+        //select val?
+        //display warning if mismatch
+        //separate out gender, plurality both on front and on noun/adj declension
+    //set up post request with noted inaccuracies : ? this is like a prelease thing
+    //move on to document reading : 5 (I think)    
         
     this.genders = ['M','F','N']    
     this.animate = ['Animate','Inanimate']
@@ -17,7 +24,375 @@ app.controller('endingCtrl',function(sharedProps, $q){
     this.consonants = ['б','в','г','д','ж','з','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ']
     this.vowels = ['а','э','ы','у','о','я','е','ё','ю','и']
     this.exceptions = {
-
+        'мой': {
+            'gender': 'M',
+            'именительный': {                
+                'M': {'oper': 'none'},
+                'Plural': {'oper': 'replace', 'ending': 'и', 'howMany': '1'} 
+            },'винительный': {
+                'Inanimate': {
+                    'M': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'и', 'dropHowMany': '1'}    
+                },
+                'Animate': {
+                    'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                    'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}      
+                }
+            },'родительный': {
+                'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}    
+            },'дательный': {
+                'M': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'}   
+            },'творительный': {
+                'M': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'ими', 'dropHowMany': '1'} 
+            },'предложный': {
+                'M': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}   
+            }
+        },
+        'моя' : {
+            'gender': 'F',
+            'именительный': {                
+                'F': {'oper': 'none'},
+                'Plural': {'oper': 'replace', 'ending': 'и', 'howMany': '1'} 
+            },'винительный': {
+                'Inanimate': {
+                    'F': {'oper': 'replace', 'ending': 'ю', 'dropHowMany': '1'},
+                    'Plural': {'oper': 'replace', 'ending': 'и', 'dropHowMany': '1'}    
+                },
+                'Animate': {
+                    'F': {'oper': 'replace', 'ending': 'ю', 'dropHowMany': '1'},
+                    'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}      
+                }
+            },'родительный': {
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}    
+            },'дательный': {
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'}   
+            },'творительный': {
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'ими', 'dropHowMany': '1'} 
+            },'предложный': {
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}   
+            }
+        },
+        'мое': {
+            'gender': 'N',
+            'именительный': {                
+                'N': {'oper': 'none'},
+                'Plural': {'oper': 'replace', 'ending': 'и', 'howMany': '1'} 
+            },'винительный': {
+                'Inanimate': {
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'и', 'dropHowMany': '1'}    
+                },
+                'Animate': {
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}      
+                }
+            },'родительный': {
+                'N': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}    
+            },'дательный': {
+                'N': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'}   
+            },'творительный': {
+                'N': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'ими', 'dropHowMany': '1'} 
+            },'предложный': {
+                'N': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}   
+            }
+        },
+        'твой': {
+            'gender': 'M',
+            'именительный': {                
+                'M': {'oper': 'none'},
+                'Plural': {'oper': 'replace', 'ending': 'и', 'howMany': '1'} 
+            },'винительный': {
+                'Inanimate': {
+                    'M': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'и', 'dropHowMany': '1'}    
+                },
+                'Animate': {
+                    'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                    'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}      
+                }
+            },'родительный': {
+                'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}    
+            },'дательный': {
+                'M': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'}   
+            },'творительный': {
+                'M': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'ими', 'dropHowMany': '1'} 
+            },'предложный': {
+                'M': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}   
+            }
+        },
+        'твоя': {
+            'gender': 'F',
+            'именительный': {
+                'F': {'oper': 'none'},
+                'Plural': {'oper': 'replace', 'ending': 'и', 'howMany': '1'} 
+            },'винительный': {
+                'Inanimate': {
+                    'M': {'oper': 'none'},
+                    'F': {'oper': 'replace', 'ending': 'ю', 'dropHowMany': '1'},
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'и', 'dropHowMany': '1'}    
+                },
+                'Animate': {
+                    'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                    'F': {'oper': 'replace', 'ending': 'ю', 'dropHowMany': '1'},
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}      
+                }
+            },'родительный': {
+                'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}    
+            },'дательный': {
+                'M': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'}   
+            },'творительный': {
+                'M': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'ими', 'dropHowMany': '1'} 
+            },'предложный': {
+                'M': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}   
+            }
+        },
+        'твое': {
+            'gender': 'N',
+            'именительный': {                
+                'M': {'oper': 'none'},
+                'F': {'oper': 'none'},
+                'N': {'oper': 'none'},
+                'Plural': {'oper': 'replace', 'ending': 'и', 'howMany': '1'} 
+            },'винительный': {
+                'Inanimate': {
+                    'M': {'oper': 'none'},
+                    'F': {'oper': 'replace', 'ending': 'ю', 'dropHowMany': '1'},
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'и', 'dropHowMany': '1'}    
+                },
+                'Animate': {
+                    'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                    'F': {'oper': 'replace', 'ending': 'ю', 'dropHowMany': '1'},
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}      
+                }
+            },'родительный': {
+                'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}    
+            },'дательный': {
+                'M': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'}   
+            },'творительный': {
+                'M': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'ими', 'dropHowMany': '1'} 
+            },'предложный': {
+                'M': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}   
+            }
+        },
+        'свой': {
+            'gender': 'M',
+            'именительный': {                
+                'M': {'oper': 'none'},
+                'F': {'oper': 'none'},
+                'N': {'oper': 'none'},
+                'Plural': {'oper': 'replace', 'ending': 'и', 'howMany': '1'} 
+            },'винительный': {
+                'Inanimate': {
+                    'M': {'oper': 'none'},
+                    'F': {'oper': 'replace', 'ending': 'ю', 'dropHowMany': '1'},
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'и', 'dropHowMany': '1'}    
+                },
+                'Animate': {
+                    'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                    'F': {'oper': 'replace', 'ending': 'ю', 'dropHowMany': '1'},
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}      
+                }
+            },'родительный': {
+                'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}    
+            },'дательный': {
+                'M': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'}   
+            },'творительный': {
+                'M': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'ими', 'dropHowMany': '1'} 
+            },'предложный': {
+                'M': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}   
+            }
+        },
+        'своя': {
+            'gender': 'F',
+            'именительный': {                
+                'M': {'oper': 'none'},
+                'F': {'oper': 'none'},
+                'N': {'oper': 'none'},
+                'Plural': {'oper': 'replace', 'ending': 'и', 'howMany': '1'} 
+            },'винительный': {
+                'Inanimate': {
+                    'M': {'oper': 'none'},
+                    'F': {'oper': 'replace', 'ending': 'ю', 'dropHowMany': '1'},
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'и', 'dropHowMany': '1'}    
+                },
+                'Animate': {
+                    'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                    'F': {'oper': 'replace', 'ending': 'ю', 'dropHowMany': '1'},
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}      
+                }
+            },'родительный': {
+                'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}    
+            },'дательный': {
+                'M': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'}   
+            },'творительный': {
+                'M': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'ими', 'dropHowMany': '1'} 
+            },'предложный': {
+                'M': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}   
+            }
+        },
+        'свое': {
+            'gender': 'N',
+            'именительный': {                
+                'M': {'oper': 'none'},
+                'F': {'oper': 'none'},
+                'N': {'oper': 'none'},
+                'Plural': {'oper': 'replace', 'ending': 'и', 'howMany': '1'} 
+            },'винительный': {
+                'Inanimate': {
+                    'M': {'oper': 'none'},
+                    'F': {'oper': 'replace', 'ending': 'ю', 'dropHowMany': '1'},
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'и', 'dropHowMany': '1'}    
+                },
+                'Animate': {
+                    'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                    'F': {'oper': 'replace', 'ending': 'ю', 'dropHowMany': '1'},
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}      
+                }
+            },'родительный': {
+                'M': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}    
+            },'дательный': {
+                'M': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'}   
+            },'творительный': {
+                'M': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'ими', 'dropHowMany': '1'} 
+            },'предложный': {
+                'M': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}   
+            }
+        },
+        'наш': {
+            'gender': 'M',
+            'именительный': {                
+                'M': {'oper': 'none'},
+                'F': {'oper': 'none'},
+                'N': {'oper': 'none'},
+                'Plural': {'oper': 'add', 'ending': 'и'} 
+            },'винительный': {
+                'Inanimate': {
+                    'M': {'oper': 'none'},
+                    'F': {'oper': 'replace', 'ending': 'у', 'dropHowMany': '1'},
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'add', 'ending': 'и'}    
+                },
+                'Animate': {
+                    'M': {'oper': 'add', 'ending': 'его'},
+                    'F': {'oper': 'replace', 'ending': 'у', 'dropHowMany': '1'},
+                    'N': {'oper': 'none'},
+                    'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}      
+                }
+            },'родительный': {
+                'M': {'oper': 'add', 'ending': 'его'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'его', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}    
+            },'дательный': {
+                'M': {'oper': 'add', 'ending': 'ему'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'ему', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'}   
+            },'творительный': {
+                'M': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'им', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'ими', 'dropHowMany': '1'} 
+            },'предложный': {
+                'M': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'F': {'oper': 'replace', 'ending': 'ей', 'dropHowMany': '1'},
+                'N': {'oper': 'replace', 'ending': 'ём', 'dropHowMany': '1'},
+                'Plural': {'oper': 'replace', 'ending': 'их', 'dropHowMany': '1'}   
+            }
+        },
+        'наша': {},
+        'наше': {},
+        'ваш': {},
+        'ваша': {},
+        'ваше': {},
+        //also gonna need the demonstratives in here
+        'ребёнок': {} //just as POC for what a noun exception will look like
     }
 
     this.getPrepositions = function(){
@@ -39,293 +414,7 @@ app.controller('endingCtrl',function(sharedProps, $q){
         }.bind(this));
         
     }
-    this.prepositions = []/*
-        {
-            'name': '', 
-            'cases':    
-                ['именительный','винительный','родительный','дательный','предложный']
-        },
-        {
-            'name': 'у', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'за', 
-            'cases':    
-                ['именительный','винительный','предложный']
-        },
-        {
-            'name': 'около', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'на', 
-            'cases':    
-                ['винительный','предложный']
-        },
-        {
-            'name': 'с', 
-            'cases':    
-                ['творительный','винительный','родительный']
-        },
-        {
-            'name': 'над', 
-            'cases':    
-                ['творительный']
-        },
-        {
-            'name': 'под', 
-            'cases':    
-                ['винительный','творительный']
-        },
-        {
-            'name': 'из', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'в', 
-            'cases':    
-                ['винительный','предложный']
-        },
-        {
-            'name': 'по', 
-            'cases':    
-                ['именительный','винительный','дательный','предложный']
-        },
-        {
-            'name': 'через', 
-            'cases':    
-                ['винительный']
-        },
-        {
-            'name': 'вокруг', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'к', 
-            'cases':    
-                ['дательный']
-        },
-        {
-            'name': 'от', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'при', 
-            'cases':    
-                ['предложный']
-        },
-        {
-            'name': 'без', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'до', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'благодаря', 
-            'cases':    
-                ['дательный']
-        },
-        {
-            'name': 'близ', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'ввиду', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'вдоль', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'вместо', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'вне', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'внутри', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'внутрь', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'возле', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'впереди', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'вследствие', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'для', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'до', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'вопреки', 
-            'cases':    
-                ['дательный']
-        },
-        {
-            'name': 'из-за', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'из-под', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'кроме', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'между', 
-            'cases':    
-                ['родительный','творительный']
-        },
-        {
-            'name': 'мимо', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'напротив', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'насчет', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'относительно', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'перед', 
-            'cases':    
-                ['творительный']
-        },
-        {
-            'name': 'подле', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'подобно', 
-            'cases':    
-                ['дательный']
-        },
-        {
-            'name': 'позади', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'помимо', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'после', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'посреди', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'посредством', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'про', 
-            'cases':    
-                ['винительный']
-        },
-        {
-            'name': 'против', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'путём', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'ради', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'с', 
-            'cases':    
-                ['винительный','родительный','творительный']
-        },
-        {
-            'name': 'сверх', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'свыше', 
-            'cases':    
-                ['родительный']
-        },
-        {
-            'name': 'сквозь', 
-            'cases':    
-                ['винительный']
-        },
-        {
-            'name': 'согласно', 
-            'cases':    
-                ['дательный']
-        }
-    ]*/
+    this.prepositions = []
 
     this.checkCaseCount = function(caseArr){
         if(caseArr.length == 1){
@@ -348,15 +437,21 @@ app.controller('endingCtrl',function(sharedProps, $q){
 
             var adjType = this.getAdjType(oldAdj);
 
+            if(this.exceptions.hasOwnProperty(currAdj)){
+                var endingDict = this.exceptions[currAdj]
+            }else{
+                var endingDict = this.endingsDict['предлогательное'][adjType]
+            }
+
             if(padex =='винительный'){
                 if(this.currAnimate){
                     var anim = this.currAnimate;
-                    var newEnding = this.endingsDict['предлогательное'][adjType][padex][anim][gen]
+                    var newEnding = endingDict[adjType][padex][anim][gen]
                 }else{
                     return oldAdj
                 }
             }else{
-                var newEnding = this.endingsDict['предлогательное'][adjType][padex][gen]
+                var newEnding = endingDict[adjType][padex][gen]
             }
             
             var stem = oldAdj.substring(0,length-2);
@@ -388,15 +483,21 @@ app.controller('endingCtrl',function(sharedProps, $q){
             var padex = this.currCase;
             var length = oldNoun.length;
 
+            if(this.exceptions.hasOwnProperty(this.currNoun)){
+                var endingDict = this.exceptions[this.currNoun]
+            }else{
+                var endingDict = this.endingsdict['существительное']
+            }
+
             if(padex =='винительный'){
                 if(this.currAnimate){
                     var anim = this.currAnimate;
-                    var possibleEndings = this.endingsDict['существительное'][padex][anim][plur][gen]
+                    var possibleEndings = endingDict[padex][anim][plur][gen]
                 }else{
                     return oldNoun
                 }
             }else{
-                var possibleEndings = this.endingsDict['существительное'][padex][plur][gen]
+                var possibleEndings = endingDict[padex][plur][gen]
             }
 
             var lastLetter = oldNoun.substring(length-1,length);
@@ -519,10 +620,12 @@ app.controller('endingCtrl',function(sharedProps, $q){
     }
 
     this.endingsDict = {
+        //when we convert this, we are gonna add a 'how many to replace' attr
         'предлогательное': {
             'hard': {
                 'именительный': {
-                    'M': 'ый','F': 'ая','N': 'ое','Plural': 'ые'
+                    'M': 'ый','F': 'ая','N': 'ое',
+                    'Plural': 'ые'
                 },'винительный': {
                     'Inanimate': {
                         'M': 'ый','F': 'ую','N': 'ое','Plural': 'ые'
@@ -542,7 +645,8 @@ app.controller('endingCtrl',function(sharedProps, $q){
             },
             'soft': {
                 'именительный': {
-                    'M': 'ий','F': 'яя','N': 'ее','Plural': 'ие'
+                    'M': 'ий','F': 'яя','N': 'ее',
+                    'Plural': 'ие'
                 },'винительный': {
                     'Inanimate': {
                         'M': 'ий','F': 'юю','N': 'ее','Plural': 'ие'
