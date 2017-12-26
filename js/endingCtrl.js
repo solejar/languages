@@ -3,12 +3,12 @@ var app = angular.module('lang');
 app.controller('endingCtrl',function(){
 
     //to do list:
-    //function to check spelling rules before making a change
-    //perhaps generalize dict, once we have spelling rules in place?
-    //abstract data away into mongo collection
+    //generalize adj changes to oper, so exceptions can work more fluidly (?)
+    //  worry about this more when you try to do exceptions
+    //abstract data away into mongo collection : 1
     //  set up pipework for mongo interaction
-    //determine schema for 'exception' cases
-    //set up post request with noted inaccuracies
+    //determine schema for 'exception' cases : 2 (gonna move on to next part first, then come back to exceptions)
+    //set up post request with noted inaccuracies : 5 this is like a prelease thing
     //move on to document reading (this is a big feature)
         
     this.genders = ['M','F','N']    
@@ -16,11 +16,13 @@ app.controller('endingCtrl',function(){
     this.pluralities = ['Single','Plural']
     this.consonants = ['б','в','г','д','ж','з','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ']
     this.vowels = ['а','э','ы','у','о','я','е','ё','ю','и']
-    this.exceptions = {}
+    this.exceptions = {
+
+    }
 
     this.prepositions = [
         {
-            'name': 'none', 
+            'name': '', 
             'cases':    
                 ['именительный','винительный','родительный','дательный','предложный']
         },
@@ -118,6 +120,191 @@ app.controller('endingCtrl',function(){
             'name': 'близ', 
             'cases':    
                 ['родительный']
+        },
+        {
+            'name': 'ввиду', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'вдоль', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'вместо', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'вне', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'внутри', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'внутрь', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'возле', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'впереди', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'вследствие', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'для', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'до', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'вопреки', 
+            'cases':    
+                ['дательный']
+        },
+        {
+            'name': 'из-за', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'из-под', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'кроме', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'между', 
+            'cases':    
+                ['родительный','творительный']
+        },
+        {
+            'name': 'мимо', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'напротив', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'насчет', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'относительно', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'перед', 
+            'cases':    
+                ['творительный']
+        },
+        {
+            'name': 'подле', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'подобно', 
+            'cases':    
+                ['дательный']
+        },
+        {
+            'name': 'позади', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'помимо', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'после', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'посреди', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'посредством', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'про', 
+            'cases':    
+                ['винительный']
+        },
+        {
+            'name': 'против', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'путём', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'ради', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'с', 
+            'cases':    
+                ['винительный','родительный','творительный']
+        },
+        {
+            'name': 'сверх', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'свыше', 
+            'cases':    
+                ['родительный']
+        },
+        {
+            'name': 'сквозь', 
+            'cases':    
+                ['винительный']
+        },
+        {
+            'name': 'согласно', 
+            'cases':    
+                ['дательный']
         }
     ]
 
@@ -146,17 +333,13 @@ app.controller('endingCtrl',function(){
                 if(this.currAnimate){
                     var anim = this.currAnimate;
                     var newEnding = this.endingsDict['предлогательное'][adjType][padex][anim][gen]
+                }else{
+                    return oldAdj
                 }
             }else{
                 var newEnding = this.endingsDict['предлогательное'][adjType][padex][gen]
             }
             
-            /*if(adjType=='hard'){
-
-                newAdj = newAdj.substring(0,length-2) + newEnding;
-            }else if(adjType=='soft'){
-                newAdj = newAdj.substring(0,length-3) + newEnding;
-            }*/
             var stem = oldAdj.substring(0,length-2);
             ruleAdjustedEnding = this.checkSpellingRules(stem,newEnding);
             var newAdj = stem + ruleAdjustedEnding;
@@ -190,49 +373,50 @@ app.controller('endingCtrl',function(){
                 if(this.currAnimate){
                     var anim = this.currAnimate;
                     var possibleEndings = this.endingsDict['существительное'][padex][anim][plur][gen]
+                }else{
+                    return oldNoun
                 }
             }else{
                 var possibleEndings = this.endingsDict['существительное'][padex][plur][gen]
             }
 
-            console.log(possibleEndings)
-            console.log('word is: ' + oldNoun)
-
             var lastLetter = oldNoun.substring(length-1,length);
 
             var log = []
+            var consonants = this.consonants;
             angular.forEach(possibleEndings,function(value,key){
                 if(key=='all'){
                     var declensionObj = possibleEndings[key];
-                    console.log(declensionObj)
                     this.push(declensionObj);
 
                 }else if(key=='consonant'){
-                    if(this.consonants.includes(lastLetter)){
+                    if(consonants.includes(lastLetter)){
                         var declensionObj = possibleEndings['consonant'];
-                        console.log(declensionObj)
                         this.push(declensionObj);
                     }
                 }else{
                     if(key==lastLetter){
                         var declensionObj = possibleEndings[key];
-                        console.log(declensionObj)
                         this.push(declensionObj);
                     }
                 }
             },log);
 
             if(!log[0]){
-                var declensionObj = possibleEndings['else'];
-                console.log(declensionObj)
+                if(possibleEndings.hasOwnProperty('else')){
+                    var declensionObj = possibleEndings['else'];
+                }else{
+                    return oldNoun;
+                }
+                
             }else{
                 var declensionObj = log[0]
             }
 
-            console.log(declensionObj);
+            //console.log(declensionObj);
 
             var newNoun = this.applyEnding(oldNoun,declensionObj);
-            console.log(newNoun)
+            //console.log(newNoun)
             
             return newNoun;
         }else{
@@ -241,24 +425,32 @@ app.controller('endingCtrl',function(){
     }
 
     this.applyEnding = function(noun, declension){
-        console.log(declension)
+        //console.log(declension)
         var oper = declension['oper'];
         if(oper=='none'){
+
             return noun;
         }else if(oper=='replace'){
+
             var stem = noun.substring(0,noun.length-1)
             var ending = declension['ending']
             var ruleAdjustedEnding = this.checkSpellingRules(stem,ending);
+
             return stem+ruleAdjustedEnding
         }else if(oper=='drop'){
+
             return noun.substring(0,noun.length-1)
         }else if(oper=='add'){
+
             var ending = declension['ending']
             var ruleAdjustedEnding = this.checkSpellingRules(noun,ending)
+
             return noun+ruleAdjustedEnding;
         }else if(oper=='conditional'){
+
             var cond = declension['condition']
             var lastLetter = noun.substring(noun.length-1,noun.length)
+
             if(cond=='consonant'){
                 if(this.consonants.includes(lastLetter)){
                     var declensionObj = declension['true']
@@ -275,15 +467,36 @@ app.controller('endingCtrl',function(){
         }
     }
 
-    //this is just a bare prototype
-    this.checkSpellingRules = function(origWord, origEnding){
-        var compliesRules = true; //need to determine if this is true
-        if(compliesRules){
-            return origEnding;
-        }else{
-            var newEnding = origEnding;
-            return newEnding;
+    this.softConsList = ['г','к','х','ж','ч','ш','щ','ц'];
+
+    this.checkSpellingRules = function(origStem, origEnding){
+        console.log(origStem + ' ' + origEnding)
+
+        var stemLen = origStem.length;
+        var lastStemLetter = origStem.substring(stemLen-1,stemLen)
+
+        var firstEndingLetter = origEnding.substring(0,1)
+        var newEnding = firstEndingLetter
+
+        var endingLen = origEnding.length
+        var endingRemainder = origEnding.substring(1,endingLen) //either blank or the last letter
+
+        console.log(lastStemLetter + ' ' + firstEndingLetter + ' ' + endingRemainder)
+
+        if(this.softConsList.includes(lastStemLetter)){
+            if(firstEndingLetter=='ы'){
+                newEnding = 'и'
+            }else if(firstEndingLetter=='я'){
+                newEnding = 'а'
+            }else if(firstEndingLetter=='ю'){
+                newEnding = 'у'
+            }else if((lastStemLetter!='г'||lastStemLetter!='к'||lastStemLetter!='х')&&firstEndingLetter =='о'){
+                newEnding = 'е'
+            }
+            
         }
+        
+        return newEnding+endingRemainder
     }
 
     this.endingsDict = {
@@ -304,7 +517,7 @@ app.controller('endingCtrl',function(){
                     'M': 'ому','F': 'ой','N': 'ому','Plural': 'ым'
                 },'творительный': {
                     'M': 'ым','F': 'ой','N': 'ым','Plural': 'ыми'
-                },'предлогжный': {
+                },'предложный': {
                     'M': 'ом','F': 'ой','N': 'ом','Plural': 'ых'
                 }
             },
@@ -485,20 +698,20 @@ app.controller('endingCtrl',function(){
                 'Plural': {
                     'M': {
                         'consonant': {'oper': 'add', 'ending': 'ам'},
-                        'а': {'oper': 'add', 'ending': 'ам'},
-                        'о': {'oper': 'add', 'ending': 'ам'},
+                        'а': {'oper': 'replace', 'ending': 'ам'},
+                        'о': {'oper': 'replace', 'ending': 'ам'},
                         'else': {'oper': 'replace', 'ending': 'ям'}
                     },
                     'F': {
                         'consonant': {'oper': 'add', 'ending': 'ам'},
-                        'а': {'oper': 'add', 'ending': 'ам'},
-                        'о': {'oper': 'add', 'ending': 'ам'},
+                        'а': {'oper': 'replace', 'ending': 'ам'},
+                        'о': {'oper': 'replace', 'ending': 'ам'},
                         'else': {'oper': 'replace', 'ending': 'ям'}
                     },
                     'N': {
                         'consonant': {'oper': 'add', 'ending': 'ам'},
-                        'а': {'oper': 'add', 'ending': 'ам'},
-                        'о': {'oper': 'add', 'ending': 'ам'},
+                        'а': {'oper': 'replace', 'ending': 'ам'},
+                        'о': {'oper': 'replace', 'ending': 'ам'},
                         'else': {'oper': 'replace', 'ending': 'ям'}
                     }
                 }
@@ -559,16 +772,19 @@ app.controller('endingCtrl',function(){
                     'M': {
                         'а': {'oper': 'replace','ending': 'ax'},
                         'о': {'oper': 'replace','ending': 'ах'},
+                        'consonant': {'oper': 'add','ending': 'ах'},
                         'else': {'oper': 'replace','ending': 'ях'}
                     },
                     'F': {
                         'а': {'oper': 'replace','ending': 'ax'},
                         'о': {'oper': 'replace','ending': 'ах'},
+                        'consonant': {'oper': 'add','ending': 'ах'},
                         'else': {'oper': 'replace','ending': 'ях'}
                     },
                     'N': {
                         'а': {'oper': 'replace','ending': 'ax'},
                         'о': {'oper': 'replace','ending': 'ах'},
+                        'consonant': {'oper': 'add','ending': 'ах'},
                         'else': {'oper': 'replace','ending': 'ях'}
                     }
                 }

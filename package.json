@@ -27,6 +27,8 @@
     "angular-aria": "^1.6.7",
     "angular-material": "^1.1.5",
     "angular-messages": "^1.6.7",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "mongodb": "^3.0.1",
+    "node": "^9.3.0"
   }
 }

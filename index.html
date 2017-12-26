@@ -59,13 +59,13 @@
                 <div layout="row">        
                     <md-input-container>
                         <label>
-                        Adjective
+                        Предлогательное
                         </label>
                         <input ng-model="ending.currAdj">
                     </md-input-container>
                     <md-input-container>
                         <label>
-                        Noun
+                        Сусществилтельное
                         </label>
                         <input ng-model="ending.currNoun">
                     </md-input-container>
@@ -73,7 +73,7 @@
 
                 <div layout="row">
                     <md-input-container>
-                        <label>Preposition</label>
+                        <label>Предлог</label>
                         <md-select ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)">
                             <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep" >
                             {{prep.name}}
@@ -81,7 +81,7 @@
                         </md-select>
                     </md-input-container>  
                     <md-input-container>
-                        <label>Case</label>
+                        <label>Падеж</label>
                         <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase">
                             <md-option ng-repeat="case in ending.currPrep.cases" ng-value="case" >
                             {{case}}
@@ -97,7 +97,7 @@
                         </md-select>
                     </md-input-container>
                     <md-input-container >
-                        <label>Gender</label>
+                        <label>Род</label>
                         <md-select ng-model="ending.currGender">
                             <md-option ng-repeat="gender in ending.genders" ng-value="gender">
                             {{gender}}
@@ -113,9 +113,9 @@
                         </md-select>
                     </md-input-container>
                 </div>
-                <p>
+                <div>
                     {{ending.currPrep.name+' ' +ending.declineAdj() +' ' + ending.declineNoun()}}
-                </p>
+                </div>
             </div>    
         </div>
         
