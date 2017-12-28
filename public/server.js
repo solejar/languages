@@ -16,10 +16,6 @@ app.get('/',function(req,res){
     res.render('index.html');
 });
 
-app.get('/getEndings',function(req,res){
-
-});
-
 app.get('/getPrepositionList',function(req,res){
     var options = {}
     mongo.getPrepositions(options,function(result){
@@ -27,6 +23,24 @@ app.get('/getPrepositionList',function(req,res){
         res.statusCode = result.statusCode;
         res.send(result);
     });
+});
+
+app.get('/exceptionsRu',function(req,res){
+    var options = {}
+    mongo.getExceptions(options,function(result){
+        console.log('onResult: ('+result.statusCode + ')' + JSON.stringify(result.content));
+        res.statusCode = result.statusCode;
+        res.send(result);
+    })
+});
+
+app.get('/endingsRu',function(req,res){
+    var options = {}
+    mongo.getEndings(options,function(result){
+        console.log('onResult: (' + result.statusCode + ')' + JSON.stringify(result.content));
+        res.statusCode = result.statusCode;
+        res.send(result);
+    })
 });
 
 app.listen(port,(err)=>{
