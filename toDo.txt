@@ -1,0 +1,30 @@
+remaining exceptions : PL: 2 not high priority but should be done eventually,   maybe one day if you're bored out of your mind
+    add family nouns (eventually, idgaf tbh)
+        ребёнок
+        брать
+        сестра
+        etc
+    add fleeting vowel nouns 
+        девушка
+        звонок
+        etc.
+    weird exceptions
+        год
+    for nouns, if it's only one case taking the error, probably the data model can reflect that, makes life easier
+gender improvement: 1
+    if possible, try to put it only on adj+noun
+error detection: Priority Level: 3
+    what to do with garbage inputs?
+    I'm thinking about adding an 'else' rule to whatever endings don't have them
+    this way, even if garbage inputs, the app won't break or throw needless errors, perhaps alert user to potential wrongdoing? -> only if we go sync route
+    should i make this synchronous behind a button? Or live update?
+move on to document reading : 4 (I think)
+figure out some methodical way to do unit testing: 3
+    run through all options with assertions?
+    karma + jasmine?
+    don't need to have them all done, but at least get started with it
+    so you know how to work on this moving forward
+set up post request with noted inaccuracies : 2
+    useful to both get input from people, and to have framework for post requests
+put endings, exceptions, and preps in one RU collection
+    debatable, this is like a design decision

@@ -61,7 +61,7 @@
                         <label>
                         Предлогательное
                         </label>
-                        <input ng-model="ending.currAdj">
+                        <input ng-model="ending.currAdj" ng-change="ending.currGender=ending.expectedGender()">
                     </md-input-container>
                     <md-input-container>
                         <label>
@@ -98,7 +98,7 @@
                     </md-input-container>
                     <md-input-container >
                         <label>Род</label>
-                        <md-select ng-model="ending.currGender">
+                        <md-select ng-model="ending.currGender" ng-disabled="ending.expectedGender()!='all'">
                             <md-option ng-repeat="gender in ending.genders" ng-value="gender">
                             {{gender}}
                             </md-option>
@@ -115,9 +115,6 @@
                 </div>
                 <div ng-show="ending.declineAdj()!=''||ending.declineNoun()!=''">
                     {{ending.currPrep.name+' ' +ending.declineAdj() +' ' + ending.declineNoun()| prepositionFilter}}
-                </div>
-                <div>
-                    {{ending.expectedGender()}}
                 </div>
             </div>    
         </div>

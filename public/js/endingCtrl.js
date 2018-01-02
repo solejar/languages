@@ -1,33 +1,7 @@
 var app = angular.module('lang');
 
 app.controller('endingCtrl',function(sharedProps, $q){
-
-    //to do list:    
     
-    //remaining exceptions : 4/5/6
-        //add family nouns (eventually, idgaf tbh)
-            //ребёнок
-            //брать
-            //сестра
-            //etc
-        //add fleeting vowel nouns 
-            //девушка
-            //звонок
-            //etc.
-        //weird exceptions
-            //год
-        //for nouns, if it's only one case taking the error, probably the data model can reflect that
-        //make life easier
-    //add gender suggestion: 2
-        //class change
-        //select val? 
-        //display warning if mismatch
-    //move on to document reading : 4 (I think)
-    //figure out some methodical way to do unit testing: 4/5/6
-        //run through all options with assertions?
-        //karma + jasmine?
-    //set up post request with noted inaccuracies : 3 this is like a prelease thing
-    //put endings, exceptions, and preps in one RU collection
         
     //these are options for our front end selects, simple enough to store locally
     this.genders = ['M','F','N']    
@@ -45,18 +19,6 @@ app.controller('endingCtrl',function(sharedProps, $q){
     this.exceptions = {}
     //if not, just use general rules
     this.endings = {}
-
-    //basically overloading '==' for genders
-    //let's me compare gender of words like столько which may be any gender 
-    this.sameGender = function(gender1,gender2){
-        if(gender1=='all'||gender2=='all'){
-            return true
-        }else if(gender1==gender2){
-            return true
-        }else{
-            return false
-        }
-    }
 
     //GET requests made on page init, gives the page everything it needs to run
     this.initializeEndings = function(){
@@ -110,7 +72,7 @@ app.controller('endingCtrl',function(sharedProps, $q){
     //function that declines an adjective
     this.declineAdj = function(){
         //only works if all needed params are chosen
-        if (this.currAdj&&this.currCase&&this.currPlurality&&this.currGender){
+        if (this.currAdj&&this.currCase&&this.currPlurality&&(this.currGender!='all')){
             
             //parse into shorter names just for readability
             var plur = this.currPlurality;
@@ -166,13 +128,7 @@ app.controller('endingCtrl',function(sharedProps, $q){
     //so if user picks мой and says F, then we'll mention there's probably an issue
     this.expectedGender = function(){
 
-        //nullity check, this is kinda shitty practice, maybe I'll refactor later
-        if(this.currAdj==null){
-            return 'all'
-        }else{
-            var adj = this.currAdj
-        }
-
+        var adj = this.currAdj!=null? this.currAdj: ''
         if(this.exceptions.hasOwnProperty(adj)){
             return this.exceptions[adj]['gender']
         }else{
@@ -183,6 +139,20 @@ app.controller('endingCtrl',function(sharedProps, $q){
             }else{
                 return 'all' //if for some reason ending not in there (this is weird, but will happen if user picks params before writing adj)
             }
+        }
+    }
+
+    this.currGender = 'all'
+    //basically overloading '==' for genders
+    //let's me compare gender of words like столько which may be any gender 
+    this.sameGender = function(gender1,gender2){
+
+        if(gender1=='all'||gender2=='all'){
+            return true
+        }else if(gender1==gender2){
+            return true
+        }else{
+            return false
         }
     }
 
@@ -201,7 +171,7 @@ app.controller('endingCtrl',function(sharedProps, $q){
     //function to decline a noun
     this.declineNoun = function(){
         //wait for all params to be selected
-        if (this.currNoun&&this.currCase&&this.currPlurality&&this.currGender){
+        if (this.currNoun&&this.currCase&&this.currPlurality&&(this.currGender!='all')){
             //pull into these vars for readability
             var oldNoun = this.currNoun;
             var plur = this.currPlurality;
