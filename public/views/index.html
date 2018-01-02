@@ -54,8 +54,8 @@
 
     </div>
     <div ng-if="page.currPage=='russian'">        
-        <div ng-controller="endingCtrl as ending" ng-init="ending.getEndings()">
-            <div layout="column" ng-init="ending.getExceptions()">
+        <div ng-controller="endingCtrl as ending" ng-init="ending.initializeEndings()">
+            <div layout="column" >
                 <div layout="row">        
                     <md-input-container>
                         <label>
@@ -72,7 +72,7 @@
                 </div>
 
                 <div layout="row">
-                    <md-input-container ng-init="ending.getPrepositions()">
+                    <md-input-container >
                         <label>Предлог</label>
                         <md-select ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)">
                             <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep" >
@@ -113,8 +113,11 @@
                         </md-select>
                     </md-input-container>
                 </div>
+                <div ng-show="ending.declineAdj()!=''||ending.declineNoun()!=''">
+                    {{ending.currPrep.name+' ' +ending.declineAdj() +' ' + ending.declineNoun()| prepositionFilter}}
+                </div>
                 <div>
-                    {{ending.currPrep.name+' ' +ending.declineAdj() +' ' + ending.declineNoun()}}
+                    {{ending.expectedGender()}}
                 </div>
             </div>    
         </div>
