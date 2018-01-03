@@ -97,31 +97,31 @@
                         </label>
                         <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase">
                             <md-option ng-repeat="case in ending.currPrep.cases" ng-value="case" >
-                            {{ending.caseDisplay[case][ending.displayLang]}}
+                            {{ending.labels['caseSelect']['options'][case][ending.displayLang]}}
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container ng-if="ending.currCase=='винительный'&&endings.showSelects" >
+                    <md-input-container ng-if="ending.showAccusative()" >
                         <label>{{ending.labels['animateSelect'][ending.displayLang]}}</label>
                         <md-select ng-model="ending.currAnimate">
-                            <md-option ng-repeat="state in ending.animate"  ng-value="state">
-                            {{state}}
+                            <md-option ng-repeat="state in ending.labels['animateSelect']['options']"  ng-value="state['en']">
+                            {{state[ending.displayLang]}}
                             </md-option>
                         </md-select>
                     </md-input-container>
                     <md-input-container ng-if="ending.showSelects" >
                         <label>{{ending.labels['genderSelect'][ending.displayLang]}}</label>
                         <md-select ng-model="ending.currGender" ng-disabled="ending.expectedGender()!='all'">
-                            <md-option ng-repeat="gender in ending.genders" ng-value="gender">
-                            {{gender}}
+                            <md-option ng-repeat="gender in ending.labels['genderSelect']['options']" ng-value="gender['en']">
+                            {{gender[ending.displayLang]}}
                             </md-option>
                         </md-select>
                     </md-input-container>
                     <md-input-container ng-if="ending.showSelects">
                         <label>{{ending.labels['plurSelect'][ending.displayLang]}}</label>
                         <md-select ng-model="ending.currPlurality">
-                            <md-option ng-repeat="plurality in ending.pluralities" ng-value="plurality">
-                            {{plurality}}
+                            <md-option ng-repeat="plurality in ending.labels['plurSelect']['options']" ng-value="plurality['en']">
+                            {{plurality[ending.displayLang]}}
                             </md-option>
                         </md-select>
                     </md-input-container>

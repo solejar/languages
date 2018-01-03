@@ -31,6 +31,10 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
         ]
     }
 
+    this.showAccusative = function(){
+        return this.showSelects&&(this.currCase=='винительный')
+    }
+
     this.currLabels = {
         'prepSelect': 'Предлог'
     }
@@ -60,46 +64,80 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
         },
         'caseSelect': {
             'en': 'Case',
-            'ru': 'Падеж'
+            'ru': 'Падеж',
+            'options': {
+                'винительный': {
+                    'en': 'Accusative',
+                    'ru': 'винительный'
+                },
+                'родительный': {
+                    'en': 'Genitive',
+                    'ru': 'родительный'
+                },
+                'творительный': {
+                    'en': 'Instrumental',
+                    'ru': 'творительный'
+                },
+                'предложный': {
+                    'en': 'Prepositional',
+                    'ru': 'предложный'
+                },
+                'именительный': {
+                    'en': 'Nominative',
+                    'ru': 'именительный'
+                },
+                'дательный': {
+                    'en': 'Dative',
+                    'ru': 'дательный'
+                }
+            }
         },
         'genderSelect': {
             'en': 'Gender',
-            'ru': 'Род'
+            'ru': 'Род',
+            'options': [
+                {
+                    'en': 'M',
+                    'ru': 'М'
+                },
+                {
+                    'en': 'F',
+                    'ru': 'Ж'
+
+                },
+                {
+                    'en': 'N',
+                    'ru': 'С'
+                }
+            ]
         },
         'plurSelect': {
             'en': 'Plurality',
-            'ru': 'Множество'
+            'ru': 'Множество',
+            'options': [
+                {
+                    'en': 'Single',
+                    'ru': 'единственный'
+                },
+                {
+                    'en': 'Plural',
+                    'ru': 'множественный'
+                }
+            ]            
         },
         'animateSelect': {
             'en': 'Animateness',
-            'ru': 'Одушевленность'
-        }
-    }
-
-    this.caseDisplay = {
-        'винительный': {
-            'en': 'Accusative',
-            'ru': 'винительный'
-        },
-        'родительный': {
-            'en': 'Genitive',
-            'ru': 'родительный'
-        },
-        'творительный': {
-            'en': 'Instrumental',
-            'ru': 'творительный'
-        },
-        'предложный': {
-            'en': 'Prepositional',
-            'ru': 'предложный'
-        },
-        'именительный': {
-            'en': 'Nominative',
-            'ru': 'именительный'
-        },
-        'дательный': {
-            'en': 'Dative',
-            'ru': 'дательный'
+            'ru': 'Одушевленность',
+            'options': [
+                {
+                    'en': 'Animate',
+                    'ru': 'одушевленный'
+                },
+                {
+                    'en': 'Inanimate',
+                    'ru': 'неодушевленный'
+                }
+            ]
         }
     }
 
