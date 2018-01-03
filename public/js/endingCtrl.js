@@ -1,6 +1,6 @@
 var app = angular.module('lang');
 
-app.controller('endingCtrl',function(sharedProps, $q){
+app.controller('endingCtrl',function(sharedProps, $q, $timeout){
     
         
     //these are options for our front end selects, simple enough to store locally
@@ -19,6 +19,89 @@ app.controller('endingCtrl',function(sharedProps, $q){
     this.exceptions = {}
     //if not, just use general rules
     this.endings = {}
+
+    this.displayLang = 'ru'
+
+    this.showSelects = true
+
+    this.currPrep = {
+        'name': '',
+        'cases': [
+            'винительный','родительный','творительный','предложный','именительный','дательный'
+        ]
+    }
+
+    this.currLabels = {
+        'prepSelect': 'Предлог'
+    }
+
+    this.updateLabels = function(){
+        $timeout( function(){
+            this.showSelects = false
+        }.bind(this), 0)
+        $timeout(function(){
+            this.showSelects = true
+        }.bind(this),0)
+    }
+
+    //i'm going to put all this in the db in a Russian collection
+    this.labels = {
+        'adjSelect': {
+            'en': 'Adjective',
+            'ru': 'Предлогательное'
+        },
+        'nounSelect': {
+            'en': 'Noun',
+            'ru': 'Существительное'
+        },
+        'prepSelect': {
+            'en': 'Preposition',
+            'ru': 'Предлог'
+        },
+        'caseSelect': {
+            'en': 'Case',
+            'ru': 'Падеж'
+        },
+        'genderSelect': {
+            'en': 'Gender',
+            'ru': 'Род'
+        },
+        'plurSelect': {
+            'en': 'Plurality',
+            'ru': 'Множество'
+        },
+        'animateSelect': {
+            'en': 'Animateness',
+            'ru': 'Одушевленность'
+        }
+    }
+
+    this.caseDisplay = {
+        'винительный': {
+            'en': 'Accusative',
+            'ru': 'винительный'
+        },
+        'родительный': {
+            'en': 'Genitive',
+            'ru': 'родительный'
+        },
+        'творительный': {
+            'en': 'Instrumental',
+            'ru': 'творительный'
+        },
+        'предложный': {
+            'en': 'Prepositional',
+            'ru': 'предложный'
+        },
+        'именительный': {
+            'en': 'Nominative',
+            'ru': 'именительный'
+        },
+        'дательный': {
+            'en': 'Dative',
+            'ru': 'дательный'
+        }
+    }
 
     //GET requests made on page init, gives the page everything it needs to run
     this.initializeEndings = function(){

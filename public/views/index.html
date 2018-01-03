@@ -56,56 +56,69 @@
     <div ng-if="page.currPage=='russian'">        
         <div ng-controller="endingCtrl as ending" ng-init="ending.initializeEndings()">
             <div layout="column" >
+                <div layout="column">
+                    <br>
+                    <div>Display Language:
+                    </div>
+                    <br>
+                    <md-radio-group layout="row" ng-model="ending.displayLang" ng-change="ending.updateLabels()">
+                        <md-radio-button value="ru">Русский</md-radio-button>
+                        <md-radio-button value="en">English</md-radio-button>
+                    </md-radio-group>
+                </div>
                 <div layout="row">        
                     <md-input-container>
                         <label>
-                        Предлогательное
+                        {{ending.labels['adjSelect'][ending.displayLang]}}
                         </label>
                         <input ng-model="ending.currAdj" ng-change="ending.currGender=ending.expectedGender()">
                     </md-input-container>
                     <md-input-container>
                         <label>
-                        Сусществилтельное
+                        {{ending.labels['nounSelect'][ending.displayLang]}}
                         </label>
                         <input ng-model="ending.currNoun">
                     </md-input-container>
                 </div>
-
                 <div layout="row">
-                    <md-input-container >
-                        <label>Предлог</label>
+                    <md-input-container ng-if="ending.showSelects">
+                        <label>
+                        {{ending.labels['prepSelect'][ending.displayLang]}}
+                        </label>
                         <md-select ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)">
                             <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep" >
                             {{prep.name}}
                             </md-option>
                         </md-select>
                     </md-input-container>  
-                    <md-input-container>
-                        <label>Падеж</label>
+                    <md-input-container ng-if="ending.showSelects">
+                        <label>
+                        {{ending.labels['caseSelect'][ending.displayLang]}}
+                        </label>
                         <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase">
                             <md-option ng-repeat="case in ending.currPrep.cases" ng-value="case" >
-                            {{case}}
+                            {{ending.caseDisplay[case][ending.displayLang]}}
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container ng-if="ending.currCase=='винительный'" >
-                        <label>Animate</label>
+                    <md-input-container ng-if="ending.currCase=='винительный'&&endings.showSelects" >
+                        <label>{{ending.labels['animateSelect'][ending.displayLang]}}</label>
                         <md-select ng-model="ending.currAnimate">
                             <md-option ng-repeat="state in ending.animate"  ng-value="state">
                             {{state}}
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container >
-                        <label>Род</label>
+                    <md-input-container ng-if="ending.showSelects" >
+                        <label>{{ending.labels['genderSelect'][ending.displayLang]}}</label>
                         <md-select ng-model="ending.currGender" ng-disabled="ending.expectedGender()!='all'">
                             <md-option ng-repeat="gender in ending.genders" ng-value="gender">
                             {{gender}}
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container>
-                        <label>Plurality</label>
+                    <md-input-container ng-if="ending.showSelects">
+                        <label>{{ending.labels['plurSelect'][ending.displayLang]}}</label>
                         <md-select ng-model="ending.currPlurality">
                             <md-option ng-repeat="plurality in ending.pluralities" ng-value="plurality">
                             {{plurality}}
