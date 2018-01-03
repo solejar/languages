@@ -14,17 +14,15 @@ Decliner:
             год
         for nouns, if it's only one case taking the error, probably the data model can reflect that, makes life easier
 
-        option to switch between Russian and English PoS names
-            This is done, but because Angular is garbage, I have to do it using some manual timeout cycles that makes it blip and looks really ugly. Consider other workarounds
-
         Clear button
-            Options:
+            Options: Do this soon
                 To clear out phrase only
                 Or to clear out everything
         submit button
             This is a little sketchy idk how this is gonna look
 
     Non-Functional:
+        //do this soonish
         Use ng-hover or something comprobably to alert users to why they can't choose case or gender
     
         Styling
@@ -54,13 +52,10 @@ Decliner:
         Design Docs/How-to:
             Hmm this should come before release I suppose?
 
+        //this is also worthwhile to do
         set up post request with noted inaccuracies : 2
             useful to both get input from people, and to have framework for post requests
             maybe even some e-mail integration so I can get e-mailed when something gets submitted (this is maybe not necessary)
-     
-        
-    put endings, exceptions, and preps in one RU collection (?)
-        Yeah, let's me initialize data with one HTTP request, and also put all my data in there and get it at once. I think I like this
 
 Text Learner:
     Authentication:

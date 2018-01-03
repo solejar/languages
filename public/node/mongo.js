@@ -6,16 +6,20 @@ exports.getPrepositions = function(options,onResult){
     MongoClient.connect(url,function(err,database){
         if (err) {onResult({'statusCode': '400','errMsg': err})}
         var db = database.db('languageDB');
-        var collection =  db.collection("russianPrepositions");
+        //var collection =  db.collection("russianPrepositions");
+        var collection = db.collection(options.lang)
 
-        collection.find().toArray(function(err,items){
+        //returns only preposition field, so we have one element (russian is only object)
+        //and prep and id as only fields, need to specify query as blank
+        collection.find().project({prepositions: 1}).toArray(function(err,items){
+        //collection.find().toArray(function(err,items){
             if (err) {
                 onResult(
                     {'statusCode': '400','errMsg': err }
                 )
             }
             console.log(items);
-            var content = items[0]
+            var content = items[0] //return that one element
             var response = {
                 'statusCode': '200',
                 'content': content
@@ -26,15 +30,17 @@ exports.getPrepositions = function(options,onResult){
     });
 }
 
-exports.getExceptions = function(options,onResult){
+exports.getDeclensionRules = function(options,onResult){
     MongoClient.connect(url,function(err,database){
         if(err){onResult({'statusCode': '400','errMsg': err})}
         var db = database.db('languageDB');
-        var collection = db.collection('russianExceptions');
+        var collection = db.collection(options.lang);
 
-        collection.find().toArray(function(err,items){
+        collection.find().project({exceptions: 1,endings: 1}).toArray(function(err,items){
             if(err){
-                onResult({'statusCode': '400','errMsg': err})
+                onResult(
+                    {'statusCode': '400','errMsg': err}
+                )
             }
             console.log(items);
             var content = items[0]
@@ -48,15 +54,17 @@ exports.getExceptions = function(options,onResult){
     });
 }
 
-exports.getEndings = function(options,onResult){
+exports.getLabels = function(options,onResult){
     MongoClient.connect(url,function(err,database){
         if(err){onResult({'statusCode': '400','errMsg': err})}
         var db = database.db('languageDB');
-        var collection = db.collection('russianEndings');
+        var collection = db.collection(options.lang);
 
-        collection.find().toArray(function(err,items){
+        collection.find().project({labels: 1}).toArray(function(err,items){
             if(err){
-                onResult({'statusCode': '400','errMsg': err})
+                onResult(
+                    {'statusCode': '400','errMsg': err}
+                )
             }
             console.log(items);
             var content = items[0]

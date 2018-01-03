@@ -16,32 +16,39 @@ app.get('/',function(req,res){
     res.render('index.html');
 });
 
-app.get('/getPrepositionList',function(req,res){
-    var options = {}
+app.get('/ru/prepositions',function(req,res){
+    var options = {
+        lang: 'ru'
+    }
     mongo.getPrepositions(options,function(result){
-        console.log('onResult: (' + result.statusCode + ')' + JSON.stringify(result.content));
+        console.log('onResult: (' + result.statusCode + ')');
         res.statusCode = result.statusCode;
         res.send(result);
     });
 });
 
-app.get('/exceptionsRu',function(req,res){
-    var options = {}
-    mongo.getExceptions(options,function(result){
-        console.log('onResult: ('+result.statusCode + ')' + JSON.stringify(result.content));
+//not that it really matters but eventually this should be generalized to a regex
+app.get('/ru/labels',function(req,res){
+    var options = {
+        lang: 'ru'
+    }
+    mongo.getLabels(options,function(result){
+        console.log('onResult: (' + result.statusCode + ')');
         res.statusCode = result.statusCode;
         res.send(result);
-    })
+    });
 });
 
-app.get('/endingsRu',function(req,res){
-    var options = {}
-    mongo.getEndings(options,function(result){
-        console.log('onResult: (' + result.statusCode + ')' + JSON.stringify(result.content));
+app.get('/ru/declensionRules',function(req,res){
+    var options = {
+        lang: 'ru'
+    }
+    mongo.getDeclensionRules(options,function(result){
+        console.log('onResult: (' + result.statusCode + ')');
         res.statusCode = result.statusCode;
         res.send(result);
-    })
-});
+    });
+})
 
 app.listen(port,(err)=>{
     if(err){

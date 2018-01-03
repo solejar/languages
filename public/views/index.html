@@ -85,7 +85,7 @@
                         <label>
                         {{ending.labels['prepSelect'][ending.displayLang]}}
                         </label>
-                        <md-select ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)">
+                        <md-select ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)" aria-label="Предлог" >
                             <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep" >
                             {{prep.name}}
                             </md-option>
@@ -95,7 +95,7 @@
                         <label>
                         {{ending.labels['caseSelect'][ending.displayLang]}}
                         </label>
-                        <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase">
+                        <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase" aria-label="Падеж">
                             <md-option ng-repeat="case in ending.currPrep.cases" ng-value="case" >
                             {{ending.labels['caseSelect']['options'][case][ending.displayLang]}}
                             </md-option>
@@ -103,7 +103,7 @@
                     </md-input-container>
                     <md-input-container ng-if="ending.showAccusative()" >
                         <label>{{ending.labels['animateSelect'][ending.displayLang]}}</label>
-                        <md-select ng-model="ending.currAnimate">
+                        <md-select ng-model="ending.currAnimate" aria-label="Одушевленность" >
                             <md-option ng-repeat="state in ending.labels['animateSelect']['options']"  ng-value="state['en']">
                             {{state[ending.displayLang]}}
                             </md-option>
@@ -111,15 +111,15 @@
                     </md-input-container>
                     <md-input-container ng-if="ending.showSelects" >
                         <label>{{ending.labels['genderSelect'][ending.displayLang]}}</label>
-                        <md-select ng-model="ending.currGender" ng-disabled="ending.expectedGender()!='all'">
+                        <md-select ng-model="ending.currGender" ng-disabled="ending.expectedGender()!='all'" aria-label="Род" >
                             <md-option ng-repeat="gender in ending.labels['genderSelect']['options']" ng-value="gender['en']">
                             {{gender[ending.displayLang]}}
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container ng-if="ending.showSelects">
+                    <md-input-container ng-if="ending.showSelects" >
                         <label>{{ending.labels['plurSelect'][ending.displayLang]}}</label>
-                        <md-select ng-model="ending.currPlurality">
+                        <md-select ng-model="ending.currPlurality" aria-label="Множество" >
                             <md-option ng-repeat="plurality in ending.labels['plurSelect']['options']" ng-value="plurality['en']">
                             {{plurality[ending.displayLang]}}
                             </md-option>

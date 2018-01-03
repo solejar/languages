@@ -1,28 +1,21 @@
 var app = angular.module('lang');
 
 app.controller('endingCtrl',function(sharedProps, $q, $timeout){
-    
-        
-    //these are options for our front end selects, simple enough to store locally
-    this.genders = ['M','F','N']    
-    this.animate = ['Animate','Inanimate']
-    this.pluralities = ['Single','Plural']
 
     //list of prepositions and their associated case options
-    //pretty frickin big, so we store in db
     this.prepositions = []
-
-    //used to determine if ending is a cons or vowel
-    this.consonants = ['б','в','г','д','ж','з','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ']
 
     //if word is an exception, use rules from exception dict
     this.exceptions = {}
     //if not, just use general rules
     this.endings = {}
 
-    this.displayLang = 'ru'
+    //used to determine if ending is a cons or vowel
+    this.consonants = ['б','в','г','д','ж','з','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ']
 
-    this.showSelects = true
+    this.displayLang = 'ru' //this is the only thing I can imagine putting in a config
+
+    this.showSelects = false //this only initializes after labels are loaded
 
     this.currPrep = {
         'name': '',
@@ -31,12 +24,9 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
         ]
     }
 
+    //trying to abstract logic away from html, so made a function
     this.showAccusative = function(){
         return this.showSelects&&(this.currCase=='винительный')
-    }
-
-    this.currLabels = {
-        'prepSelect': 'Предлог'
     }
 
     this.updateLabels = function(){
@@ -49,133 +39,45 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
     }
 
     //i'm going to put all this in the db in a Russian collection
-    this.labels = {
-        'adjSelect': {
-            'en': 'Adjective',
-            'ru': 'Предлогательное'
-        },
-        'nounSelect': {
-            'en': 'Noun',
-            'ru': 'Существительное'
-        },
-        'prepSelect': {
-            'en': 'Preposition',
-            'ru': 'Предлог'
-        },
-        'caseSelect': {
-            'en': 'Case',
-            'ru': 'Падеж',
-            'options': {
-                'винительный': {
-                    'en': 'Accusative',
-                    'ru': 'винительный'
-                },
-                'родительный': {
-                    'en': 'Genitive',
-                    'ru': 'родительный'
-                },
-                'творительный': {
-                    'en': 'Instrumental',
-                    'ru': 'творительный'
-                },
-                'предложный': {
-                    'en': 'Prepositional',
-                    'ru': 'предложный'
-                },
-                'именительный': {
-                    'en': 'Nominative',
-                    'ru': 'именительный'
-                },
-                'дательный': {
-                    'en': 'Dative',
-                    'ru': 'дательный'
-                }
-            }
-        },
-        'genderSelect': {
-            'en': 'Gender',
-            'ru': 'Род',
-            'options': [
-                {
-                    'en': 'M',
-                    'ru': 'М'
-                },
-                {
-                    'en': 'F',
-                    'ru': 'Ж'
-
-                },
-                {
-                    'en': 'N',
-                    'ru': 'С'
-                }
-            ]
-        },
-        'plurSelect': {
-            'en': 'Plurality',
-            'ru': 'Множество',
-            'options': [
-                {
-                    'en': 'Single',
-                    'ru': 'единственный'
-                },
-                {
-                    'en': 'Plural',
-                    'ru': 'множественный'
-                }
-            ]            
-        },
-        'animateSelect': {
-            'en': 'Animateness',
-            'ru': 'Одушевленность',
-            'options': [
-                {
-                    'en': 'Animate',
-                    'ru': 'одушевленный'
-                },
-                {
-                    'en': 'Inanimate',
-                    'ru': 'неодушевленный'
-                }
-            ]
-        }
-    }
+    this.labels = {}
 
     //GET requests made on page init, gives the page everything it needs to run
     this.initializeEndings = function(){
         //create option dicts for HTTP reqs
-        var exceptionOptions = {
-            url: '/exceptionsRu',
-            params: {},
-            method: 'GET'
-        }
-
-        var endingOptions = {
-            url: '/endingsRu',
+        var declensionOptions = {
+            url: '/ru/declensionRules',
             params: {},
             method: 'GET'
         }
 
         var prepositionOptions = {
-            url: '/getPrepositionList',
+            url: '/ru/prepositions',
             params: {},
             method: 'GET',
         }
 
+        var labelOptions = {
+            url: '/ru/labels',
+            params: {},
+            method: 'GET'
+        }
+
         var promises = [];
-        console.log('about to fetch exceptions, endings, and preps!');
+        console.log('about to fetch exceptions, endings, preps, and labels!');
 
         //push promises onto promise arr
-        promises.push(sharedProps.httpReq(exceptionOptions))
-        promises.push(sharedProps.httpReq(endingOptions))
+        promises.push(sharedProps.httpReq(declensionOptions))
         promises.push(sharedProps.httpReq(prepositionOptions))
+        promises.push(sharedProps.httpReq(labelOptions))
 
         //async timeout until all promise completion
         $q.all(promises).then(function(res){
             //set data structs equal to responses
             this.exceptions = res[0].content.exceptions
-            this.endings = res[1].content.endings
-            this.prepositions = res[2].content.prepositions
+            this.endings = res[0].content.endings
+            this.prepositions = res[1].content.prepositions
+            this.labels = res[2].content.labels
+            this.showSelects = true
         }.bind(this));
     }
 
@@ -302,21 +204,21 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
 
             //if noun is in exception dict, use those rules
             if(this.exceptions.hasOwnProperty(this.currNoun)){
-                var endingDict = this.exceptions[this.currNoun]
+                var endingDict = this.exceptions[this.currNoun][padex]
             }else{ //use general rules
-                var endingDict = this.endings['существительное']
+                var endingDict = this.endings['существительное'][padex]
             }
 
             //need an extra param if вин.
             if(padex =='винительный'){
                 if(this.currAnimate){
                     var anim = this.currAnimate;
-                    var possibleEndings = endingDict[padex][anim][plur][gen]
+                    var possibleEndings = endingDict[anim][plur][gen]
                 }else{
                     return ''
                 }
             }else{
-                var possibleEndings = endingDict[padex][plur][gen]
+                var possibleEndings = endingDict[plur][gen]
             }
 
             //use the last letter to determine declension
