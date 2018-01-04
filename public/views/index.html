@@ -54,80 +54,97 @@
 
     </div>
     <div ng-if="page.currPage=='russian'">        
-        <div ng-controller="endingCtrl as ending" ng-init="ending.initializeEndings()">
-            <div layout="column" >
+        <div ng-controller="endingCtrl as ending" ng-init="ending.init()">
+            <div layout="column">
                 <div layout="column">
                     <br>
                     <div>Display Language:
                     </div>
                     <br>
-                    <md-radio-group layout="row" ng-model="ending.displayLang" ng-change="ending.updateLabels()">
-                        <md-radio-button value="ru">Русский</md-radio-button>
-                        <md-radio-button value="en">English</md-radio-button>
-                    </md-radio-group>
-                </div>
-                <div layout="row">        
-                    <md-input-container>
-                        <label>
-                        {{ending.labels['adjSelect'][ending.displayLang]}}
-                        </label>
-                        <input ng-model="ending.currAdj" ng-change="ending.currGender=ending.expectedGender()">
-                    </md-input-container>
-                    <md-input-container>
-                        <label>
-                        {{ending.labels['nounSelect'][ending.displayLang]}}
-                        </label>
-                        <input ng-model="ending.currNoun">
-                    </md-input-container>
+                    <div layout="row">
+                        <md-radio-group layout="row" ng-model="ending.displayLang" ng-change="ending.updateLabels()">
+                            <md-radio-button value="ru">Русский</md-radio-button>
+                            <md-radio-button value="en">English</md-radio-button>
+                        </md-radio-group>
+                        <div ng-show="!ending.sameGender(ending.adjGender,ending.nounGender)">
+                        {{"Warning! Your adjective has a gender of " + ending.adjGender + " while your noun has a gender of " + ending.nounGender + ". Please change either to make them match."}}
+                        </div>          
+                    </div>
+                    <br>
+
                 </div>
                 <div layout="row">
-                    <md-input-container ng-if="ending.showSelects">
+                    <md-input-container>
                         <label>
-                        {{ending.labels['prepSelect'][ending.displayLang]}}
+                        {{ending.labels.prepSelect.display}}
                         </label>
                         <md-select ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)" aria-label="Предлог" >
                             <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep" >
                             {{prep.name}}
                             </md-option>
                         </md-select>
-                    </md-input-container>  
-                    <md-input-container ng-if="ending.showSelects">
+                    </md-input-container>          
+                    <md-input-container>
                         <label>
-                        {{ending.labels['caseSelect'][ending.displayLang]}}
+                        {{ending.labels.adjSelect.display}}
+                        </label>
+                        <input ng-model="ending.currAdj" ng-change="ending.currGender=ending.expectedGender()">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>
+                        {{ending.labels.nounSelect.display}}
+                        </label>
+                        <input ng-model="ending.currNoun">
+                    </md-input-container>
+                </div>
+                <div layout="row" ng-if="ending.showSelects">
+                    
+                    <md-input-container>
+                        <md-tooltip ng-show="ending.onlyOneCase" md-delay="230">{{ending.labels.caseForcedTooltip.display}}</md-tooltip>
+                        <label>
+                        {{ending.labels.caseSelect.display}}
                         </label>
                         <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase" aria-label="Падеж">
                             <md-option ng-repeat="case in ending.currPrep.cases" ng-value="case" >
-                            {{ending.labels['caseSelect']['options'][case][ending.displayLang]}}
+                            {{ending.labels.caseSelect.options[case].display}}
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container ng-if="ending.showAccusative()" >
-                        <label>{{ending.labels['animateSelect'][ending.displayLang]}}</label>
+                    <md-input-container ng-if="ending.currCase=='винительный'" >
+                        <label>{{ending.labels.animateSelect.display}}</label>
                         <md-select ng-model="ending.currAnimate" aria-label="Одушевленность" >
-                            <md-option ng-repeat="state in ending.labels['animateSelect']['options']"  ng-value="state['en']">
-                            {{state[ending.displayLang]}}
+                            <md-option ng-repeat="state in ending.labels.animateSelect.options"  ng-value="state.value">
+                            {{state.display}}
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container ng-if="ending.showSelects" >
-                        <label>{{ending.labels['genderSelect'][ending.displayLang]}}</label>
+                    <md-input-container >
+                        <md-tooltip ng-show="ending.expectedGender()!='all'" md-delay="230">{{ending.labels.genderForcedTooltip.display}}</md-tooltip>
+                        <label>{{ending.labels.genderSelect.display}}</label>
                         <md-select ng-model="ending.currGender" ng-disabled="ending.expectedGender()!='all'" aria-label="Род" >
-                            <md-option ng-repeat="gender in ending.labels['genderSelect']['options']" ng-value="gender['en']">
-                            {{gender[ending.displayLang]}}
+                            <md-option ng-repeat="gender in ending.labels.genderSelect.options" ng-value="gender.value">
+                            {{gender.display}}
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container ng-if="ending.showSelects" >
-                        <label>{{ending.labels['plurSelect'][ending.displayLang]}}</label>
+                    <md-input-container >
+                        <label>{{ending.labels.plurSelect.display}}</label>
                         <md-select ng-model="ending.currPlurality" aria-label="Множество" >
-                            <md-option ng-repeat="plurality in ending.labels['plurSelect']['options']" ng-value="plurality['en']">
-                            {{plurality[ending.displayLang]}}
+                            <md-option ng-repeat="plurality in ending.labels.plurSelect.options" ng-value="plurality.value">
+                            {{plurality.display[ending.currGender]}}
                             </md-option>
                         </md-select>
                     </md-input-container>
                 </div>
                 <div ng-show="ending.declineAdj()!=''||ending.declineNoun()!=''">
                     {{ending.currPrep.name+' ' +ending.declineAdj() +' ' + ending.declineNoun()| prepositionFilter}}
+                </div>
+                <div>
+                    <md-button ng-click="ending.clearToInitial()" ng-disabled="ending.disableClear()">Clear
+                    </md-button>
+                    <md-button ng-click="ending.submitErrorReport()">
+                    Report error
+                    </md-button>
                 </div>
             </div>    
         </div>

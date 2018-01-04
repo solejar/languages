@@ -1,4 +1,18 @@
 Decliner:
+    Backlog in order:
+
+    Add noun exception gender for expected gender
+
+    
+    Add fleeting vowel exceptions
+
+    Add family nouns
+
+    Add foreign words
+
+    Add post request for noted inaccuracies
+
+
     Functional: Needed for the app to work correctly
         remaining exceptions : PL: 2 not high priority but should be done eventually,   maybe one day if you're bored out of your mind
         add family nouns (eventually, idgaf tbh)
@@ -7,23 +21,25 @@ Decliner:
             сестра
             etc
         add fleeting vowel nouns 
-            девушка
+            девушка maybe these are programmatic?
             звонок
             etc.
         weird exceptions
             год
-        for nouns, if it's only one case taking the error, probably the data model can reflect that, makes life easier
+            день
+            весь
+        foreign words which don't get declined
+            такси
+            кофе
+        neuter nouns
+            существительное?
+            прилагательное
+        Add noun gender as tool for expected gender!
 
-        Clear button
-            Options: Do this soon
-                To clear out phrase only
-                Or to clear out everything
         submit button
             This is a little sketchy idk how this is gonna look
 
     Non-Functional:
-        //do this soonish
-        Use ng-hover or something comprobably to alert users to why they can't choose case or gender
     
         Styling
             Mobile vs web sizing
@@ -35,6 +51,8 @@ Decliner:
             I'm thinking about adding an 'else' rule to whatever endings don't have them
             this way, even if garbage inputs, the app won't break or throw needless errors, perhaps alert user to potential wrongdoing? -> only if we go sync route
             should i make this synchronous behind a button? Or live update?
+
+        Maybe look at schema validation
     
     Pre-release, once code base has solidified to v1.0.0:
 
@@ -56,6 +74,15 @@ Decliner:
         set up post request with noted inaccuracies : 2
             useful to both get input from people, and to have framework for post requests
             maybe even some e-mail integration so I can get e-mailed when something gets submitted (this is maybe not necessary)
+
+    Design decisions:
+        Should clear get rid of everything or just the phrase? For now let's do everything
+
+        Button to submit?
+
+        Show users if they potentially submitted not a real word?
+
+    My new idea might require a little more complicated schema...will need to reevaluate this and improve my code base
 
 Text Learner:
     Authentication:

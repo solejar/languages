@@ -1,6 +1,6 @@
 {   
     "endings":{
-        "предлогательное": {
+        "прилагательное": {
             "hard": {
                 "M": {
                     "именительный": {
@@ -1333,94 +1333,205 @@
         }
     ],
     "labels": {
+    "en": {
         "adjSelect": {
-            "en": "Adjective",
-            "ru": "Предлогательное"
+            "display": "Adjective"
         },
         "nounSelect": {
-            "en": "Noun",
-            "ru": "Существительное"
+            "display": "Noun"
         },
         "prepSelect": {
-            "en": "Preposition",
-            "ru": "Предлог"
+            "display": "Preposition"
         },
         "caseSelect": {
-            "en": "Case",
-            "ru": "Падеж",
+            "display": "Case",
             "options": {
                 "винительный": {
-                    "en": "Accusative",
-                    "ru": "винительный"
+                    "display": "Accusative",
+                    "value": "винительный"
                 },
                 "родительный": {
-                    "en": "Genitive",
-                    "ru": "родительный"
+                    "display": "Genitive",
+                    "value": "родительный"
                 },
                 "творительный": {
-                    "en": "Instrumental",
-                    "ru": "творительный"
+                    "display": "Instrumental",
+                    "value": "творительный"
                 },
                 "предложный": {
-                    "en": "Prepositional",
-                    "ru": "предложный"
+                    "display": "Prepositional",
+                    "value": "предложный"
                 },
                 "именительный": {
-                    "en": "Nominative",
-                    "ru": "именительный"
+                    "display": "Nominative",
+                    "value": "именительный"
                 },
                 "дательный": {
-                    "en": "Dative",
-                    "ru": "дательный"
+                    "display": "Dative",
+                    "value": "дательный"
                 }
             }
         },
         "genderSelect": {
-            "en": "Gender",
-            "ru": "Род",
+            "display": "Gender",
             "options": [
                 {
-                    "en": "M",
-                    "ru": "М"
+                    "display": "M",
+                    "value": "M"
                 },
                 {
-                    "en": "F",
-                    "ru": "Ж"
+                    "display": "F",
+                    "value": "F"
 
                 },
                 {
-                    "en": "N",
-                    "ru": "С"
+                    "display": "N",
+                    "value": "N"
                 }
             ]
         },
         "plurSelect": {
-            "en": "Plurality",
-            "ru": "Множество",
+            "display": "Plurality",
             "options": [
                 {
-                    "en": "Single",
-                    "ru": "единственный"
+                    "value": "Single",
+                    "display": {
+                        "M":  "Single",
+                        "F": "Single",
+                        "N": "Single",
+                        "all": "Single"
+                    }
                 },
                 {
-                    "en": "Plural",
-                    "ru": "множественный"
+                    "display": {
+                        "M":  "Plural",
+                        "F": "Plural",
+                        "N": "Plural",
+                        "all": "Plural"                        
+                    },
+                    "value": "Plural"
                 }
             ]            
         },
         "animateSelect": {
-            "en": "Animateness",
-            "ru": "Одушевленность",
+            "display": "Animateness",
             "options": [
                 {
-                    "en": "Animate",
-                    "ru": "одушевленный"
+                    "display": "Animate",
+                    "value": "Animate"
                 },
                 {
-                    "en": "Inanimate",
-                    "ru": "неодушевленный"
+                    "display": "Inanimate",
+                    "value": "Inanimate"
                 }
             ]
+        },
+        "genderForcedTooltip": {
+            "display": "Selection disabled, as gender is implied by the adjective/noun"
+        },
+         "caseForcedTooltip": {
+            "display": "Selection disabled, as your selected preposition only takes one case"
         }
-    }
+    },
+    "ru": {
+        "adjSelect": {
+            "display": "Прилагательное"
+        },
+        "nounSelect": {
+            "display": "Существительное"
+        },
+        "prepSelect": {
+            "display": "Предлог"
+        },
+        "caseSelect": {
+            "display": "Падеж",
+            "options": {
+                "винительный": {
+                    "value": "винительный",
+                    "display": "винительный"
+                },
+                "родительный": {
+                    "display": "родительный",
+                    "value": "родительный"
+                },
+                "творительный": {
+                    "display": "творительный",
+                    "value": "творительный"
+                },
+                "предложный": {
+                    "display": "предложный",
+                    "value": "предложный"
+                },
+                "именительный": {
+                    "display": "именительный",
+                    "value": "именительный"
+                },
+                "дательный": {
+                    "display": "дательный",
+                    "value": "дательный"
+                }
+            }
+        },
+        "genderSelect": {
+            "display": "Род",
+            "options": [
+                {
+                    "value": "M",
+                    "display": "М"
+                },
+                {
+                    "value": "F",
+                    "display": "Ж"
+
+                },
+                {
+                    "value": "N",
+                    "display": "С"
+                }
+            ]
+        },
+        "plurSelect": {
+            "display": "Множество",
+            "options": [
+                {
+                    "value": "Single",
+                    "display": {
+                        "M": "единственный",
+                        "F": "единственная",
+                        "N": "единственное",
+                        "all": "единственный"
+                    }
+                },
+                {
+                    "value": "Plural",
+                    "display": {
+                        "M": "множественные",
+                        "F": "множественные",
+                        "N": "множественные",
+                        "all": "множественные"                        
+                    }
+                }
+            ]            
+        },
+        "animateSelect": {
+            "display": "Одушевленность",
+            "options": [
+                {
+                    "value": "Animate",
+                    "display": "одушевленный"
+                },
+                {
+                    "value": "Inanimate",
+                    "display": "неодушевленный"
+                }
+            ]
+        },
+        "genderForcedTooltip": {
+            "display": "Выбор отключен, род уже понимается из прилагательного/существительного"
+        },
+        "caseForcedTooltip": {
+            "display": "Выбор отключен, только один падеж совпадает с этим предлогом"
+        }
+    }        
+}
 }

@@ -4,42 +4,71 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
 
     //list of prepositions and their associated case options
     this.prepositions = []
+    
+    this.exceptions = {}//if word is exception, use rules from exception dict 
+    this.endings = {} //if not, just use general rules
 
-    //if word is an exception, use rules from exception dict
-    this.exceptions = {}
-    //if not, just use general rules
-    this.endings = {}
-
-    //used to determine if ending is a cons or vowel
-    this.consonants = ['б','в','г','д','ж','з','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ']
-
-    this.displayLang = 'ru' //this is the only thing I can imagine putting in a config
-
+    this.labels = {} //contains labels in curr language
+    this.allLabels = {} //contains labels in all languages
     this.showSelects = false //this only initializes after labels are loaded
 
-    this.currPrep = {
-        'name': '',
-        'cases': [
-            'винительный','родительный','творительный','предложный','именительный','дательный'
-        ]
+    this.displayLang = 'ru' //starting lang for interface 
+    
+    this.init = function(){
+        this.initializeEndings() //pull data from Mongo     
+        this.clearToInitial()   //initialize select vals
     }
 
-    //trying to abstract logic away from html, so made a function
-    this.showAccusative = function(){
-        return this.showSelects&&(this.currCase=='винительный')
+    //clear out select vals
+    this.clearToInitial = function(){
+        this.currAdj = ''
+        this.currNoun = ''
+        this.currCase = ''
+
+        //this JSON is basically equivalent to a blank prep
+        this.currPrep = {
+            'name': '',
+            'cases': [
+                'винительный','родительный','творительный','предложный','именительный','дательный'
+            ]
+        }
+
+        this.currGender = ''
+        this.currPlurality = ''
+        this.currAnimate = ''
+
+        this.adjGender = 'all'
+        this.nounGender = 'all'
+
+        this.onlyOneCase = false //this is a disable that may need to be cleared
+    }
+
+    //can only clear when something is there!
+    this.disableClear = function(){
+        var a = this.currAdj
+        var b = this.currNoun
+        var c = this.currGender
+        var d = this.currPrep.name
+        var e = this.currCase
+        var f = this.currPlurality
+        var g = this.currAnimate
+
+        return !(a||b||c||d||e||f||g);
+    }
+
+    this.submitErrorReport = function(){
+        console.log('submitted an error report!')
     }
 
     this.updateLabels = function(){
         $timeout( function(){
             this.showSelects = false
+            this.labels = this.allLabels[this.displayLang]
         }.bind(this), 0)
         $timeout(function(){
             this.showSelects = true
         }.bind(this),0)
     }
-
-    //i'm going to put all this in the db in a Russian collection
-    this.labels = {}
 
     //GET requests made on page init, gives the page everything it needs to run
     this.initializeEndings = function(){
@@ -76,7 +105,10 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
             this.exceptions = res[0].content.exceptions
             this.endings = res[0].content.endings
             this.prepositions = res[1].content.prepositions
-            this.labels = res[2].content.labels
+            
+            this.allLabels = res[2].content.labels
+            this.labels = this.allLabels[this.displayLang]
+
             this.showSelects = true
         }.bind(this));
     }
@@ -110,7 +142,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
             }else{//use the general rules
                 
                 var adjType = this.getAdjType(oldAdj);
-                var endingDict = this.endings['предлогательное'][adjType][gen]
+                var endingDict = this.endings['прилагательное'][adjType][gen]
             }
 
             //need an extra param if it's accusative
@@ -133,6 +165,9 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
         }
     }
 
+    //function to determine expected gender,
+    //so if user picks мой and says F, then we'll mention there's probably an issue
+
     this.adjEndingGenders = {
         'ий': 'M',
         'яя': 'F',
@@ -143,27 +178,38 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
         'ое': 'N'
     }
 
-     //I don't like using this.currAdj here cause it's kind of messy scope wise
-    //but unless I end up needing this later I'd rather not change
-    //cause then non-nullity would be a precon
-
-    //function to determine expected gender,
-    //so if user picks мой and says F, then we'll mention there's probably an issue
     this.expectedGender = function(){
 
-        var adj = this.currAdj!=null? this.currAdj: ''
+        var adj = this.currAdj
+        var noun = this.currNoun
+
+        if(this.exceptions.hasOwnProperty(noun)){
+            this.nounGender = this.exceptions[adj]['gender']
+        }else{
+            this.nounGender = 'all'
+        }
+
         if(this.exceptions.hasOwnProperty(adj)){
-            return this.exceptions[adj]['gender']
+            this.adjGender = this.exceptions[adj]['gender']
         }else{
             var len = adj.length;
             var ending = adj.substring(len-2,len)
             if (this.adjEndingGenders.hasOwnProperty(ending)){
-                return this.adjEndingGenders[ending]
+                this.adjGender = this.adjEndingGenders[ending]
             }else{
-                return 'all' //if for some reason ending not in there (this is weird, but will happen if user picks params before writing adj)
+                //return 'all' //if for some reason ending not in there (this is weird, but will happen if user picks params before writing adj)
+                this.adjGender = 'all'
             }
         }
+
+        if(this.sameGender(this.adjGender,this.nounGender)){
+            return this.adjGender
+        }else{
+            return 'all'
+        }
+        
     }
+
 
     this.currGender = 'all'
     //basically overloading '==' for genders
@@ -190,6 +236,9 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
             return 'hard'
         }
     }
+
+    //used to determine if ending is a cons or vowel
+    this.consonants = ['б','в','г','д','ж','з','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ']
 
     //function to decline a noun
     this.declineNoun = function(){
