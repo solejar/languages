@@ -26,25 +26,19 @@
         <md-nav-bar  
         md-selected-nav-item="currentNavItem"
         nav-bar-aria-label="navigation links">
-            <md-nav-item md-nav-click="page.changePage('home')" name="HomeTab">
-                Home
+            <md-nav-item md-nav-click="page.changePage('declension')" name="DeclensionTab">
+                Русское Склонение
             </md-nav-item>
-            <md-nav-item md-nav-click="page.changePage('russian')" name="RussianTab">
-                Русский
-            </md-nav-item>
-            <md-nav-item md-nav-click="page.changePage('japanese')" name="JapaneseTab">
-                日本語
-            </md-nav-item>
-            <md-nav-item md-nav-click="page.changePage('spanish')" name="SpanishTab">
-                Español
+            <md-nav-item md-nav-click="page.changePage('readings')" name="ReadingsTab">
+                Русские чтения
             </md-nav-item>
             <md-nav-item md-nav-click="page.changePage('about')" name="aboutTab">
                 About
             </md-nav-item>
         </md-nav-bar>
     </div>
-    <div ng-if="page.currPage=='home'">
-        Welcome to the home page of my application!
+    <div ng-if="page.currPage=='about'">
+        Доброе пожаловать на моем приложение!
 
         <br><br>
         The goal of this language application is to incrementally add features which I find useful in language learning, which I hope will provide some use to other people down the road.
@@ -53,7 +47,7 @@
         Feel free to fork on https://github.com/solejar/languages.git
 
     </div>
-    <div ng-if="page.currPage=='russian'">        
+    <div ng-if="page.currPage=='declension'">        
         <div ng-controller="endingCtrl as ending" ng-init="ending.init()">
             <div layout="column">
                 <div layout="column">
@@ -88,7 +82,7 @@
                         <label>
                         {{ending.labels.adjSelect.display}}
                         </label>
-                        <input ng-model="ending.currAdj" ng-change="ending.currGender=ending.expectedGender()">
+                        <input ng-model="ending.currAdj" >
                     </md-input-container>
                     <md-input-container>
                         <label>
@@ -150,15 +144,8 @@
         </div>
         
     </div>
-    <div ng-if="page.currPage=='japanese'">
-        You are on the Japanese page! This page is still under development. Come back later for more :3
-    </div>
-    <div ng-if="page.currPage=='spanish'">
-        You are on the Spanish page! This page is still under development. Come back later for more :3
-    </div>
-    <div ng-if="page.currPage=='about'">
-        You are on the about page! This page is still under development. Come back later for more :3
-    </div>
-    
+    <div ng-if="page.currPage=='readings'">
+        You are on the Readings page! This page is still under development. Come back later for more :3
+    </div>    
 </body>
 </html>

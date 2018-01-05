@@ -102,7 +102,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
         //async timeout until all promise completion
         $q.all(promises).then(function(res){
             //set data structs equal to responses
-            this.exceptions = res[0].content.exceptions
+            this.nounExceptions = res[0].content.exceptions['существительное']
+            this.adjExceptions = res[0].content.exceptions['прилагательное']
             this.endings = res[0].content.endings
             this.prepositions = res[1].content.prepositions
             
@@ -183,14 +184,14 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
         var adj = this.currAdj
         var noun = this.currNoun
 
-        if(this.exceptions.hasOwnProperty(noun)){
-            this.nounGender = this.exceptions[adj]['gender']
+        if(this.nounExceptions.hasOwnProperty(noun)){
+            this.nounGender = this.nounExceptions[noun]['gender']
         }else{
             this.nounGender = 'all'
         }
 
-        if(this.exceptions.hasOwnProperty(adj)){
-            this.adjGender = this.exceptions[adj]['gender']
+        if(this.adjExceptions.hasOwnProperty(adj)){
+            this.adjGender = this.adjExceptions[adj]['gender']
         }else{
             var len = adj.length;
             var ending = adj.substring(len-2,len)
@@ -202,10 +203,16 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
             }
         }
 
-        if(this.sameGender(this.adjGender,this.nounGender)){
+        if(this.adjGender == this.nounGender){ //if both indeterminate, return 'all'
+            
+            this.currGender = this.adjGender            
             return this.adjGender
-        }else{
-            return 'all'
+        }else if(this.adjGender=='all'){ //elif adj indeterminate, return nounGender
+            this.currGender = this.nounGender
+            return this.nounGender
+        }else {
+            this.currGender = this.adjGender
+            return this.adjGender //else return adjGender
         }
         
     }

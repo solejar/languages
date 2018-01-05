@@ -4,9 +4,9 @@
 
     //this controller is just for page switching on a larger scope.
     app.controller('pageCtrl',function(){
-        this.pages = ['home','russian','japanese','spanish','about'];
+        this.pages = ['declension','readings','about'];
 
-        this.currPage = 'russian'
+        this.currPage = 'declension'
 
         this.changePage = function(newPage){
             if (this.pages.includes(newPage)){

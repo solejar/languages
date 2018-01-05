@@ -1,14 +1,9 @@
 Decliner:
     Backlog in order:
-
-    Add noun exception gender for expected gender
-
     
     Add fleeting vowel exceptions
 
     Add family nouns
-
-    Add foreign words
 
     Add post request for noted inaccuracies
 
@@ -34,10 +29,11 @@ Decliner:
         neuter nouns
             существительное?
             прилагательное
-        Add noun gender as tool for expected gender!
 
         submit button
             This is a little sketchy idk how this is gonna look
+
+    Change to data schema, add else oper, for clarity and for reasons that will be clarified later (?)
 
     Non-Functional:
     
