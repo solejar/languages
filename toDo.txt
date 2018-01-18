@@ -1,39 +1,45 @@
 Decliner:
     Backlog in order:
     
-    Add fleeting vowel exceptions
+    Missing solo exceptions:
+        господин
+        болгарин
+        татарин
+        хозяин
 
-    Add family nouns
+    Flesh out what to do if oper indicated is 'else'
+        or rather how do I know/indicate that the ruleSet returned is the default?
+
+    Еxpected animateness
+
+    Should I allow user to enter wrong gender mistakenly?
+        For example enter male adj and female noun, then just conjugate the male adj into female before starting
+        i'm thinking maybe
+
+    Think about not getting all the exceptions at the start, and what that would look like as far the get request is concerned
+
+    Add 'example' field to facilitate easy testing
 
     Add post request for noted inaccuracies
 
+    What does this app not handle:
+
+        words with multiple forms of plurals
+        Non-declinable, non-russian names.
+
+        Currently deciding if I can handle locative case for words like год
+    
+    Singular personal pronouns? Question pronouns? Determinative?
+        work on this after the infrastructure is set up    
+
+    Potential idea:
+        word bank!
 
     Functional: Needed for the app to work correctly
-        remaining exceptions : PL: 2 not high priority but should be done eventually,   maybe one day if you're bored out of your mind
-        add family nouns (eventually, idgaf tbh)
-            ребёнок
-            брать
-            сестра
-            etc
-        add fleeting vowel nouns 
-            девушка maybe these are programmatic?
-            звонок
-            etc.
-        weird exceptions
-            год
-            день
-            весь
-        foreign words which don't get declined
-            такси
-            кофе
-        neuter nouns
-            существительное?
-            прилагательное
-
+       
         submit button
-            This is a little sketchy idk how this is gonna look
-
-    Change to data schema, add else oper, for clarity and for reasons that will be clarified later (?)
+            Probably only appears if the adj or noun has changed
+            we can let people change the case/plurality on the fly (but gender?)
 
     Non-Functional:
     
@@ -41,12 +47,6 @@ Decliner:
             Mobile vs web sizing
             Add some fun colors
             Maybe box things off?
-
-        error detection: Priority Level: 3
-            what to do with garbage inputs?
-            I'm thinking about adding an 'else' rule to whatever endings don't have them
-            this way, even if garbage inputs, the app won't break or throw needless errors, perhaps alert user to potential wrongdoing? -> only if we go sync route
-            should i make this synchronous behind a button? Or live update?
 
         Maybe look at schema validation
     
@@ -65,20 +65,6 @@ Decliner:
 
         Design Docs/How-to:
             Hmm this should come before release I suppose?
-
-        //this is also worthwhile to do
-        set up post request with noted inaccuracies : 2
-            useful to both get input from people, and to have framework for post requests
-            maybe even some e-mail integration so I can get e-mailed when something gets submitted (this is maybe not necessary)
-
-    Design decisions:
-        Should clear get rid of everything or just the phrase? For now let's do everything
-
-        Button to submit?
-
-        Show users if they potentially submitted not a real word?
-
-    My new idea might require a little more complicated schema...will need to reevaluate this and improve my code base
 
 Text Learner:
     Authentication:

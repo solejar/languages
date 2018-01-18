@@ -1,6 +1,66 @@
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 
+exports.postErrorReports = function(options,onResult){
+    
+}
+
+exports.getExceptions = function(options,onResult){
+    MongoClient.connect(url,function(err,database){
+        if(err){onResult({'statusCode': '400', 'errMsg': err})}
+        var db = database.db('languageDB');
+        var collection = db.collection(options.lang)
+
+        collection.find().project({exceptions: 1}).toArray(function(err,items){
+            if(err){
+                onResult(
+                    {'statusCode': '400','errMsg': err}
+                )
+            }
+
+            console.log(items)
+            var content = items[0]
+
+            var response = {
+                'statusCode': '200',
+                'content': content
+            }
+            onResult(response)
+            database.close()
+        })
+    })
+}
+
+exports.getRuleGroups = function(options,onResult){
+    MongoClient.connect(url,function(err,database){
+        if(err){onResults({'statusCode': '400', 'errMsg': err})}
+
+        var db = database.db('languageDB');
+        var collection = db.collection(options.lang)
+
+        var projection = "ruleGroups." + options.q
+        var params = {}
+        params[projection] = 1
+        //console.log(projection)
+        collection.find().project(params).toArray(function(err,items){
+            if(err){
+                onResult({'statusCode': '400', 'errMsg': err})
+            }
+
+            console.log(items)
+            var content = items[0]
+
+            var response = {
+                'statusCode': '200',
+                'content': content
+            }
+            onResult(response)
+            database.close()
+        })
+
+    })
+}
+
 exports.getPrepositions = function(options,onResult){
 
     MongoClient.connect(url,function(err,database){

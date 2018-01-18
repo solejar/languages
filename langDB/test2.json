@@ -1,549 +1,569 @@
-{   
-    "exceptions": {
-    "адрес": {
-        "gender": "M",
-        "animate": "Inanimate",
+"exceptions": [
+    {
         "word": "адрес",
-        "ruleSet": "15"
-    },
-    "берег": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "берег",
-        "ruleSet": "15"
-    },
-    "бок": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "бок",
-        "ruleSet": "15"
-    },
-    "век": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "век",
-        "ruleSet": "15"
-    },
-    "вечер": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "вечер",
-        "ruleSet": "15"
-    },
-    "глаз": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "глаз",
-        "ruleSet": "15"
-    },
-    "год": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "год",
-        "ruleSet": "15"
-    },
-    "голос": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "голос",
-        "ruleSet": "15"
-    },
-    "город": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "город",
-        "ruleSet": "15"
-    },
-    "доктор": {
         "gender": "M",
-        "animate": "Animate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "доктор",
-        "ruleSet": "15"
-    },
-    "дом": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Animate"
+    },
+    {
         "word": "дом",
-        "ruleSet": "15"
-    },
-    "колокол": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "колокол",
-        "ruleSet": "15"
-    },
-    "край": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "край",
-        "ruleSet": "15"
-    },
-    "купол": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "купол",
-        "ruleSet": "15"
-    },
-    "лагерь": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "лагерь",
-        "ruleSet": "-15"
-    },
-    "кучер": {
         "gender": "M",
-        "animate": "Animate",
+        "ruleSet": "-15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "кучер",
-        "ruleSet": "15"
-    },
-    "лес": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Animate"
+    },
+    {
         "word": "лес",
-        "ruleSet": "15"
-    },
-    "луг": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "луг",
-        "ruleSet": "15"
-    },
-    "мастер": {
         "gender": "M",
-        "animate": "Animate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "мастер",
-        "ruleSet": "15"
-    },
-    "мех": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Animate"
+    },
+    {
         "word": "мех",
-        "ruleSet": "15"
-    },
-    "номер": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "номер",
-        "ruleSet": "15"
-    },
-    "образ": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "образ",
-        "ruleSet": "15"
-    },
-    "орден": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "орден",
-        "ruleSet": "15"
-    },
-    "остров": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "остров",
-        "ruleSet": "15"
-    },
-    "паспорт": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "паспорт",
-        "ruleSet": "15"
-    },
-    "парус": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "парус",
-        "ruleSet": "15"
-    },
-    "повар": {
         "gender": "M",
-        "animate": "Animate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "повар",
-        "ruleSet": "15"
-    },
-    "погреб": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Animate"
+    },
+    {
         "word": "погреб",
-        "ruleSet": "15"
-    },
-    "поезд": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "поезд",
-        "ruleSet": "15"
-    },
-    "пояс": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "пояс",
-        "ruleSet": "15"
-    },
-    "провод": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "провод",
-        "ruleSet": "15"
-    },
-    "рог": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "рог",
-        "ruleSet": "15"
-    },
-    "снег": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "снег",
-        "ruleSet": "15"
-    },
-    "сорт": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "сорт",
-        "ruleSet": "15"
-    },
-    "том": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "том",
-        "ruleSet": "15"
-    },
-    "тон": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "тон",
-        "ruleSet": "15"
-    },
-    "тормоз": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "тормоз",
-        "ruleSet": "15"
-    },
-    "цвет": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "цвет",
-        "ruleSet": "15"
-    },
-    "якорь": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "якорь",
-        "ruleSet": "-15"
-    },
-    "дизель": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "-15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "дизель",
-        "ruleSet": "-15"
-    },
-    "штепсель": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "-15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "штепсель",
-        "ruleSet": "-15"
-    },
-    "вексель": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "-15",
+        "animate": "Inanimate"
+    },
+    {
         "word": "вексель",
-        "ruleSet": "-15"
+        "gender": "M",
+        "ruleSet": "-15",
+        "animate": "Inanimate"
     },
-    "окошко": {
-        "gender": "N",
-        "animate": "Inanimate",
+    {
         "word": "окошко",
-        "ruleSet": "-1"
-    },
-    "яблоко": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "-1",
+        "animate": "Inanimate"
+    },
+    {
         "word": "яблоко",
-        "ruleSet": "-1"
-    },
-    "веко": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "-1",
+        "animate": "Inanimate"
+    },
+    {
         "word": "веко",
-        "ruleSet": "-1"
-    },
-    "колечко": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "-1",
+        "animate": "Inanimate"
+    },
+    {
         "word": "колечко",
-        "ruleSet": "-1.1"
-    },
-    "яблочко": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "-1.1",
+        "animate": "Inanimate"
+    },
+    {
         "word": "яблочко",
-        "ruleSet": "-1.1"
-    },
-    "очко": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "-1.1",
+        "animate": "Inanimate"
+    },
+    {
         "word": "очко",
-        "ruleSet": "-1"
+        "gender": "N",
+        "ruleSet": "-1",
+        "animate": "Inanimate"
     },
-    "колено": {
-        "gender": "Н",
-        "animate": "Inanimate",
+    {
         "word": "колено",
-        "ruleSet": "-1"
-    },
-    "плечо": {
         "gender": "Н",
-        "animate": "Inanimate",
+        "ruleSet": "-1",
+        "animate": "Inanimate"
+    },
+    {
         "word": "плечо",
-        "ruleSet": "-1"
+        "gender": "Н",
+        "ruleSet": "-1",
+        "animate": "Inanimate"
     },
-    "этот": {
-        "gender": "M",
+    {
         "word": "этот",
-        "ruleSet": "29"
+        "gender": "M",
+        "ruleSet": "29",
+        "animate": ""
     },
-    "эта": {
-        "gender": "F",
+    {
         "word": "эта",
-        "ruleSet": "30"
+        "gender": "F",
+        "ruleSet": "30",
+        "animate": ""
     },
-    "это": {
-        "gender": "N",
+    {
         "word": "это",
-        "ruleSet": "29"
+        "gender": "N",
+        "ruleSet": "29",
+        "animate": ""
     },
-    "тот": {
-        "gender": "M",
+    {
         "word": "тот",
-        "ruleSet": "29"
+        "gender": "M",
+        "ruleSet": "29",
+        "animate": ""
     },
-    "та": {
-        "gender": "F",
+    {
         "word": "та",
-        "ruleSet": "30"
+        "gender": "F",
+        "ruleSet": "30",
+        "animate": ""
     },
-    "то": {
-        "gender": "N",
+    {
         "word": "то",
-        "ruleSet": "29"
+        "gender": "N",
+        "ruleSet": "29",
+        "animate": ""
     },
-    "ваш": {
-        "gender": "M",
+    {
         "word": "ваш",
-        "ruleSet": "26"
+        "gender": "M",
+        "ruleSet": "26",
+        "animate": ""
     },
-    "ваша": {
-        "gender": "F",
+    {
         "word": "ваша",
-        "ruleSet": "27"
+        "gender": "F",
+        "ruleSet": "27",
+        "animate": ""
     },
-    "ваше": {
-        "gender": "N",
+    {
         "word": "ваше",
-        "ruleSet": "28"
+        "gender": "N",
+        "ruleSet": "28",
+        "animate": ""
     },
-    "наш": {
-        "gender": "M",
+    {
         "word": "наш",
-        "ruleSet": "26"
+        "gender": "M",
+        "ruleSet": "26",
+        "animate": ""
     },
-    "наша": {
-        "gender": "F",
+    {
         "word": "наша",
-        "ruleSet": "27"
+        "gender": "F",
+        "ruleSet": "27",
+        "animate": ""
     },
-    "наше": {
-        "gender": "N",
+    {
         "word": "наше",
-        "ruleSet": "28"
+        "gender": "N",
+        "ruleSet": "28",
+        "animate": ""
     },
-    "мой": {
-        "gender": "M",
+    {
         "word": "мой",
-        "ruleSet": "23"
+        "gender": "M",
+        "ruleSet": "23",
+        "animate": ""
     },
-    "моя": {
-        "gender": "F",
+    {
         "word": "моя",
-        "ruleSet": "24"
+        "gender": "F",
+        "ruleSet": "24",
+        "animate": ""
     },
-    "мое": {
-        "gender": "N",
+    {
         "word": "мое",
-        "ruleSet": "25"
+        "gender": "N",
+        "ruleSet": "25",
+        "animate": ""
     },
-    "твой": {
-        "gender": "M",
+    {
         "word": "твой",
-        "ruleSet": "23"
+        "gender": "M",
+        "ruleSet": "23",
+        "animate": ""
     },
-    "твоя": {
-        "gender": "F",
+    {
         "word": "твоя",
-        "ruleSet": "24"
+        "gender": "F",
+        "ruleSet": "24",
+        "animate": ""
     },
-    "твое": {
-        "gender": "N",
+    {
         "word": "твое",
-        "ruleSet": "25"
+        "gender": "N",
+        "ruleSet": "25",
+        "animate": ""
     },
-    "свой": {
-        "gender": "M",
+    {
         "word": "свой",
-        "ruleSet": "23"
+        "gender": "M",
+        "ruleSet": "23",
+        "animate": ""
     },
-    "своя": {
-        "gender": "F",
+    {
         "word": "своя",
-        "ruleSet": "24"
+        "gender": "F",
+        "ruleSet": "24",
+        "animate": ""
     },
-    "свое": {
-        "gender": "N",
+    {
         "word": "свое",
-        "ruleSet": "25"
+        "gender": "N",
+        "ruleSet": "25",
+        "animate": ""
     },
-    "виски": {
-        "gender": "M",
-        "animate": "Inanimate",
+    {
         "word": "виски",
-        "ruleSet": "4"
-    },
-    "кофе": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "кофе",
-        "ruleSet": "4"
-    },
-    "удар": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "удар",
-        "ruleSet": "4"
-    },
-    "атташе": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "атташе",
-        "ruleSet": "4"
-    },
-    "пенальти": {
         "gender": "M",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "пенальти",
-        "ruleSet": "4"
-    },
-    "кенгуру": {
         "gender": "M",
-        "animate": "Animate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "кенгуру",
-        "ruleSet": "4"
-    },
-    "пони": {
         "gender": "M",
-        "animate": "Аnimate",
+        "ruleSet": "4",
+        "animate": "Animate"
+    },
+    {
         "word": "пони",
-        "ruleSet": "4"
+        "gender": "M",
+        "ruleSet": "4",
+        "animate": "Аnimate"
     },
-    "леди": {
-        "gender": "F",
-        "animate": "Animate",
+    {
         "word": "леди",
-        "ruleSet": "4"
-    },
-    "авеню": {
         "gender": "F",
-        "animate": "Animate",
+        "ruleSet": "4",
+        "animate": "Animate"
+    },
+    {
         "word": "авеню",
-        "ruleSet": "4"
+        "gender": "F",
+        "ruleSet": "4",
+        "animate": "Animate"
     },
-    "такси": {
-        "gender": "N",
-        "animate": "Inanimate",
+    {
         "word": "такси",
-        "ruleSet": "4"
-    },
-    "хобби": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "хобби",
-        "ruleSet": "4"
-    },
-    "интервью": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "интервью",
-        "ruleSet": "4"
-    },
-    "жюри": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "жюри",
-        "ruleSet": "4"
-    },
-    "интерью": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "интерью",
-        "ruleSet": "4"
-    },
-    "кафе": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "кафе",
-        "ruleSet": "4"
-    },
-    "кино": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "кино",
-        "ruleSet": "4"
-    },
-    "купе": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "купе",
-        "ruleSet": "4"
-    },
-    "меню": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "меню",
-        "ruleSet": "4"
-    },
-    "метро": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "метро",
-        "ruleSet": "4"
-    },
-    "пальто": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "пальто",
-        "ruleSet": "4"
-    },
-    "пианино": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "пианино",
-        "ruleSet": "4"
-    },
-    "радио": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "радио",
-        "ruleSet": "4"
-    },
-    "шоссе": {
         "gender": "N",
-        "animate": "Inanimate",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+    {
         "word": "шоссе",
-        "ruleSet": "4"
-    }
-},
+        "gender": "N",
+        "ruleSet": "4",
+        "animate": "Inanimate"
+    },
+],
 "ruleGroups": {
     "0": {
         "именительный": {
@@ -576,8 +596,7 @@
             "Single": {"oper": "none"},
             "Plural": {"oper": "none"}
         },
-        "description": "default ending for when we're not sure what kind of noun it is",
-        "example" : "TeStNoNSenS3"
+        "description": "default ending for when we're not sure what kind of noun it is"
     },
     "1": {
         "именительный": {
@@ -610,8 +629,7 @@
             "Single": {"oper": "replace", "ending": "е", "dropHowMany": "1"},
             "Plural": {"oper": "replace","ending": "ах", "dropHowMany": "1"}
         },
-        "description": "rule set for neuter nouns ending in о, like слово",
-        "example": "слово"
+        "description": "rule set for neuter nouns ending in о, like слово"        
     },
     "-1": {
         "именительный": {
@@ -1266,28 +1284,28 @@
     },
     "18": {
         "именительный": {
-            "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ая"},
+            "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ый"},
             "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ые"}
         },"винительный": {
             "Inanimate": {
-                "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ую"},
+                "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ый"},
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ые"}
             },
             "Animate": {
-                "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ую"},
+                "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ого"},
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ых"} 
             }
         },"родительный": {
-            "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ой"},
+            "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ого"},
             "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ых"}
         },"дательный": {
-            "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ой"},
+            "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ому"},
             "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ым"}
         },"творительный": {
-            "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ой"},
+            "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ым"},
             "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ыми"}
         },"предложный": {
-            "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ой"},
+            "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ом"},
             "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ых"}
         },
         "description": "rule set for hard, female adjectives"
@@ -1444,28 +1462,27 @@
             "Plural": {"oper": "replace", "ending": "и", "howMany": "1"} 
         },"винительный": {
             "Inanimate": {
-                "Single": {"oper": "replace", "ending": "ю", "dropHowMany": "1"},
+                "Single": {"oper": "none"},
                 "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"}    
             },
             "Animate": {
-                "Single": {"oper": "replace", "ending": "ю", "dropHowMany": "1"},
+                "Single": {"oper": "replace", "ending": "его", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}      
             }
         },"родительный": {
-            "Single": {"oper": "replace", "ending": "ей", "dropHowMany": "1"},
+            "Single": {"oper": "replace", "ending": "его", "dropHowMany": "1"},
             "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}    
         },"дательный": {
-            "Single": {"oper": "replace", "ending": "ей", "dropHowMany": "1"},
+            "Single": {"oper": "replace", "ending": "ему", "dropHowMany": "1"},
             "Plural": {"oper": "replace", "ending": "им", "dropHowMany": "1"}   
         },"творительный": {
-            "Single": {"oper": "replace", "ending": "ей", "dropHowMany": "1"},
+            "Single": {"oper": "replace", "ending": "им", "dropHowMany": "1"},
             "Plural": {"oper": "replace", "ending": "ими", "dropHowMany": "1"} 
         },"предложный": {
-            "Single": {"oper": "replace", "ending": "ей", "dropHowMany": "1"},
+            "Single": {"oper": "replace", "ending": "ём", "dropHowMany": "1"},
             "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}   
         },
-        "description": "rule set for female possessive adjectives, like моя",
-        "example": "моя"
+        "description": "rule set for female possessive adjectives, like моя"
     },
     "25": {
         "именительный": {                
@@ -1669,495 +1686,4 @@
         "description": "rule set for neuter demonstrative adjectives, like это"
     }
 
-},
-    "prepositions": 
-    [
-        {
-            "name": "", 
-            "cases":    
-                ["именительный","винительный","родительный","дательный","предложный"]
-        },
-        {
-            "name": "о",
-            "cases": ["винительный","предложный"]
-        },
-        {
-            "name": "у", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "за", 
-            "cases":    
-                ["именительный","винительный","предложный"]
-        },
-        {
-            "name": "около", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "на", 
-            "cases":    
-                ["винительный","предложный"]
-        },
-        {
-            "name": "над", 
-            "cases":    
-                ["творительный"]
-        },
-        {
-            "name": "под", 
-            "cases":    
-                ["винительный","творительный"]
-        },
-        {
-            "name": "из", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "в", 
-            "cases":    
-                ["винительный","предложный"]
-        },
-        {
-            "name": "по", 
-            "cases":    
-                ["именительный","винительный","дательный","предложный"]
-        },
-        {
-            "name": "через", 
-            "cases":    
-                ["винительный"]
-        },
-        {
-            "name": "вокруг", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "к", 
-            "cases":    
-                ["дательный"]
-        },
-        {
-            "name": "от", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "при", 
-            "cases":    
-                ["предложный"]
-        },
-        {
-            "name": "без", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "благодаря", 
-            "cases":    
-                ["дательный"]
-        },
-        {
-            "name": "близ", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "ввиду", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "вдоль", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "вместо", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "вне", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "внутри", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "внутрь", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "возле", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "впереди", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "вследствие", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "для", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "до", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "вопреки", 
-            "cases":    
-                ["дательный"]
-        },
-        {
-            "name": "из-за", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "из-под", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "кроме", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "между", 
-            "cases":    
-                ["родительный","творительный"]
-        },
-        {
-            "name": "мимо", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "напротив", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "насчет", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "относительно", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "перед", 
-            "cases":    
-                ["творительный"]
-        },
-        {
-            "name": "подле", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "подобно", 
-            "cases":    
-                ["дательный"]
-        },
-        {
-            "name": "позади", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "помимо", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "после", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "посреди", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "посредством", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "про", 
-            "cases":    
-                ["винительный"]
-        },
-        {
-            "name": "против", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "путём", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "ради", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "с", 
-            "cases":    
-                ["винительный","родительный","творительный"]
-        },
-        {
-            "name": "сверх", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "свыше", 
-            "cases":    
-                ["родительный"]
-        },
-        {
-            "name": "сквозь", 
-            "cases":    
-                ["винительный"]
-        },
-        {
-            "name": "согласно", 
-            "cases":    
-                ["дательный"]
-        }
-    ],
-    "labels": {
-    "en": {
-        "adjSelect": {
-            "display": "Adjective"
-        },
-        "nounSelect": {
-            "display": "Noun"
-        },
-        "prepSelect": {
-            "display": "Preposition"
-        },
-        "caseSelect": {
-            "display": "Case",
-            "options": {
-                "винительный": {
-                    "display": "Accusative",
-                    "value": "винительный"
-                },
-                "родительный": {
-                    "display": "Genitive",
-                    "value": "родительный"
-                },
-                "творительный": {
-                    "display": "Instrumental",
-                    "value": "творительный"
-                },
-                "предложный": {
-                    "display": "Prepositional",
-                    "value": "предложный"
-                },
-                "именительный": {
-                    "display": "Nominative",
-                    "value": "именительный"
-                },
-                "дательный": {
-                    "display": "Dative",
-                    "value": "дательный"
-                }
-            }
-        },
-        "genderSelect": {
-            "display": "Gender",
-            "options": [
-                {
-                    "display": "M",
-                    "value": "M"
-                },
-                {
-                    "display": "F",
-                    "value": "F"
-
-                },
-                {
-                    "display": "N",
-                    "value": "N"
-                }
-            ]
-        },
-        "plurSelect": {
-            "display": "Plurality",
-            "options": [
-                {
-                    "value": "Single",
-                    "display": {
-                        "M":  "Single",
-                        "F": "Single",
-                        "N": "Single",
-                        "all": "Single"
-                    }
-                },
-                {
-                    "display": {
-                        "M":  "Plural",
-                        "F": "Plural",
-                        "N": "Plural",
-                        "all": "Plural"                        
-                    },
-                    "value": "Plural"
-                }
-            ]            
-        },
-        "animateSelect": {
-            "display": "Animateness",
-            "options": [
-                {
-                    "display": "Animate",
-                    "value": "Animate"
-                },
-                {
-                    "display": "Inanimate",
-                    "value": "Inanimate"
-                }
-            ]
-        },
-        "genderForcedTooltip": {
-            "display": "Selection disabled, as gender of your selected adjective/noun is already known"
-        },
-         "caseForcedTooltip": {
-            "display": "Selection disabled, as your selected preposition only takes one case"
-        },
-        "animateForcedTooltip": {
-            "display": "Selection disabled, as animateness of your selected noun is already noun "
-        }
-    },
-    "ru": {
-        "adjSelect": {
-            "display": "Прилагательное"
-        },
-        "nounSelect": {
-            "display": "Существительное"
-        },
-        "prepSelect": {
-            "display": "Предлог"
-        },
-        "caseSelect": {
-            "display": "Падеж",
-            "options": {
-                "винительный": {
-                    "value": "винительный",
-                    "display": "винительный"
-                },
-                "родительный": {
-                    "display": "родительный",
-                    "value": "родительный"
-                },
-                "творительный": {
-                    "display": "творительный",
-                    "value": "творительный"
-                },
-                "предложный": {
-                    "display": "предложный",
-                    "value": "предложный"
-                },
-                "именительный": {
-                    "display": "именительный",
-                    "value": "именительный"
-                },
-                "дательный": {
-                    "display": "дательный",
-                    "value": "дательный"
-                }
-            }
-        },
-        "genderSelect": {
-            "display": "Род",
-            "options": [
-                {
-                    "value": "M",
-                    "display": "М"
-                },
-                {
-                    "value": "F",
-                    "display": "Ж"
-
-                },
-                {
-                    "value": "N",
-                    "display": "С"
-                }
-            ]
-        },
-        "plurSelect": {
-            "display": "Множество",
-            "options": [
-                {
-                    "value": "Single",
-                    "display": {
-                        "M": "единственный",
-                        "F": "единственная",
-                        "N": "единственное",
-                        "all": "единственный"
-                    }
-                },
-                {
-                    "value": "Plural",
-                    "display": {
-                        "M": "множественные",
-                        "F": "множественные",
-                        "N": "множественные",
-                        "all": "множественные"                        
-                    }
-                }
-            ]            
-        },
-        "animateSelect": {
-            "display": "Одушевленность",
-            "options": [
-                {
-                    "value": "Animate",
-                    "display": "одушевленный"
-                },
-                {
-                    "value": "Inanimate",
-                    "display": "неодушевленный"
-                }
-            ]
-        },
-        "genderForcedTooltip": {
-            "display": "Выбор отключен, род вашего выбранного прилагательного/существительного уже понимается"
-        },
-        "caseForcedTooltip": {
-            "display": "Выбор отключен, только один падеж совпадает с этим предлогом"
-        },
-        "animateForcedTooltip": {
-            "display": "Выбор отключен, одушевленность вашего выбранного существительного уже понимается "
-        }
-    }        
-}
 }
