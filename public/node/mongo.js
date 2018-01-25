@@ -2,14 +2,33 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 
 exports.postErrorReports = function(options,onResult){
-    
+    MongoClient.connect(url,function(err,database){
+        if(err){onResult({'statusCode': '400','errMsg': err})}
+        var db = database.db(options.db);
+        var collection = db.collection('errorReports')
+
+        var reportObj = options.body
+        collection.insertOne(reportObj,function(err,res){
+            if(err){onResult({'statusCode': '400','errMsg': err})}
+            console.log("1 document inserted")
+            
+            var response = {
+                'statusCode': '200',
+                'content': {'nInserted': 1}
+            }
+
+            onResult(response)
+
+            database.close();
+        });
+    })
 }
 
 exports.getExceptions = function(options,onResult){
     MongoClient.connect(url,function(err,database){
         if(err){onResult({'statusCode': '400', 'errMsg': err})}
-        var db = database.db('languageDB');
-        var collection = db.collection(options.lang)
+        var db = database.db(options.db);
+        var collection = db.collection('exceptions')
 
         collection.find().project({exceptions: 1}).toArray(function(err,items){
             if(err){
@@ -18,13 +37,30 @@ exports.getExceptions = function(options,onResult){
                 )
             }
 
-            console.log(items)
-            var content = items[0]
+            
+            
+            if(typeof options.query.q !=='undefined' && options.query.q){
+
+                var exceptionsDict = items[0].exceptions
+                var word = options.query.q
+                if(exceptionsDict.hasOwnProperty(word)){
+                    var content = exceptionsDict[word]
+
+                }else{
+                    var content = exceptionsDict['default']
+                }
+
+            }else{
+                var content = items[0] //i'm not really sure if this default makes sense
+            }
 
             var response = {
                 'statusCode': '200',
                 'content': content
             }
+
+            console.log(content)
+
             onResult(response)
             database.close()
         })
@@ -35,8 +71,8 @@ exports.getRuleGroups = function(options,onResult){
     MongoClient.connect(url,function(err,database){
         if(err){onResults({'statusCode': '400', 'errMsg': err})}
 
-        var db = database.db('languageDB');
-        var collection = db.collection(options.lang)
+        var db = database.db(options.db);
+        var collection = db.collection('ruleGroups')
 
         var projection = "ruleGroups." + options.q
         var params = {}
@@ -47,13 +83,15 @@ exports.getRuleGroups = function(options,onResult){
                 onResult({'statusCode': '400', 'errMsg': err})
             }
 
-            console.log(items)
             var content = items[0]
 
             var response = {
                 'statusCode': '200',
                 'content': content
             }
+            
+            console.log(content)
+
             onResult(response)
             database.close()
         })
@@ -65,9 +103,8 @@ exports.getPrepositions = function(options,onResult){
 
     MongoClient.connect(url,function(err,database){
         if (err) {onResult({'statusCode': '400','errMsg': err})}
-        var db = database.db('languageDB');
-        //var collection =  db.collection("russianPrepositions");
-        var collection = db.collection(options.lang)
+        var db = database.db(options.db);
+        var collection = db.collection('prepositions')
 
         //returns only preposition field, so we have one element (russian is only object)
         //and prep and id as only fields, need to specify query as blank
@@ -78,38 +115,15 @@ exports.getPrepositions = function(options,onResult){
                     {'statusCode': '400','errMsg': err }
                 )
             }
-            console.log(items);
+            
             var content = items[0] //return that one element
             var response = {
                 'statusCode': '200',
                 'content': content
             }
+            console.log(content)
             onResult(response)
             database.close();    
-        });
-    });
-}
-
-exports.getDeclensionRules = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
-        if(err){onResult({'statusCode': '400','errMsg': err})}
-        var db = database.db('languageDB');
-        var collection = db.collection(options.lang);
-
-        collection.find().project({exceptions: 1,endings: 1}).toArray(function(err,items){
-            if(err){
-                onResult(
-                    {'statusCode': '400','errMsg': err}
-                )
-            }
-            console.log(items);
-            var content = items[0]
-            var response = {
-                'statusCode': '200',
-                'content': content
-            }
-            onResult(response)
-            database.close();
         });
     });
 }
@@ -117,8 +131,8 @@ exports.getDeclensionRules = function(options,onResult){
 exports.getLabels = function(options,onResult){
     MongoClient.connect(url,function(err,database){
         if(err){onResult({'statusCode': '400','errMsg': err})}
-        var db = database.db('languageDB');
-        var collection = db.collection(options.lang);
+        var db = database.db(options.db);
+        var collection = db.collection('labels');
 
         collection.find().project({labels: 1}).toArray(function(err,items){
             if(err){
@@ -126,8 +140,19 @@ exports.getLabels = function(options,onResult){
                     {'statusCode': '400','errMsg': err}
                 )
             }
-            console.log(items);
-            var content = items[0]
+
+            if(typeof options.lang !=='undefined' &&options.lang){
+                var labelsDict = items[0].labels
+                if(labelsDict.hasOwnProperty(options.lang)){
+                    var content = items[0].labels[options.lang]
+                }else{
+                    var content = items[0].labels['ru']
+                }
+            }else{
+                var content = items[0].labels['ru'] //this is default
+            }
+            console.log(content);
+            
             var response = {
                 'statusCode': '200',
                 'content': content

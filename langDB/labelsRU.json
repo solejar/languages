@@ -1,0 +1,211 @@
+{
+    "labels": 
+    {
+        "en": {
+            "adjSelect": {
+                "display": "Adjective"
+            },
+            "nounSelect": {
+                "display": "Noun"
+            },
+            "prepSelect": {
+                "display": "Preposition"
+            },
+            "caseSelect": {
+                "display": "Case",
+                "options": {
+                    "винительный": {
+                        "display": "Accusative",
+                        "value": "винительный"
+                    },
+                    "родительный": {
+                        "display": "Genitive",
+                        "value": "родительный"
+                    },
+                    "творительный": {
+                        "display": "Instrumental",
+                        "value": "творительный"
+                    },
+                    "предложный": {
+                        "display": "Prepositional",
+                        "value": "предложный"
+                    },
+                    "именительный": {
+                        "display": "Nominative",
+                        "value": "именительный"
+                    },
+                    "дательный": {
+                        "display": "Dative",
+                        "value": "дательный"
+                    }
+                }
+            },
+            "genderSelect": {
+                "display": "Gender",
+                "options": [
+                    {
+                        "display": "M",
+                        "value": "M"
+                    },
+                    {
+                        "display": "F",
+                        "value": "F"
+
+                    },
+                    {
+                        "display": "N",
+                        "value": "N"
+                    }
+                ]
+            },
+            "plurSelect": {
+                "display": "Plurality",
+                "options": [
+                    {
+                        "value": "Single",
+                        "display": {
+                            "M":  "Single",
+                            "F": "Single",
+                            "N": "Single",
+                            "all": "Single"
+                        }
+                    },
+                    {
+                        "display": {
+                            "M":  "Plural",
+                            "F": "Plural",
+                            "N": "Plural",
+                            "all": "Plural"                        
+                        },
+                        "value": "Plural"
+                    }
+                ]            
+            },
+            "animateSelect": {
+                "display": "Animateness",
+                "options": [
+                    {
+                        "display": "Animate",
+                        "value": "Animate"
+                    },
+                    {
+                        "display": "Inanimate",
+                        "value": "Inanimate"
+                    }
+                ]
+            },
+            "genderForcedTooltip": {
+                "display": "Selection disabled, as gender of your selected adjective/noun is already known"
+            },
+             "caseForcedTooltip": {
+                "display": "Selection disabled, as your selected preposition only takes one case"
+            },
+            "animateForcedTooltip": {
+                "display": "Selection disabled, as animateness of your selected noun is already noun "
+            }
+        },
+        "ru": {
+            "adjSelect": {
+                "display": "Прилагательное"
+            },
+            "nounSelect": {
+                "display": "Существительное"
+            },
+            "prepSelect": {
+                "display": "Предлог"
+            },
+            "caseSelect": {
+                "display": "Падеж",
+                "options": {
+                    "винительный": {
+                        "value": "винительный",
+                        "display": "винительный"
+                    },
+                    "родительный": {
+                        "display": "родительный",
+                        "value": "родительный"
+                    },
+                    "творительный": {
+                        "display": "творительный",
+                        "value": "творительный"
+                    },
+                    "предложный": {
+                        "display": "предложный",
+                        "value": "предложный"
+                    },
+                    "именительный": {
+                        "display": "именительный",
+                        "value": "именительный"
+                    },
+                    "дательный": {
+                        "display": "дательный",
+                        "value": "дательный"
+                    }
+                }
+            },
+            "genderSelect": {
+                "display": "Род",
+                "options": [
+                    {
+                        "value": "M",
+                        "display": "М"
+                    },
+                    {
+                        "value": "F",
+                        "display": "Ж"
+
+                    },
+                    {
+                        "value": "N",
+                        "display": "С"
+                    }
+                ]
+            },
+            "plurSelect": {
+                "display": "Множество",
+                "options": [
+                    {
+                        "value": "Single",
+                        "display": {
+                            "M": "единственный",
+                            "F": "единственная",
+                            "N": "единственное",
+                            "all": "единственный"
+                        }
+                    },
+                    {
+                        "value": "Plural",
+                        "display": {
+                            "M": "множественные",
+                            "F": "множественные",
+                            "N": "множественные",
+                            "all": "множественные"                        
+                        }
+                    }
+                ]            
+            },
+            "animateSelect": {
+                "display": "Одушевленность",
+                "options": [
+                    {
+                        "value": "Animate",
+                        "display": "одушевленный"
+                    },
+                    {
+                        "value": "Inanimate",
+                        "display": "неодушевленный"
+                    }
+                ]
+            },
+            "genderForcedTooltip": {
+                "display": "Выбор отключен, род вашего выбранного прилагательного/существительного уже понимается"
+            },
+            "caseForcedTooltip": {
+                "display": "Выбор отключен, только один падеж совпадает с этим предлогом"
+            },
+            "animateForcedTooltip": {
+                "display": "Выбор отключен, одушевленность вашего выбранного существительного уже понимается "
+            }
+        }        
+    }
+}

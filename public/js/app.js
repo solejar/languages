@@ -3,7 +3,7 @@
     //this basic file is eventually for dependency injection and page control only.
 
     //this controller is just for page switching on a larger scope.
-    app.controller('pageCtrl',function(){
+    app.controller('headerController',function(){
         this.pages = ['declension','readings','about'];
 
         this.currPage = 'declension'
@@ -17,6 +17,13 @@
             }
         }
     })
+
+    app.controller('footerController',function(){
+        this.langs = [
+            {display: 'Русский', url: 'ru'},
+            {display: 'English', url: 'en'}
+        ]
+    });
 
     //maybe move this to another file
     app.filter('prepositionFilter',function(){

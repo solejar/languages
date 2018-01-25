@@ -17,7 +17,8 @@ app.factory('sharedProps',function($http, $location){
             return $http({
                 method: options.method,
                 url: path+options.url,
-                params: options.params
+                params: options.params,
+                data: options.data
             }).then(function mySuccess(response){
                 console.log('the request went well!');
                 return response.data;

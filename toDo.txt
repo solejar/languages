@@ -1,70 +1,84 @@
 Decliner:
-    Backlog in order:
-    
-    Missing solo exceptions:
-        господин
-        болгарин
-        татарин
-        хозяин
+    Backlog in order:        
 
-    Flesh out what to do if oper indicated is 'else'
-        or rather how do I know/indicate that the ruleSet returned is the default?
+    Functional:
 
-    Еxpected animateness
+        Wrning for gender mismatch between noun and adj currently can only display in english, perhaps a flaw that can be fixed with an enhancement to the data schema
+            also display this warning as a popup
+            <div ng-show="!ending.sameGender(ending.adjGender,ending.nounGender)&&ending.display">
+                        {{"Warning! Your adjective has a gender of " + ending.adjGender + " while your noun has a gender of " + ending.nounGender + ". Please change either to make them match."}}
+                        </div> <-- leaving this here for now
 
-    Should I allow user to enter wrong gender mistakenly?
-        For example enter male adj and female noun, then just conjugate the male adj into female before starting
-        i'm thinking maybe
+        Submit Button:
+            Try out for a couple of cases. Allow user to change plurality and case asynchronously
 
-    Think about not getting all the exceptions at the start, and what that would look like as far the get request is concerned
+        Why doesn't case show up automatically???
 
-    Add 'example' field to facilitate easy testing
+        Gender warning:
+            Only display gender warning after submit press
 
-    Add post request for noted inaccuracies
+        Error Button:
+            make it open a window where users can include manual comments and perhaps additional info
 
-    What does this app not handle:
+        Add remaining exceptions:
+            Missing solo exceptions: (amongst others)
+                господин
+                болгарин
+                татарин
+                хозяин
 
-        words with multiple forms of plurals
-        Non-declinable, non-russian names.
+        Edge Cases:
+            Flesh out what to do if oper indicated is 'else'
+                how do I know/indicate that the ruleSet returned is the default?
 
-        Currently deciding if I can handle locative case for words like год
-    
-    Singular personal pronouns? Question pronouns? Determinative?
-        work on this after the infrastructure is set up    
+            Should I allow user to enter wrong gender mistakenly?
+                For example enter male adj and female noun, then just conjugate the male adj into female before starting
+                i'm thinking maybe
 
-    Potential idea:
-        word bank!
-
-    Functional: Needed for the app to work correctly
-       
-        submit button
-            Probably only appears if the adj or noun has changed
-            we can let people change the case/plurality on the fly (but gender?)
-
-    Non-Functional:
-    
-        Styling
+    Non-functional: 
+        Styling (this is my priority right now)
             Mobile vs web sizing
             Add some fun colors
             Maybe box things off?
 
-        Maybe look at schema validation
-    
-    Pre-release, once code base has solidified to v1.0.0:
+        Code improvement/refactoring:
+            Group inputs into a single object, then re-integrate this into rest of app.
+            Improve REST endpoints, parse inputs/path urls on start, abstract such logic out of the Mongo
+  
+        Server-side:
+            pipe output to a file or db
+            don't get all exceptions at first, just get exceptions with GET request when needed  
+
+        Mongo:
+            Look at adding schema validation
+
+        Testing:
+            Add 'example' field to facilitate easy testing  
 
         Buy a domain, some online mongo allocation as well
 
-        clean up code:
-            Make sure there isn't any glaringly bad practice in there
-
-        figure out some methodical way to do unit testing: 3
-            run through all options with assertions?
-            karma + jasmine?
-            don't need to have them all done, but at least get started with it
-            so you know how to work on this moving forward
-
         Design Docs/How-to:
-            Hmm this should come before release I suppose?
+            Hmm this should come before release I suppose?  
+
+    Potential ideas:
+        word bank!
+            Should I move to a model of every word entered going into the database? And then keeping the rules stored? Then we could keep track of frequency and other such things, and provide an asynchronous suggestion bank
+        Total sentence constructor, with pronoun and verb placement
+
+        App doesn't handle:
+
+            words with multiple forms of plurals
+            Non-declinable, non-russian names.
+
+            Currently deciding if I can handle locative case for words like год
+
+    Singular personal pronouns? Question pronouns? Determinative?
+        work on this after the infrastructure is set up    
+
+
+        
+
+Looking at this later
 
 Text Learner:
     Authentication:

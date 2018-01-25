@@ -1,6 +1,6 @@
 var app = angular.module('lang');
 
-app.controller('endingCtrl',function(sharedProps, $q, $timeout){
+app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
     //list of prepositions and their associated case options
     this.prepositions = []
@@ -9,14 +9,57 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
     this.endings = {} //if not, just use general rules
 
     this.labels = {} //contains labels in curr language
-    this.allLabels = {} //contains labels in all languages
-    this.showSelects = false //this only initializes after labels are loaded
-
-    this.displayLang = 'ru' //starting lang for interface 
     
     this.init = function(){
-        this.initializeEndings() //pull data from Mongo     
+        var urlPath = $window.location.href;
+        var pathSplit = urlPath.split('/')
+        console.log(pathSplit[3])
+        var options = {
+            lang: pathSplit[3]
+        }
+
+        this.initializeValues(options) //pull data from Mongo     
         this.clearToInitial()   //initialize select vals
+    }
+
+    //GET requests made on page init, gives the page everything it needs to run
+    this.initializeValues = function(options){
+        //create option dicts for HTTP reqs
+        //technically want to send actual path lang, but in this case vals don't change so I won't bother
+        var prepositionOptions = {
+            url: '/ru/prepositions',
+            params: {},
+            method: 'GET',
+        }
+
+        var labelOptions = {
+            url: '/'+options.lang+'/labels',
+            params: {},
+            method: 'GET'
+        }
+
+        var exceptionsOptions = {
+            url: '/ru/exceptions',
+            params: {},
+            method: 'GET'
+        }
+
+        var promises = [];
+        console.log('about to fetch exceptions, endings, preps, and labels!');
+
+        //push promises onto promise arr
+        promises.push(sharedProps.httpReq(exceptionsOptions))
+        promises.push(sharedProps.httpReq(prepositionOptions))
+        promises.push(sharedProps.httpReq(labelOptions))
+
+        //async timeout until all promise completion
+        $q.all(promises).then(function(res){
+            //set data structs equal to responses
+            this.exceptions = res[0].content.exceptions
+            this.prepositions = res[1].content.prepositions            
+            this.labels = res[2].content   
+
+        }.bind(this));
     }
 
     //clear out select vals
@@ -61,13 +104,37 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
         return !(a||b||c||d||e||f||g);
     }
 
+    //just a function to collate all inputs, maybe this isn't necessary
+    //maybe I will flesh this out for more of the other functions
+    //maybe I will just make this an objet to begin with, that would save me the trouble
+
+    this.allInputs = function(){
+        var obj = {}
+
+        obj.gender = this.currGender
+        obj.animate = this.currAnimate
+        obj.plurality = this.currPlurality
+        obj.padex = this.currCase
+        obj.preposition = this.currPrep.name
+        obj.noun = this.currNoun
+        obj.adj = this.currAdj
+        obj.declinedNoun = this.declinedNoun
+        obj.declinedAdj = this.declinedAdj
+        obj.ruleSet = this.ruleSet
+
+        return obj
+    }
+
     this.submitErrorReport = function(){
+        //look at reorganizing this...
+        var allInputs = this.allInputs()
+
+        var data = {}
+        data['allInputs'] = allInputs
+
         var errorReportOptions = {
             url: '/ru/errorReports',
-            params: {//this is really 'data', but just checking if this works
-                'name': 'test',
-                'date': 'today'
-            },
+            data: data,
             method: 'POST'
         }
 
@@ -77,61 +144,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
         promises.push(sharedProps.httpReq(errorReportOptions))
         $q.all(promises).then(function(res){
             console.log('appears to have worked!')
+            //alert that things went well
         })
-    }
-
-    this.updateLabels = function(){
-        $timeout( function(){
-            this.showSelects = false
-            this.labels = this.allLabels[this.displayLang]
-        }.bind(this), 0)
-        $timeout(function(){
-            this.showSelects = true
-        }.bind(this),0)
-    }
-
-    //GET requests made on page init, gives the page everything it needs to run
-    this.initializeEndings = function(){
-        //create option dicts for HTTP reqs
-        var prepositionOptions = {
-            url: '/ru/prepositions',
-            params: {},
-            method: 'GET',
-        }
-
-        var labelOptions = {
-            url: '/ru/labels',
-            params: {},
-            method: 'GET'
-        }
-
-        var exceptionsOptions = {
-            url: '/ru/exceptions',
-            params: {},
-            method: 'GET'
-        }
-
-        var promises = [];
-        console.log('about to fetch exceptions, endings, preps, and labels!');
-
-        //push promises onto promise arr
-        promises.push(sharedProps.httpReq(exceptionsOptions))
-        promises.push(sharedProps.httpReq(prepositionOptions))
-        promises.push(sharedProps.httpReq(labelOptions))
-        
-
-        //async timeout until all promise completion
-        $q.all(promises).then(function(res){
-            //set data structs equal to responses
-            this.exceptions = res[0].content.exceptions
-            this.prepositions = res[1].content.prepositions
-            
-            this.allLabels = res[2].content.labels
-            this.labels = this.allLabels[this.displayLang]           
-
-            this.showSelects = true
-
-        }.bind(this));
     }
 
     //just QoL, disables case select when there's only one case option
@@ -150,10 +164,11 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
             this.declinedNoun = declinedNoun
         }.bind(this))
 
-        var declinedAdj = this.declineWord(this.currAdj,'adj').then(function(declinedAdj){
+        this.declineWord(this.currAdj,'adj').then(function(declinedAdj){
             this.declinedAdj = declinedAdj
         }.bind(this))
     }
+
     this.declineWord = function(currWord,PoS){
 
         var deferred = $q.defer()
@@ -371,7 +386,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout){
         var noun = this.currNoun
 
         if(this.exceptions.hasOwnProperty(noun)){
-            var nounAnimate = this.exception[noun].animate
+            var nounAnimate = this.exceptions[noun].animate
             this.currAnimate = nounAnimate
             return nounAnimate
         }else{

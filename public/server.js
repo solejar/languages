@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+
 const app = express()
 
 const port = 8080
@@ -19,13 +20,17 @@ app.set('views',__dirname + '/views/'); //sets default render dir
 app.engine('html',require('ejs').renderFile);
 app.set('view engine','html'); //i just added these two lines cause I saw them in a tutorial
 
-app.get('/',function(req,res){
+app.get('/ru',function(req,res){
     res.render('index.html');
 });
 
+app.get('/en',function(req,res){
+    res.render('index.html');
+})
+
 app.get('/ru/prepositions',function(req,res){
     var options = {
-        lang: 'ru'
+        db: 'ru'
     }
     mongo.getPrepositions(options,function(result){
         console.log('onResult: (' + result.statusCode + ')');
@@ -37,7 +42,8 @@ app.get('/ru/prepositions',function(req,res){
 //not that it really matters but eventually this should be generalized to a regex
 app.get('/ru/labels',function(req,res){
     var options = {
-        lang: 'ru'
+        lang: 'ru',
+        db: 'ru'
     }
     mongo.getLabels(options,function(result){
         console.log('onResult: (' + result.statusCode + ')');
@@ -46,15 +52,28 @@ app.get('/ru/labels',function(req,res){
     });
 });
 
+app.get('/en/labels',function(req,res){
+    var options = {
+        lang: 'en',
+        db: 'ru'
+    }
+    mongo.getLabels(options,function(result){
+        console.log('onResult: (' + result.statusCode + ')');
+        res.statusCode = result.statusCode;
+        res.send(result);
+    });
+});
+
+
 app.get('/ru/ruleGroups',function(req,res){
     if (typeof req.query.q !== 'undefined' && req.query.q){
         var options = {
-            lang: 'ru',
+            db: 'ru',
             q: req.query.q
         }
     }else{
         var options = {
-            lang: 'ru',
+            db: 'ru',
             q: '0'
         }
     }
@@ -71,7 +90,8 @@ app.get('/ru/ruleGroups',function(req,res){
 
 app.get('/ru/exceptions',function(req,res){
     var options = {
-        lang: 'ru'
+        db: 'ru',
+        query: req.query
     }
 
     mongo.getExceptions(options,function(result){
@@ -82,14 +102,21 @@ app.get('/ru/exceptions',function(req,res){
 })
 
 app.post('/ru/errorReports',function(req,res){
-    var options = {}
+    var body = req.body
+    res.set('Content-Type','application/json')
 
-    console.log(req)
+    console.log(req.body)
 
-    /*mongo.postErrorReport(options,function(result){
-        console.log('onResult: (' + result.statusCode _ ')');
-        res.statusCode = result
-    })*/
+    var options = {
+        body: body,
+        db: 'ru'
+    }
+
+    mongo.postErrorReports(options,function(result){
+        console.log('onResult: (' + result.statusCode + ')');
+        res.statusCode = result.statusCode;
+        res.send(result); //i'm not even sure what I should be sending back for POST requests
+    })
 })
 
 app.listen(port,(err)=>{

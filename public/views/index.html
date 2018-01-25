@@ -22,138 +22,165 @@
 
 </head>
 
-<body ng-controller="pageCtrl as page">
+<body ng-controller="headerController as header">
     <div id= "nav-bar">        
         <md-nav-bar  
         md-selected-nav-item="currentNavItem"
         nav-bar-aria-label="navigation links">
-            <md-nav-item md-nav-click="page.changePage('declension')" name="DeclensionTab">
-                Русское Склонение
+            <md-nav-item md-nav-click="header.changePage('declension')" name="DeclensionTab">
+                Склонение
             </md-nav-item>
-            <md-nav-item md-nav-click="page.changePage('readings')" name="ReadingsTab">
-                Русские чтения
+            <md-nav-item md-nav-click="header.changePage('readings')" name="ReadingsTab">
+                Чтения
             </md-nav-item>
-            <md-nav-item md-nav-click="page.changePage('about')" name="aboutTab">
+            <md-nav-item md-nav-click="header.changePage('about')" name="aboutTab">
                 About
             </md-nav-item>
         </md-nav-bar>
     </div>
-    <div ng-if="page.currPage=='about'">
-        Доброе пожаловать на моем приложение!
-
-        <br><br>
-        The goal of this language application is to incrementally add features which I find useful in language learning, which I hope will provide some use to other people down the road.
-        <br><br>
-
-        Feel free to fork on https://github.com/solejar/languages.git
-
-    </div>
-    <div ng-if="page.currPage=='declension'">        
-        <div ng-controller="endingCtrl as ending" ng-init="ending.init()">
-            <div layout="column">
-                <div layout="column">
-                    <br>
-                    <div>Display Language:
-                    </div>
-                    <br>
-                    <div layout="row">
-                        <md-radio-group layout="row" ng-model="ending.displayLang" ng-change="ending.updateLabels()">
-                            <md-radio-button value="ru">Русский</md-radio-button>
-                            <md-radio-button value="en">English</md-radio-button>
-                        </md-radio-group>
-                        <div ng-show="!ending.sameGender(ending.adjGender,ending.nounGender)">
-                        {{"Warning! Your adjective has a gender of " + ending.adjGender + " while your noun has a gender of " + ending.nounGender + ". Please change either to make them match."}}
-                        </div>          
-                    </div>
-                    <br>
-
-                </div>
-                <div layout="row">
-                    <md-input-container ng-if="ending.showSelects">
-                        <label>
-                        {{ending.labels.prepSelect.display}}
-                        </label>
-                        <md-select ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)" aria-label="Предлог" >
-                            <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep" >
-                            {{prep.name}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>          
-                    <md-input-container>
-                        <label>
-                        {{ending.labels.adjSelect.display}}
-                        </label>
-                        <input ng-model="ending.currAdj" >
-                    </md-input-container>
-                    <md-input-container>
-                        <label>
-                        {{ending.labels.nounSelect.display}}
-                        </label>
-                        <input ng-model="ending.currNoun">
-                    </md-input-container>
-                </div>
-                <div layout="row" ng-if="ending.showSelects">
-                    
-                    <md-input-container>
-                        <md-tooltip ng-show="ending.onlyOneCase" md-delay="230">{{ending.labels.caseForcedTooltip.display}}</md-tooltip>
-                        <label>
-                        {{ending.labels.caseSelect.display}}
-                        </label>
-                        <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase" aria-label="Падеж">
-                            <md-option ng-repeat="case in ending.currPrep.cases" ng-value="case" >
-                            {{ending.labels.caseSelect.options[case].display}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container ng-if="ending.currCase=='винительный'" >
-                        <label>{{ending.labels.animateSelect.display}}</label>
-                        <md-tooltip ng-show="ending.expectedAnimate()!=''" md-delay="230">{{ending.labels.animateForcedTooltip.display}}</md-tooltip>
-                        <md-select ng-model="ending.currAnimate" aria-label="Одушевленность" ng-disabled="ending.expectedAnimate()!=''" >
-                            <md-option ng-repeat="state in ending.labels.animateSelect.options"  ng-value="state.value">
-                            {{state.display}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container >
-                        <md-tooltip ng-show="ending.expectedGender()!=''" md-delay="230">{{ending.labels.genderForcedTooltip.display}}</md-tooltip>
-                        <label>{{ending.labels.genderSelect.display}}</label>
-                        <md-select ng-model="ending.currGender" ng-disabled="ending.expectedGender()!=''" aria-label="Род" >
-                            <md-option ng-repeat="gender in ending.labels.genderSelect.options" ng-value="gender.value">
-                            {{gender.display}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container >
-                        <label>{{ending.labels.plurSelect.display}}</label>
-                        <md-select ng-model="ending.currPlurality" aria-label="Множество" >
-                            <md-option ng-repeat="plurality in ending.labels.plurSelect.options" ng-value="plurality.value">
-                            {{plurality.display[ending.currGender]}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                </div>
-                <div ng-show="ending.declinedAdj!=''||ending.declinedNoun!=''">
-                    {{ending.currPrep.name+' ' +ending.declinedAdj +' ' + ending.declinedNoun| prepositionFilter}}
-                </div>
-                <div>
-                    <md-button ng-click="ending.clearToInitial()" ng-disabled="ending.disableClear()">Clear
-                    </md-button>
-                    <md-button ng-click="ending.submitErrorReport()">
-                    Report error
-                    </md-button>
-                    <md-button ng-click="ending.declinePhrase()" ng-disabled="!(ending.validInputs('adj')||ending.validInputs('noun'))">
-                    Decline Phrase
-                    </md-button>
-                    <!--{{'valid adj: '+ending.validInputs('adj') + ' valid noun: ' + ending.validInputs('noun')}}-->
-
-                </div>
-
-            </div>    
+    
+    <div layout="column">
+        <div flex="10" id="header" style="background-color: #ccffff">
+        Yo wassup
         </div>
-        
+        <div layout="row" flex="60" layout-align="center">
+            <div flex="15" style="background-color: #ccffff" >
+            </div>
+            <div flex ng-if="header.currPage=='about'" style="background-color: #ccffff">
+                Доброе пожаловать на моем приложение!
+
+                <br><br>
+                The goal of this language application is to incrementally add features which I find useful in language learning, which I hope will provide some use to other people down the road.
+                <br><br>
+
+                Feel free to fork on https://github.com/solejar/languages.git
+
+            </div>
+            
+            <div flex ng-if="header.currPage=='declension'" ng-init="ending.init()" ng-controller="endingCtrl as ending" layout="column" >
+                <md-whiteframe class="md-whiteframe-15dp" layout="column">
+                    
+                            
+                    <div layout="row" id="phrase-input" layout-align="center">
+                        <md-input-container>
+                            <label>
+                            {{ending.labels.prepSelect.display}}
+                            </label>
+                            <md-select ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)" aria-label="Предлог" >
+                                <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep" >
+                                {{prep.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>          
+                        <md-input-container>
+                            <label>
+                            {{ending.labels.adjSelect.display}}
+                            </label>
+                            <input ng-model="ending.currAdj" >
+                        </md-input-container>
+                        <md-input-container>
+                            <label>
+                            {{ending.labels.nounSelect.display}}
+                            </label>
+                            <input ng-model="ending.currNoun">
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-align="center" id="quality-select">
+                        
+                        <md-input-container>
+                            <md-tooltip ng-show="ending.onlyOneCase" md-delay="230">{{ending.labels.caseForcedTooltip.display}}
+                            </md-tooltip>
+                            <label>
+                            {{ending.labels.caseSelect.display}}
+                            </label>
+                            <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase" aria-label="Падеж">
+                                <md-option ng-repeat="case in ending.currPrep.cases" ng-value="case" >
+                                {{ending.labels.caseSelect.options[case].display}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container ng-if="ending.currCase=='винительный'" >
+                            <label>{{ending.labels.animateSelect.display}}</label>
+                            <md-tooltip ng-show="ending.expectedAnimate()!=''" md-delay="230">{{ending.labels.animateForcedTooltip.display}}</md-tooltip>
+                            <md-select ng-model="ending.currAnimate" aria-label="Одушевленность" ng-disabled="ending.expectedAnimate()!=''" >
+                                <md-option ng-repeat="state in ending.labels.animateSelect.options"  ng-value="state.value">
+                                {{state.display}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container >
+                            <md-tooltip ng-show="ending.expectedGender()!=''" md-delay="230">{{ending.labels.genderForcedTooltip.display}}</md-tooltip>
+                            <label>{{ending.labels.genderSelect.display}}</label>
+                            <md-select ng-model="ending.currGender" ng-disabled="ending.expectedGender()!=''" aria-label="Род" >
+                                <md-option ng-repeat="gender in ending.labels.genderSelect.options" ng-value="gender.value">
+                                {{gender.display}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container >
+                            <label>{{ending.labels.plurSelect.display}}</label>
+                            <md-select ng-model="ending.currPlurality" aria-label="Множество" >
+                                <md-option ng-repeat="plurality in ending.labels.plurSelect.options" ng-value="plurality.value">
+                                {{plurality.display[ending.currGender]}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div id="output-display" ng-show="ending.declinedAdj!=''||ending.declinedNoun!=''">
+                        <div style="text-align: center">{{ending.currPrep.name+' ' +ending.declinedAdj +' ' + ending.declinedNoun| prepositionFilter}}
+                        </div>
+                    </div>
+                    <div id="interact-bar" layout="row" layout-align="end center">
+                        <div layout="row" layout-align="start center" flex>
+                            <md-button class="md-primary md-raised" ng-click="ending.declinePhrase()" ng-disabled="!(ending.validInputs('adj')||ending.validInputs('noun'))">
+
+                            Decline Phrase
+                            </md-button>
+                        </div>
+                        
+                        <md-button ng-click="ending.clearToInitial()" ng-disabled="ending.disableClear()">Clear
+                        </md-button>
+                        
+                        
+                        <!--{{'valid adj: '+ending.validInputs('adj') + ' valid noun: ' + ending.validInputs('noun')}}-->
+
+                    </div>
+                    <div id="approval-bar" layout="row" layout-align="center">
+                        <md-button md-class="md-icon-button" ng-click="ending.submitReport('satisfaction')">
+                            <md-icon md-svg-icon="./images/satisfaction_k.svg"></md-icon>
+                        </md-button>
+                        <md-button ng-click="ending.submitReport('unsure')">
+                            <md-icon md-svg-icon="./images/unsure_k.svg"></md-icon>
+                        </md-button>
+                        <md-button ng-click="ending.submitReport('dissatisfaction')">
+                            <md-icon md-svg-icon="./images/dissatisfaction_k.svg"></md-icon>
+                        </md-button>
+                    </div>
+                    
+                </md-whiteframe> 
+                
+            </div>
+            <div flex ng-if="header.currPage=='readings'" style="background-color: #ccffff">
+                You are on the Readings page! This page is still under development. Come back later for more :3
+            </div>  
+            <div flex="15" style="background-color: #ccffff">
+            </div>
+        </div>
+
+        <div flex id="lower-boundary" style="background-color: #ccffff">
+            Yo wassup
+        </div>
+
+        <div id="footer" layout="column" layout-align="center" ng-controller="footerController as footer" flex="10"  style="background-color: #00b3b3;color: white; ">
+            <div style="text-align: center">Display Language:
+            </div>
+            <div layout="row" layout-align="center">
+                <md-button  ng-repeat="lang in footer.langs" ng-href="http://localhost:8080/{{lang.url}}">
+                    {{lang.display}}
+                </md-button>
+            </div>
+        </div>
     </div>
-    <div ng-if="page.currPage=='readings'">
-        You are on the Readings page! This page is still under development. Come back later for more :3
-    </div>    
+      
 </body>
 </html>
