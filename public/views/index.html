@@ -39,12 +39,12 @@
         </md-nav-bar>
     </div>
     
-    <div layout="column">
-        <div flex="noshrink" id="header" style="background-color: #ccffff; height: 50px">
+    <div layout="column" style="background-color: #ccffff" layout-align="start">
+        <div flex="noshrink" id="header" style="height: 50px; text-align: center">
         
         </div>
         <div layout="row" flex="60" layout-align="center">
-            <div flex="15" style="background-color: #ccffff" >
+            <div flex="nogrow" style="width: 550px" >
             </div>
             <div flex ng-if="header.currPage=='about'" style="background-color: #ccffff">
                 Доброе пожаловать на моем приложение!
@@ -57,12 +57,22 @@
 
             </div>
             
-            <div flex ng-if="header.currPage=='declension'" ng-init="ending.init()" ng-controller="endingCtrl as ending" layout="column" >
-                <md-whiteframe class="md-whiteframe-15dp" layout="column">
-                    
-                            
+            <div flex="nogrow" style="width: 800px" ng-if="header.currPage=='declension'" layout-margin ng-init="ending.init()" ng-controller="endingCtrl as ending" layout="column" >
+                <md-whiteframe style="background-color: #FAFAFA"class="md-whiteframe-12dp" layout="column">
+                   
+                    <md-toolbar>
+                        <div class="md-toolbar-tools" style="text-align: center">
+                            Русское Склонение
+                        </div>
+                    </md-toolbar>
+                    <br>
+                     
+                    <div layout="row" layout-align="end center">
+                        <md-button ng-click="ending.clearToInitial()" ng-hide="ending.disableClear()">Clear
+                        </md-button>
+                    </div>       
                     <div layout="row" id="phrase-input" layout-align="center">
-                        <md-input-container>
+                        <md-input-container flex="33">
                             <label>
                             {{ending.labels.prepSelect.display}}
                             </label>
@@ -72,25 +82,25 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>          
-                        <md-input-container>
+                        <md-input-container flex="33">
                             <label>
                             {{ending.labels.adjSelect.display}}
                             </label>
                             <input ng-model="ending.currAdj" >
                         </md-input-container>
-                        <md-input-container>
+                        <md-input-container flex="33">
                             <label>
                             {{ending.labels.nounSelect.display}}
                             </label>
                             <input ng-model="ending.currNoun">
                         </md-input-container>
                     </div>
-                    <div layout="row" layout-align="center" id="quality-select">
+                    <div layout="row" layout-align="center" ng-if="ending.pageInitialized" id="quality-select">
                         
-                        <md-input-container>
+                        <md-input-container flex="25" ng-init="ending.logName(ending.labels.caseSelect.display)">
                             <md-tooltip ng-show="ending.onlyOneCase" md-delay="230">{{ending.labels.caseForcedTooltip.display}}
                             </md-tooltip>
-                            <label>
+                            <label >
                             {{ending.labels.caseSelect.display}}
                             </label>
                             <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase" aria-label="Падеж">
@@ -99,7 +109,7 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
-                        <md-input-container ng-if="ending.currCase=='винительный'" >
+                        <md-input-container ng-if="ending.currCase=='винительный'" flex="25" >
                             <label>{{ending.labels.animateSelect.display}}</label>
                             <md-tooltip ng-show="ending.expectedAnimate()!=''" md-delay="230">{{ending.labels.animateForcedTooltip.display}}</md-tooltip>
                             <md-select ng-model="ending.currAnimate" aria-label="Одушевленность" ng-disabled="ending.expectedAnimate()!=''" >
@@ -108,7 +118,7 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
-                        <md-input-container >
+                        <md-input-container flex="25" >
                             <md-tooltip ng-show="ending.expectedGender()!=''" md-delay="230">{{ending.labels.genderForcedTooltip.display}}</md-tooltip>
                             <label>{{ending.labels.genderSelect.display}}</label>
                             <md-select ng-model="ending.currGender" ng-disabled="ending.expectedGender()!=''" aria-label="Род" >
@@ -117,7 +127,7 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
-                        <md-input-container >
+                        <md-input-container flex="25">
                             <label>{{ending.labels.plurSelect.display}}</label>
                             <md-select ng-model="ending.currPlurality" aria-label="Множество" >
                                 <md-option ng-repeat="plurality in ending.labels.plurSelect.options" ng-value="plurality.value">
@@ -129,33 +139,28 @@
                     <div id="output-display" ng-show="ending.declinedAdj!=''||ending.declinedNoun!=''">
                         <div style="text-align: center">{{ending.currPrep.name+' ' +ending.declinedAdj +' ' + ending.declinedNoun| prepositionFilter}}
                         </div>
-                    </div>
-                    <div id="interact-bar" layout="row" layout-align="end center">
-                        <div layout="row" layout-align="start center" flex>
-                            <md-button class="md-primary md-raised" ng-click="ending.declinePhrase()" ng-disabled="!(ending.validInputs('adj')||ending.validInputs('noun'))">
-
-                            Decline Phrase
+                        <div id="approval-bar" layout="row" layout-align="center">
+                            <md-button md-class="md-icon-button" ng-click="ending.submitReport('satisfaction')" style="background-color: green">
+                                <md-icon md-svg-icon="./images/satisfaction_w.svg"></md-icon>
+                            </md-button>
+                            <md-button style="background-color: grey" ng-click="ending.submitReport('unsure')">
+                                <md-icon md-svg-icon="./images/unsure_w.svg"></md-icon>
+                            </md-button>
+                            <md-button style="background-color: red" ng-click="ending.submitReport('dissatisfaction')">
+                                <md-icon md-svg-icon="./images/dissatisfaction_w.svg"></md-icon>
                             </md-button>
                         </div>
+                    </div>
+                    <div id="interact-bar" layout="row" layout-align="start center">
                         
-                        <md-button ng-click="ending.clearToInitial()" ng-disabled="ending.disableClear()">Clear
-                        </md-button>
-                        
-                        
+                        <md-button class="md-primary md-raised" ng-click="ending.declinePhrase()" ng-disabled="!(ending.validInputs('adj')||ending.validInputs('noun'))">
+
+                        Decline Phrase
+                        </md-button>         
                         <!--{{'valid adj: '+ending.validInputs('adj') + ' valid noun: ' + ending.validInputs('noun')}}-->
 
                     </div>
-                    <div id="approval-bar" layout="row" layout-align="center">
-                        <md-button md-class="md-icon-button" ng-click="ending.submitReport('satisfaction')">
-                            <md-icon md-svg-icon="./images/satisfaction_k.svg"></md-icon>
-                        </md-button>
-                        <md-button ng-click="ending.submitReport('unsure')">
-                            <md-icon md-svg-icon="./images/unsure_k.svg"></md-icon>
-                        </md-button>
-                        <md-button ng-click="ending.submitReport('dissatisfaction')">
-                            <md-icon md-svg-icon="./images/dissatisfaction_k.svg"></md-icon>
-                        </md-button>
-                    </div>
+                    
                     
                 </md-whiteframe> 
                 
@@ -163,21 +168,23 @@
             <div flex ng-if="header.currPage=='readings'" style="background-color: #ccffff">
                 You are on the Readings page! This page is still under development. Come back later for more :3
             </div>  
-            <div flex="15" style="background-color: #ccffff">
+            <div flex="nogrow" style="background-color: #ccffff; width: 550px">
             </div>
         </div>
 
-        <div flex="noshrink" id="lower-boundary" style="background-color: #ccffff; height: 370px">
+        <div flex="nogrow" id="lower-boundary" style="background-color: #ccffff; height: 270px">
             
         </div>
 
-        <div id="footer" layout="column" layout-align="center" ng-controller="footerController as footer" flex="10"  style="background-color: #00b3b3;color: white; ">
-            <div style="text-align: center">Display Language:
-            </div>
-            <div layout="row" layout-align="center">
-                <md-button  ng-repeat="lang in footer.langs" ng-href="http://localhost:8080/{{lang.url}}">
-                    {{lang.display}}
-                </md-button>
+        <div layout="column" flex="35" md-theme="default" style="background-color: #3F51B5" layout-align="end center">
+            <div class="md-primary" id="footer" layout="column" layout-align="center" ng-controller="footerController as footer" flex  style="color: white">
+                <div style="text-align: center">Display Language:
+                </div>
+                <div layout="row" layout-align="center">
+                    <md-button  ng-repeat="lang in footer.langs" ng-href="http://localhost:8080/{{lang.url}}">
+                        {{lang.display}}
+                    </md-button>
+                </div>
             </div>
         </div>
     </div>

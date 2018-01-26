@@ -9,6 +9,9 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     this.endings = {} //if not, just use general rules
 
     this.labels = {} //contains labels in curr language
+
+    this.pageInitialized = false
+
     
     this.init = function(){
         var urlPath = $window.location.href;
@@ -18,12 +21,24 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             lang: pathSplit[3]
         }
 
-        this.initializeValues(options) //pull data from Mongo     
+        this.initializeValues(options).then(function(statusCode){
+            this.pageInitialized = true
+        }.bind(this)) //pull data from Mongo   
+        console.log(this.labels) 
+
         this.clearToInitial()   //initialize select vals
+
+        
+    }
+
+    this.logName = function(word){
+        console.log(word)
     }
 
     //GET requests made on page init, gives the page everything it needs to run
     this.initializeValues = function(options){
+
+        var deferred = $q.defer()
         //create option dicts for HTTP reqs
         //technically want to send actual path lang, but in this case vals don't change so I won't bother
         var prepositionOptions = {
@@ -48,22 +63,29 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         console.log('about to fetch exceptions, endings, preps, and labels!');
 
         //push promises onto promise arr
-        promises.push(sharedProps.httpReq(exceptionsOptions))
-        promises.push(sharedProps.httpReq(prepositionOptions))
+        
         promises.push(sharedProps.httpReq(labelOptions))
+        promises.push(sharedProps.httpReq(prepositionOptions))        
+        promises.push(sharedProps.httpReq(exceptionsOptions))
 
         //async timeout until all promise completion
         $q.all(promises).then(function(res){
             //set data structs equal to responses
-            this.exceptions = res[0].content.exceptions
+            this.exceptions = res[2].content.exceptions
             this.prepositions = res[1].content.prepositions            
-            this.labels = res[2].content   
+            this.labels = res[0].content  
+            console.log(res[0].content) 
+            deferred.resolve('200')
 
         }.bind(this));
+
+        return deferred.promise
     }
 
     //clear out select vals
     this.clearToInitial = function(){
+         
+
         this.currAdj = ''
         this.currNoun = ''
         this.currCase = ''
@@ -125,7 +147,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         return obj
     }
 
-    this.submitErrorReport = function(){
+    this.submitReport = function(reportType){
+         this.pageInitialized = true 
         //look at reorganizing this...
         var allInputs = this.allInputs()
 
