@@ -12,7 +12,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
     this.pageInitialized = false
 
-    
+    this.targetLang = 'en'
+
     this.init = function(){
         var urlPath = $window.location.href;
         var pathSplit = urlPath.split('/')
@@ -28,7 +29,6 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
         this.clearToInitial()   //initialize select vals
 
-        
     }
 
     this.logName = function(word){
@@ -71,10 +71,11 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         //async timeout until all promise completion
         $q.all(promises).then(function(res){
             //set data structs equal to responses
+            this.labels = res[0].content 
+            this.prepositions = res[1].content.prepositions 
             this.exceptions = res[2].content.exceptions
-            this.prepositions = res[1].content.prepositions            
-            this.labels = res[0].content  
-            console.log(res[0].content) 
+                       
+             
             deferred.resolve('200')
 
         }.bind(this));
@@ -92,6 +93,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
         this.declinedNoun = ''
         this.declinedAdj = ''
+
+        this.currTranslation = ''
 
         this.ruleSet = {}
 
@@ -182,14 +185,50 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         }        
     }
 
+    this.generateCard = function(){
+        this.declinePhrase().then(function(declinedPhrase){
+            this.translatePhrase(declinedPhrase)
+        }.bind(this))
+    }
+
+    this.translatePhrase = function(phrase){
+        var options = {
+            url: 'ru/translations',
+            params: {
+                phrase: phrase,
+                targetLang: this.targetLang
+            },
+            method: 'GET'
+        }
+
+        var promises = []
+
+        promises.push(sharedProps.httpReq(options))
+
+        $q.all(promises).then(function(res){
+            this.currTranslation = res[0].text
+            console.log(res[0])
+        }.bind(this))
+    }
+
     this.declinePhrase = function(){
+        var deferred = $q.defer()
+
         this.declineWord(this.currNoun,'noun').then(function(declinedNoun){
             this.declinedNoun = declinedNoun
+            if(this.declinedAdj){
+                deferred.resolve(this.currPrep.name+' '+ this.declinedAdj+' '+this.declinedNoun)
+            }
         }.bind(this))
 
         this.declineWord(this.currAdj,'adj').then(function(declinedAdj){
             this.declinedAdj = declinedAdj
+            if(this.declinedNoun){
+                deferred.resolve(this.currPrep.name+' '+this.declinedAdj+' ' + this.declinedNoun)
+            }
         }.bind(this))
+
+        return deferred.promise
     }
 
     this.declineWord = function(currWord,PoS){

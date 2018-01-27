@@ -4,7 +4,7 @@
 
     //this controller is just for page switching on a larger scope.
     app.controller('headerController',function(){
-        this.pages = ['declension','readings','about'];
+        this.pages = ['declension','readings','about','home','study'];
 
         this.currPage = 'declension'
 

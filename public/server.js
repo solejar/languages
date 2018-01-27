@@ -3,6 +3,8 @@ const bodyParser = require('body-parser')
 
 const app = express()
 
+const translate = require('google-translate-api')
+
 const port = 8080
 var rest = require('./node/getJSON.js') //this is a manual rest implementation because i am a sorry man who does not understand express
 var mongo = require('./node/mongo.js')
@@ -87,6 +89,22 @@ app.get('/ru/ruleGroups',function(req,res){
         res.send(result);
     });
 });
+
+app.get('/ru/translations',function(req,res){
+
+    console.log(req.query.targetLang)
+    console.log(req.query.phrase)
+
+    translate(req.query.phrase,{from: 'ru',to: req.query.targetLang}).then(response =>{
+        console.log(response.text);
+        console.log(response.from.text.autoCorrected)
+        res.statusCode = '200'
+        res.send(response)
+    }).catch(err => {
+        console.error(err);
+    })
+
+})
 
 app.get('/ru/exceptions',function(req,res){
     var options = {

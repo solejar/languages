@@ -4,15 +4,14 @@ Decliner:
     Functional:
 
         Wrning for gender mismatch between noun and adj currently can only display in english, perhaps a flaw that can be fixed with an enhancement to the data schema
+
             also display this warning as a popup
             <div ng-show="!ending.sameGender(ending.adjGender,ending.nounGender)&&ending.display">
                         {{"Warning! Your adjective has a gender of " + ending.adjGender + " while your noun has a gender of " + ending.nounGender + ". Please change either to make them match."}}
                         </div> <-- leaving this here for now
 
         Submit Button:
-            Try out for a couple of cases. Allow user to change plurality and case asynchronously
-
-        Why doesn't case show up automatically???
+            Try out for a couple of cases. 
 
         Gender warning:
             Only display gender warning after submit press
@@ -35,11 +34,12 @@ Decliner:
                 For example enter male adj and female noun, then just conjugate the male adj into female before starting
                 i'm thinking maybe
 
+
+
     Non-functional: 
         Styling (this is my priority right now)
             Mobile vs web sizing
-            Add some fun colors
-            Maybe box things off?
+
 
         Code improvement/refactoring:
             Group inputs into a single object, then re-integrate this into rest of app.
