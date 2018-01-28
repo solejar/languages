@@ -38,8 +38,7 @@ Decliner:
 
     Non-functional: 
         Styling (this is my priority right now)
-            Mobile vs web sizing
-
+            Having some trouble with mobile styling
 
         Code improvement/refactoring:
             Group inputs into a single object, then re-integrate this into rest of app.

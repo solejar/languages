@@ -986,11 +986,11 @@
                 "Plural": {"oper": "replace", "ending": "и", "howMany": "1"} 
             },"винительный": {
                 "Inanimate": {
-                    "Single": {"oper": "none"},
+                    "Single": {"oper": "replace","ending": "у", "dropHowMany": "1"},
                     "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"}    
                 },
                 "Animate": {
-                    "Single": {"oper": "none"},
+                    "Single": {"oper": "replace","ending": "у", "dropHowMany": "1"},
                     "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}      
                 }
             },"родительный": {

@@ -10,11 +10,27 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
     this.labels = {} //contains labels in curr language
 
+    this.phrases = {}
+
+    this.currGender = 'M'
+
     this.pageInitialized = false
 
     this.targetLang = 'en'
 
     this.init = function(){
+        var initPhrase = {
+            adj: 'твоя',
+            noun: 'помощь',
+            preposition: 'без',
+            translation: 'without your help',
+            declinedPhrase: 'без твоей помощи',
+            plurality: 'Single',
+            gender: 'F',
+            padex: 'родительный'
+        }
+        this.phrases['без твоя помощь']=initPhrase
+
         var urlPath = $window.location.href;
         var pathSplit = urlPath.split('/')
         console.log(pathSplit[3])
@@ -83,6 +99,10 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         return deferred.promise
     }
 
+    this.removeCard = function(){
+
+    }
+
     //clear out select vals
     this.clearToInitial = function(){
          
@@ -95,6 +115,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         this.declinedAdj = ''
 
         this.currTranslation = ''
+
+        this.nounAnimate = ''
 
         this.ruleSet = {}
 
@@ -146,6 +168,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         obj.declinedNoun = this.declinedNoun
         obj.declinedAdj = this.declinedAdj
         obj.ruleSet = this.ruleSet
+        obj.declinedPhrase = this.declinedPhrase
+        obj.translation = this.currTranslation
 
         return obj
     }
@@ -187,11 +211,19 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
     this.generateCard = function(){
         this.declinePhrase().then(function(declinedPhrase){
-            this.translatePhrase(declinedPhrase)
+            this.declinedPhrase = declinedPhrase
+            this.translatePhrase(declinedPhrase).then(function(translation){
+                this.currTranslation = translation
+                var card = this.allInputs()
+                var key = card.prep +' ' + card.adj + ' ' + card.noun
+                this.phrases[key]=card
+            }.bind(this))
         }.bind(this))
     }
 
     this.translatePhrase = function(phrase){
+        var deferred = $q.defer()
+
         var options = {
             url: 'ru/translations',
             params: {
@@ -206,24 +238,30 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         promises.push(sharedProps.httpReq(options))
 
         $q.all(promises).then(function(res){
-            this.currTranslation = res[0].text
+            deferred.resolve(res[0].text)
             console.log(res[0])
         }.bind(this))
+
+        return deferred.promise
     }
 
     this.declinePhrase = function(){
         var deferred = $q.defer()
 
+        this.nounReady = false
+        this.adjReady = false;
         this.declineWord(this.currNoun,'noun').then(function(declinedNoun){
             this.declinedNoun = declinedNoun
-            if(this.declinedAdj){
+            this.nounReady = true;
+            if(this.adjReady){
                 deferred.resolve(this.currPrep.name+' '+ this.declinedAdj+' '+this.declinedNoun)
             }
         }.bind(this))
 
         this.declineWord(this.currAdj,'adj').then(function(declinedAdj){
             this.declinedAdj = declinedAdj
-            if(this.declinedNoun){
+            this.adjReady = true;
+            if(this.nounReady){
                 deferred.resolve(this.currPrep.name+' '+this.declinedAdj+' ' + this.declinedNoun)
             }
         }.bind(this))
@@ -239,6 +277,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
             this.determineRuleSet(currWord,PoS).then(function(ruleSet){
                 console.log(ruleSet)
+                this.ruleSet = ruleSet
 
                 var plur = this.currPlurality
                 var anim = this.currAnimate
@@ -272,6 +311,30 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
         return deferred.promise
         
+    }
+
+    this.inputsFresh = true
+
+    this.disableDecline= function(){
+        var a = this.inputsFresh
+        var b = this.validInputs('adj')||this.validInputs('noun')
+
+        if(a&&b){
+            var key = this.currPrep.name + ' ' + this.currAdj + ' ' + this.currNoun
+
+            if(this.phrases.hasOwnProperty(key)){
+                var obj = this.phrases[key]
+                if ((this.currCase==obj.padex)&&(this.currPlurality==obj.plurality)&&(this.currGender==obj.gender)){
+                    return true
+                }else{
+                    return false
+                }
+            }else{
+                return false
+            }
+        }else{
+            return true
+        }
     }
 
     //aim to replace enumerated rulegroups with named ones
@@ -403,57 +466,57 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         'ое': 'N'
     }
 
-    this.expectedGender = function(){
+    this.checkGender = function(word,PoS){
 
-        var adj = this.currAdj
-        var noun = this.currNoun
-
-        //maybe it's not appropriate to be doing this assignment in here?
-        //consider rearranging to a ng-change on the input
-        if(this.exceptions.hasOwnProperty(noun)){
-            this.nounGender = this.exceptions[noun]['gender']
-        }else{
-            this.nounGender = ''
-        }
-
-        if(this.exceptions.hasOwnProperty(adj)){
-            this.adjGender = this.exceptions[adj]['gender']
-        }else{
-            var len = adj.length;
-            var ending = adj.substring(len-2,len)
-            if (this.adjEndingGenders.hasOwnProperty(ending)){
-                this.adjGender = this.adjEndingGenders[ending]
+        if(PoS=='noun'){
+            if(this.exceptions.hasOwnProperty(word)){
+                var gender = this.exceptions[word]['gender']
+                this.currGender = gender
             }else{
-                //return 'all' //if for some reason ending not in there (this is weird, but will happen if user picks params before writing adj)
-                this.adjGender = ''
+                var gender = ''
             }
-        }
 
-        if(this.adjGender == this.nounGender){ //if both indeterminate, return 'all'
+            this.nounGender = gender
             
-            this.currGender = this.adjGender            
-            return this.adjGender
-        }else if(!this.adjGender){ //elif adj indeterminate, return nounGender
-            this.currGender = this.nounGender
-            return this.nounGender
-        }else {
-            this.currGender = this.adjGender
-            return this.adjGender //else return adjGender
+        }else if(PoS=='adj'){
+            if(this.exceptions.hasOwnProperty(word)){
+                var gender = this.exceptions[word]['gender']
+                this.currGender = gender
+            }else{
+                var len = word.length;
+                if(len>=2){
+                    var ending = word.substring(len-2,len)
+                    if (this.adjEndingGenders.hasOwnProperty(ending)){
+                        var gender = this.adjEndingGenders[ending]
+                        this.currGender = gender
+                    }else{
+                        //return 'all' //if for some reason ending not in there (this is weird, but will happen if user picks params before writing adj)
+                        var gender = ''
+                    }
+                }else{
+                    var gender = ''
+                }
+                
+            }
+            
+            this.adjGender = gender          
         }
-        
+    }
+    this.genderKnown = function(){
+        return !!(this.adjGender||this.nounGender)
     }
 
-    this.expectedAnimate = function(){
-
-        var noun = this.currNoun
-
-        if(this.exceptions.hasOwnProperty(noun)){
-            var nounAnimate = this.exceptions[noun].animate
-            this.currAnimate = nounAnimate
-            return nounAnimate
+    this.checkAnimate = function(word){
+        if(this.exceptions.hasOwnProperty(word)){
+            this.nounAnimate = this.exceptions[noun].animate
         }else{
-            return ''
+            this.nounAnimate = ''
         }
+    }
+
+    this.animateKnown = function(){
+
+        return !!(this.nounAnimate)
     }
 
     this.currGender = ''
