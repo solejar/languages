@@ -28,6 +28,7 @@
             <md-nav-bar  
             md-selected-nav-item="currentNavItem"
             nav-bar-aria-label="navigation links">
+
                 <md-nav-item md-nav-click="header.changePage('home')" name="homeTab">
                     Home
                 </md-nav-item>
@@ -42,11 +43,19 @@
                 </md-nav-item>
                 <md-nav-item md-nav-click="header.changePage('about')" name="aboutTab">
                     About
-                </md-nav-item>
+                </md-nav-item>                
             </md-nav-bar>
         </div>
 
-        <div flex="none" id="header" style="text-align: center; height: 30px">        
+        <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 30px">    
+            
+                <md-button>
+                    Sign up
+                </md-button>
+                <md-button>
+                    Log in
+                </md-button>
+            
         </div>
 
         <div layout="row" flex="60" layout-align="center">
@@ -67,7 +76,7 @@
             </div>
             
             <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.currPage=='declension'" layout-margin ng-init="ending.init()" ng-controller="endingCtrl as ending" layout="column" >
-                <md-whiteframe style="background-color: #FAFAFA"class="md-whiteframe-12dp" layout="column">
+                <md-whiteframe flex="noshrink" style="background-color: #FAFAFA"class="md-whiteframe-12dp" layout="column">
                    
                     <md-toolbar>
                         <div class="md-toolbar-tools" style="text-align: center">
@@ -161,22 +170,55 @@
                     <md-divider class="md-primary"></md-divider>
                     <div id="tessellated-outputs" ng-repeat="(key,phrase) in ending.phrases" layout-margin>
                         <md-divider style="color: white" ng-if="!$first" ></md-divider>
-                        <md-white-frame class="md-whiteframe-12dp" style="background-color: white" layout="column">
-                            <h3 style="text-align: center">{{phrase.declinedPhrase| prepositionFilter}}
-                            </h3>
-                            <h5 style="text-align: center">
-                            {{phrase.translation}}
-                            </h5>
-                            <div id="approval-bar" layout="row" layout-align="center">
-                                <md-button md-class="md-icon-button" ng-click="ending.submitReport(phrase,'satisfaction')" style="background-color: green">
-                                    <md-icon md-svg-icon="./images/satisfaction_w.svg"></md-icon>
+                        <md-white-frame class="md-whiteframe-12dp" style="background-color: #ffffb3" layout="column">
+                            <div id="main-phrase" layout="row" layout-align = "left center"  layout-margin>
+                                <md-button ng-click="phrase.expanded=!(phrase.expanded)">
+                                    <md-icon ng-if="!phrase.expanded" md-svg-icon="./images/right-arrow_k.svg">
+                                    </md-icon>
+                                    <md-icon ng-if="phrase.expanded" md-svg-icon="./images/down-arrow_k.svg">
+                                    </md-icon>
                                 </md-button>
-                                <md-button style="background-color: grey" ng-click="ending.submitReport(phrase,'unsure')">
-                                    <md-icon md-svg-icon="./images/unsure_w.svg"></md-icon>
-                                </md-button>
-                                <md-button style="background-color: red" ng-click="ending.submitReport(phrase,'dissatisfaction')">
-                                    <md-icon md-svg-icon="./images/dissatisfaction_w.svg"></md-icon>
-                                </md-button>
+                                <h3 flex="70" ng-click="phrase.expanded=!phrase.expanded">{{phrase.declinedPhrase| prepositionFilter}}
+                                </h3>
+                                <div flex layout="row" layout-align="end">
+
+                                    <md-button class="md-raised" >
+                                        <md-icon md-svg-icon="./images/plus_k.svg">
+                                        </md-icon>
+                                    </md-button>
+                                </div>
+                                
+                            </div>
+                            <div layout="column" id="expanded-phrase" ng-if="phrase.expanded">
+                                <div layout="row" layout-align="end">
+                                    <div flex="45" layout="row">
+                                        <md-button class="md-raised"  ng-click="ending.saveCard()">
+                                            {{'Save'}}
+                                        </md-button>
+                                        <md-button ng-click="ending.removePhrase(phrase)" class="md-raised md-warn" >
+                                            <md-icon md-svg-icon="./images/garbage_k.svg">
+                                            </md-icon>
+                                        </md-button>
+                                    </div>
+
+                                </div>
+                                <div layout="row" layout-margin>
+                                    <h5 style="text-align: none">
+                                    {{phrase.translation}}
+                                    </h5>
+
+                                </div>
+                                <div id="approval-bar" layout="row" layout-align="center">
+                                    <md-button md-class="md-icon-button" ng-click="ending.submitReport(phrase,'satisfaction')" style="background-color: green">
+                                        <md-icon md-svg-icon="./images/satisfaction_w.svg"></md-icon>
+                                    </md-button>
+                                    <md-button style="background-color: grey" ng-click="ending.submitReport(phrase,'unsure')">
+                                        <md-icon md-svg-icon="./images/unsure_w.svg"></md-icon>
+                                    </md-button>
+                                    <md-button style="background-color: red" ng-click="ending.submitReport(phrase,'dissatisfaction')">
+                                        <md-icon md-svg-icon="./images/dissatisfaction_w.svg"></md-icon>
+                                    </md-button>
+                                </div>
                             </div>
                         </md-white-frame>
                     </div>         
@@ -200,7 +242,7 @@
                 <div flex style="text-align: center">Display Language:
                 </div>
                 <div flex layout="row" layout-align="center" >
-                    <div ng-repeat="lang in footer.langs" layout-margin>
+                    <div ng-repeat="lang in footer.langs" >
                         <md-button  style="font-size: 10pt"   ng-href="http://localhost:8080/{{lang.url}}">
                             {{lang.display}}
                         </md-button>   

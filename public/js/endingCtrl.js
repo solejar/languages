@@ -27,7 +27,9 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             declinedPhrase: 'без твоей помощи',
             plurality: 'Single',
             gender: 'F',
-            padex: 'родительный'
+            padex: 'родительный',
+            expanded: true,
+            stars: 0
         }
         this.phrases['без твоя помощь']=initPhrase
 
@@ -49,6 +51,13 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
     this.logName = function(word){
         console.log(word)
+    }
+
+    this.removePhrase = function(phraseObj){
+        var key = phraseObj.preposition + ' ' + phraseObj.adj + ' ' + phraseObj.noun
+        if(this.phrases.hasOwnProperty(key)){
+            delete this.phrases[key]
+        }
     }
 
     //GET requests made on page init, gives the page everything it needs to run
@@ -215,6 +224,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             this.translatePhrase(declinedPhrase).then(function(translation){
                 this.currTranslation = translation
                 var card = this.allInputs()
+                card.expanded = false
                 var key = card.prep +' ' + card.adj + ' ' + card.noun
                 this.phrases[key]=card
             }.bind(this))

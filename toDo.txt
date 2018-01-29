@@ -3,6 +3,8 @@ Decliner:
 
     Functional:
 
+        Top tabs should have language based on display settings too
+
         Wrning for gender mismatch between noun and adj currently can only display in english, perhaps a flaw that can be fixed with an enhancement to the data schema
 
             also display this warning as a popup
@@ -34,11 +36,15 @@ Decliner:
                 For example enter male adj and female noun, then just conjugate the male adj into female before starting
                 i'm thinking maybe
 
+        Authentication:
+            FUCK
 
 
     Non-functional: 
         Styling (this is my priority right now)
             Having some trouble with mobile styling
+            Figure out shrinkage issue upon word deletion
+            Finish word card
 
         Code improvement/refactoring:
             Group inputs into a single object, then re-integrate this into rest of app.
