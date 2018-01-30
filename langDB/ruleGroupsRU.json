@@ -1214,6 +1214,74 @@
             },
             "description": "rule set for male nouns with soft plurals",
             "example": "чёрт"
+        },
+        "33": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "ья", "dropHowMany": "1"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "ья", "dropHowMany": "1"}
+                },
+                "Animate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "ья", "dropHowMany": "1"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "replace","ending": "а", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ьев", "dropHowMany": "1"}
+            },
+            "дательный": {
+                "Single": {"oper": "replace","ending": "у", "dropHowMany": "1"},
+                "Plural": {"oper": "replace", "ending": "ьям", "dropHowMany": "1"}
+            },
+            "творительный": {
+                "Single": {"oper": "add","ending": "м"},
+                "Plural": {"oper": "replace","ending": "ьями", "dropHowMany": "1"}
+            },
+            "предложный": {
+                "Single": {"oper": "replace", "ending": "е", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ьях", "dropHowMany": "1"}
+            },
+            "description": "rule set for neuter nouns taking ья in plural",
+            "example": "дерево"
+        },
+        "34": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "add","ending": "ья"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "add","ending": "ья"}
+                },
+                "Animate": {
+                    "Single": {"oper": "add", "ending": "а"},
+                    "Plural": {"oper": "add","ending": "ьев"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "add", "ending": "а"},
+                "Plural": {"oper": "add","ending": "ьев"}
+            },
+            "дательный": {
+                "Single": {"oper": "add","ending": "у"},
+                "Plural": {"oper": "add", "ending": "ьям"}
+            },
+            "творительный": {
+                "Single": {"oper": "add","ending": "ом"},
+                "Plural": {"oper": "add","ending": "ьями"}
+            },
+            "предложный": {
+                "Single": {"oper": "add", "ending": "е"},
+                "Plural": {"oper": "add","ending": "ьях"}
+            },
+            "description": "rule set for male nouns taking ья in plural",
+            "example": "брат"
         }
 
     }

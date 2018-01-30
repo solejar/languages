@@ -64,31 +64,9 @@ Decliner:
             Male group fleeting, ь
                 день
 
-            Female, ends in VC+я:
-                Not even sure this exists
-
-            Soft ending males:
-                сосед
-                чёрт
-
-            Male nouns taking ья in plural
-                брат
-                муж
-                кол           
-                колос
-
             Weird male nouns:
                 друг
                 сын
-
-            Neuters ending in -мя
-                имя
-                время
-                знамя
-
-            Neuters taking ья
-                дерево
-                перо
 
             Feminine Nouns
                 мать

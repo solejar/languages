@@ -549,6 +549,108 @@
             "animate": "Inanimate",
             "word": "шоссе",
             "ruleSet": "4"
+        },
+        "сосед": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "сосед",
+            "ruleSet": "32"  
+        },
+        "черт": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "черт",
+            "ruleSet": "32"  
+        },
+        "чёрт": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "чёрт",
+            "ruleSet": "32"  
+        },
+        "дерево": {
+            "gender": "N",
+            "animate": "Inanimate",
+            "word": "дерево",
+            "ruleSet": "33"  
+        },
+        "звено": {
+            "gender": "N",
+            "animate": "Inanimate",
+            "word": "звено",
+            "ruleSet": "33"  
+        },
+        "перо": {
+            "gender": "N",
+            "animate": "Inanimate",
+            "word": "перо",
+            "ruleSet": "33"  
+        },
+        "крыло": {
+            "gender": "N",
+            "animate": "Inanimate",
+            "word": "крыло",
+            "ruleSet": "33"  
+        },
+        "полено": {
+            "gender": "N",
+            "animate": "Inanimate",
+            "word": "полено",
+            "ruleSet": "33"  
+        },
+        "брат": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "брат",
+            "ruleSet": "34"  
+        },
+        "колос": {
+            "gender": "M",
+            "animate": "Inanimate",
+            "word": "колос",
+            "ruleSet": "34"  
+        },
+        "муж": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "муж",
+            "ruleSet": "34"  
+        },
+        "кол": {
+            "gender": "M",
+            "animate": "Inanimate",
+            "word": "кол",
+            "ruleSet": "34"  
+        },
+        "ком": {
+            "gender": "M",
+            "animate": "Inanimate",
+            "word": "ком",
+            "ruleSet": "34"  
+        },
+        "князь": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "князь",
+            "ruleSet": "34"  
+        },
+        "прут": {
+            "gender": "M",
+            "animate": "Inanimate",
+            "word": "прут",
+            "ruleSet": "34"  
+        },
+        "стул": {
+            "gender": "M",
+            "animate": "Inanimate",
+            "word": "стул",
+            "ruleSet": "34"  
+        },
+        "сук": {
+            "gender": "M",
+            "animate": "Inanimate",
+            "word": "сук",
+            "ruleSet": "34"  
         }
     }
 }

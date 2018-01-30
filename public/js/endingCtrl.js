@@ -32,7 +32,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             stars: 0,
             saved: false
         }
-        this.phrases['без твоя помощь']=initPhrase
+        this.phrases[(initPhrase.preposition+' '+initPhrase.adj+' '+initPhrase.noun)]=initPhrase
 
         var urlPath = $window.location.href;
         var pathSplit = urlPath.split('/')
@@ -56,6 +56,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
     this.removePhrase = function(phraseObj){
         var key = phraseObj.preposition + ' ' + phraseObj.adj + ' ' + phraseObj.noun
+        //console.log(key)
         if(this.phrases.hasOwnProperty(key)){
             delete this.phrases[key]
         }
@@ -108,11 +109,6 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
         return deferred.promise
     }
-
-    this.removeCard = function(){
-
-    }
-
     //clear out select vals
     this.clearToInitial = function(){
          
@@ -246,7 +242,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                 this.currTranslation = translation
                 var card = this.allInputs()
                 card.expanded = false
-                var key = card.prep +' ' + card.adj + ' ' + card.noun
+                var key = card.preposition +' ' + card.adj + ' ' + card.noun
+                //console.log(key)
                 this.phrases[key]=card
             }.bind(this))
         }.bind(this))
