@@ -29,7 +29,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             gender: 'F',
             padex: 'родительный',
             expanded: true,
-            stars: 0
+            stars: 0,
+            saved: false
         }
         this.phrases['без твоя помощь']=initPhrase
 
@@ -99,7 +100,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             this.labels = res[0].content 
             this.prepositions = res[1].content.prepositions 
             this.exceptions = res[2].content.exceptions
-                       
+            console.log(this.labels)
              
             deferred.resolve('200')
 
@@ -160,6 +161,26 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         return !(a||b||c||d||e||f||g);
     }
 
+    this.user = 'Joe Schmo'
+
+    this.savePhrase  = function(phrase){
+        console.log(phrase.saved)
+        if(phrase.saved == true){
+            this.removePhraseFromUser(phrase,this.user)
+            phrase.saved = false
+        }else{
+            this.addPhraseToUser(phrase,this.user)
+            phrase.saved = true;
+        } 
+        
+    }
+
+    this.removePhraseFromUser= function(phrase,user){
+
+    }
+    this.addPhraseToUser =function(phrase,user){
+
+    }
     //just a function to collate all inputs, maybe this isn't necessary
     //maybe I will flesh this out for more of the other functions
     //maybe I will just make this an objet to begin with, that would save me the trouble
@@ -417,7 +438,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                             ruleSetNumber = "6"
                         }else if(isFleeting){
                             ruleSetNumber = "7"
-                        }else{
+                        }else{ //this might never be reached
                             ruleSetNumber = "0" //haven't made this rule set yet
                         }
                     }else{
@@ -434,6 +455,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                         }
                     }else if(lastChar=='о'){
                         ruleSetNumber = "1"
+                    }else if((secondLastChar+lastChar)=='мя'){
+                        ruleSetNumber = "31"
                     }else{
                         ruleSetNumber = "0" //default if nothing found
                     }
@@ -542,6 +565,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             return false
         }
     }
+
 
     //figure out if soft or hard adjective (short currently not considered)
     this.getAdjType = function(adj){

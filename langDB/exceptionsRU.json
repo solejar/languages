@@ -320,7 +320,7 @@
         "это": {
             "gender": "N",
             "word": "это",
-            "ruleSet": "29"
+            "ruleSet": "29.5"
         },
         "тот": {
             "gender": "M",
@@ -335,7 +335,7 @@
         "то": {
             "gender": "N",
             "word": "то",
-            "ruleSet": "29"
+            "ruleSet": "29.5"
         },
         "ваш": {
             "gender": "M",

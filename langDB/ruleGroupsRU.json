@@ -100,7 +100,8 @@
                 "Single": {"oper": "replace", "ending": "е", "dropHowMany": "1"},
                 "Plural": {"oper": "replace","ending": "ах", "dropHowMany": "1"}
             },
-            "description": "rule set for neuter nouns ending in ко, like яблоко, or плечо"        
+            "description": "rule set for neuter nouns ending in ко, like яблоко, or плечо",
+            "example": "плечо"        
         },
         "-1.1": {
             "именительный": {
@@ -133,7 +134,8 @@
                 "Single": {"oper": "replace", "ending": "е", "dropHowMany": "1"},
                 "Plural": {"oper": "replace","ending": "ах", "dropHowMany": "1"}
             },
-            "description": "rule set for neuter nouns ending in чко, like яблочко"        
+            "description": "rule set for neuter nouns ending in чко, like яблочко",
+            "example": "яблочко"        
         },
         "2": {
             "именительный": {
@@ -161,7 +163,8 @@
                 "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ом"},
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ых"}
             },
-            "description": "rule set for neuter nouns ending in ое, like существительное"
+            "description": "rule set for neuter nouns ending in ое, like существительное",
+            "example": "существительное"
         },
         "3": {
             "именительный": {
@@ -194,7 +197,8 @@
                 "Single": {"oper": "replace", "ending": "е", "dropHowMany": "1"},
                 "Plural": {"oper": "replace","ending": "ях", "dropHowMany": "1"}
             },
-            "description": "rule set for neuter nouns ending in е, like море"  
+            "description": "rule set for neuter nouns ending in е, like море",
+            "example" : "море"  
         },
         "4": {
             "именительный": {                
@@ -222,7 +226,8 @@
                 "Single": {"oper": "none"},
                 "Plural": {"oper": "none"} 
             },
-            "description": "rule set for undeclinable nouns"
+            "description": "rule set for undeclinable nouns",
+            "example": "такси"
         },
         "5": {
             "именительный": {
@@ -255,7 +260,8 @@
                 "Single": {"oper": "replace", "ending": "и", "dropHowMany": "1"},
                 "Plural": {"oper": "replace","ending": "ях", "dropHowMany": "1"}
             },
-            "description": "rule set for neuters ending in ие, like создание"  
+            "description": "rule set for neuters ending in ие, like создание",
+            "example": "создание"  
         },
         "6": {
             "именительный": {
@@ -288,7 +294,8 @@
                 "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
                 "Plural": {"oper": "add", "ending": "х"}
             },
-            "description": "rule set for female nouns ending in ия, like партия"
+            "description": "rule set for female nouns ending in ия, like партия",
+            "example": "партия"
         },
         "7": {
             "именительный": {
@@ -321,7 +328,8 @@
                 "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
                 "Plural": {"oper": "add", "ending": "х"}
             },
-            "description": "rule set for female nouns ending in VCя, no example known just curious"
+            "description": "rule set for female nouns ending in VCя, no example known just curious",
+            "example": "test"
         },
         "-7": {
             "именительный": {
@@ -354,7 +362,8 @@
                 "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
                 "Plural": {"oper": "add", "ending": "х"}
             },
-            "description": "rule set for female nouns ending in consonant + я, like деревня"
+            "description": "rule set for female nouns ending in consonant + я, like деревня",
+            "example": "деревня"
         },
         "8": {
             "именительный": {
@@ -387,7 +396,8 @@
                 "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
                 "Plural": {"oper": "add", "ending": "х"}
             },
-            "description": "rule set for fleeting vowel female nouns ending in а, like кошка"
+            "description": "rule set for fleeting vowel female nouns ending in а, like кошка",
+            "example": "кошка"
         },
 
         "9": {
@@ -421,7 +431,8 @@
                 "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
                 "Plural": {"oper": "add", "ending": "х"}
             },
-            "description": "rule set for female nouns ending in а, like сила"
+            "description": "rule set for female nouns ending in а, like сила",
+            "example": "сила"
         },
 
         "10": {
@@ -455,7 +466,8 @@
                 "Single": {"oper": "replace","ending": "и", "dropHowMany": "1"},
                 "Plural": {"oper": "replace","ending": "ах", "dropHowMany": "1"}
             },
-            "description": "rule set for female nouns ending in ь, like помощь"
+            "description": "rule set for female nouns ending in ь, like помощь",
+            "example": "помощь"
         },
         "11": {
             "именительный": {
@@ -488,7 +500,8 @@
                 "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
                 "Plural": {"oper": "replace","ending": "ях", "dropHowMany": "1"}
             },
-            "description": "rule set for male nouns ending in й, like чёрный"
+            "description": "rule set for male nouns ending in й, like чёрный",
+            "example": "чёрный"
         },
         "12": {
             "именительный": {
@@ -521,7 +534,8 @@
                 "Single": {"oper": "replace","ending": "e", "dropHowMany": "1"},
                 "Plural": {"oper": "replace","ending": "ях", "dropHowMany": "1"}
             },
-            "description": "rule set for male nouns ending in ь, like писатель"
+            "description": "rule set for male nouns ending in ь, like писатель",
+            "example": "писатель"
         },
         "13": {
             "именительный": {
@@ -554,7 +568,8 @@
                 "Single": {"oper": "add","ending": "е"},
                 "Plural": {"oper": "add","ending": "ах"}
             },
-            "description": "rule set for male nouns ending in a regular consonant like стол"
+            "description": "rule set for male nouns ending in a regular consonant like стол",
+            "example": "стол"
         },
         "14": {
             "именительный": {
@@ -587,7 +602,8 @@
                 "Single": {"oper": "add","ending": "е"},
                 "Plural": {"oper": "add","ending": "ах"}
             },
-            "description": "rule set for male nouns ending in a husher, like падеж"
+            "description": "rule set for male nouns ending in a husher, like падеж",
+            "example": "падеж"
         },
 
         "15": {
@@ -621,7 +637,8 @@
                 "Single": {"oper": "add","ending": "е"},
                 "Plural": {"oper": "add","ending": "ах"}
             },
-            "description": "rule set for male nouns with plurals ending in а, like город"
+            "description": "rule set for male nouns with plurals ending in а, like город",
+            "example": "город"
         },
 
         "-15": {
@@ -655,7 +672,8 @@
                 "Single": {"oper": "add","ending": "е"},
                 "Plural": {"oper": "add","ending": "ах"}
             },
-            "description": "rule set for male nouns with plurals ending in я, like город"
+            "description": "rule set for male nouns with plurals ending in я, like якорь",
+            "example": "якорь"
         },
         
         "16": {
@@ -689,7 +707,8 @@
                 "Single": {"oper": "fleeting","fleetingType": "remove"},
                 "Plural": {"oper": "fleeting","fleetingType": "remove"}
             },
-            "description": "rule set for fleeting vowel male nouns"
+            "description": "rule set for fleeting vowel male nouns",
+            "example": "кусок"
         }, 
         
         "17": {
@@ -718,7 +737,8 @@
                 "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ом"},
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ых"}
             },
-            "description": "rule set for hard, male adjectives"
+            "description": "rule set for hard, male adjectives",
+            "example": "новой"
         },
         "18": {
             "именительный": {
@@ -746,7 +766,8 @@
                 "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ой"},
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ых"}
             },
-            "description": "rule set for hard, female adjectives"
+            "description": "rule set for hard, female adjectives",
+            "example": "новая"
         },
 
         "19": {
@@ -775,7 +796,8 @@
                 "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ом"},
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ых"}
             },
-            "description": "rule set for hard, neuter adjectives"
+            "description": "rule set for hard, neuter adjectives",
+            "example": "новое"
         },
 
         "20": {
@@ -804,7 +826,8 @@
                 "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ем"},
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "их"}
             },
-            "description": "rule set for soft, male adjectives"
+            "description": "rule set for soft, male adjectives",
+            "example": "синий"
         },
 
         "21": {
@@ -833,7 +856,8 @@
                 "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ей"},
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "их"}
             },
-            "description": "rule set for soft, female adjectives"
+            "description": "rule set for soft, female adjectives",
+            "example": "синяя"
         },
 
         "22": {
@@ -862,7 +886,8 @@
                 "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ем"},
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "их"}
             },
-            "description": "rule set for soft, neuter adjectives"
+            "description": "rule set for soft, neuter adjectives",
+            "example": "синее"
         },
 
         "23": {
@@ -891,7 +916,8 @@
                 "Single": {"oper": "replace", "ending": "ём", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}   
             },
-            "description": "rule set for male possessive adjectives, like мой"
+            "description": "rule set for male possessive adjectives, like мой",
+            "example": "мой"
         },
 
         "24": {
@@ -949,7 +975,8 @@
                 "Single": {"oper": "replace", "ending": "ём", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}   
             },
-            "description": "rule set for neuter possessive adjectives, like мое"
+            "description": "rule set for neuter possessive adjectives, like мое",
+            "example": "мое"
         },
         "26": {
             "именительный": {                
@@ -977,7 +1004,8 @@
                 "Single": {"oper": "replace", "ending": "ём", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}   
             },
-            "description": "rule set for male possessive adjectives, like наш"
+            "description": "rule set for male possessive adjectives, like наш",
+            "example": "наш"
         },
 
         "27": {
@@ -1006,7 +1034,8 @@
                 "Single": {"oper": "replace", "ending": "ём", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}   
             },
-            "description": "rule set for female possessive adjectives, like наша"
+            "description": "rule set for female possessive adjectives, like наша",
+            "example": "наша"
         },
 
         "28": {
@@ -1035,7 +1064,8 @@
                 "Single": {"oper": "replace", "ending": "ём", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}   
             },
-            "description": "rule set for neuter possessive adjectives, like наше"
+            "description": "rule set for neuter possessive adjectives, like наше",
+            "example": "наше"
         },
 
         "29": {
@@ -1064,7 +1094,37 @@
                 "Single": {"oper": "replace", "ending": "м", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "2"}   
             },
-            "description": "rule set for male/neuter demonstrative adjectives, like этот/это"
+            "description": "rule set for male demonstrative adjectives, like этот",
+            "example": "этот"
+        },
+        "29.5": {
+            "именительный": {                
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"} 
+            },"винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"}    
+                },
+                "Animate": {
+                    "Single": {"oper": "add", "ending": "го"},
+                    "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}      
+                }
+            },"родительный": {
+                "Single": {"oper": "add", "ending": "го"},
+                "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}
+            },"дательный": {
+                "Single": {"oper": "add", "ending": "му"},
+                "Plural": {"oper": "replace", "ending": "им","dropHowMany": "1"}   
+            },"творительный": {
+                "Single": {"oper": "replace", "ending": "им", "dropHowMany": "1"},
+                "Plural": {"oper": "replace", "ending": "ими", "dropHowMany": "1"} 
+            },"предложный": {
+                "Single": {"oper": "add", "ending": "м"},
+                "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}   
+            },
+            "description": "rule set for neuter demonstrative adjectives, like это",
+            "example": "это"
         },
 
         "30": {
@@ -1084,45 +1144,76 @@
                 "Single": {"oper": "replace", "ending": "ой", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}    
             },"дательный": {
-                "F": {"oper": "replace", "ending": "ой", "dropHowMany": "1"},
+                "Single": {"oper": "replace", "ending": "ой", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "им", "dropHowMany": "1"}   
             },"творительный": {
-                "F": {"oper": "replace", "ending": "ой", "dropHowMany": "1"},
+                "Single": {"oper": "replace", "ending": "ой", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "ими", "dropHowMany": "1"} 
             },"предложный": {
-                "F": {"oper": "replace", "ending": "ой", "dropHowMany": "1"},
+                "Single": {"oper": "replace", "ending": "ой", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}   
             },
-            "description": "rule set for female demonstrative adjectives, like эта"
+            "description": "rule set for female demonstrative adjectives, like эта",
+            "example": "эта"
         },
 
         "31": {
             "именительный": {                
                 "Single": {"oper": "none"},
-                "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"} 
+                "Plural": {"oper": "replace", "ending": "ена", "dropHowMany": "1"} 
             },"винительный": {
                 "Inanimate": {
-                    "Single": {"oper": "replace", "ending": "у", "dropHowMany": "1"},
-                    "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"}    
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace", "ending": "ена", "dropHowMany": "1"} 
                 },
                 "Animate": {
-                    "Single": {"oper": "replace", "ending": "у", "dropHowMany": "1"},
-                    "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}      
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace", "ending": "ена", "dropHowMany": "1"}      
                 }
             },"родительный": {
-                "Single": {"oper": "replace", "ending": "ой", "dropHowMany": "1"},
-                "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}    
+                "Single": {"oper": "replace", "ending": "ени", "dropHowMany": "1"},
+                "Plural": {"oper": "replace", "ending": "ён", "dropHowMany": "1"}    
             },"дательный": {
-                "F": {"oper": "replace", "ending": "ой", "dropHowMany": "1"},
-                "Plural": {"oper": "replace", "ending": "им", "dropHowMany": "1"}   
+                "Single": {"oper": "replace", "ending": "ени", "dropHowMany": "1"},
+                "Plural": {"oper": "replace", "ending": "енам", "dropHowMany": "1"}   
             },"творительный": {
-                "F": {"oper": "replace", "ending": "ой", "dropHowMany": "1"},
-                "Plural": {"oper": "replace", "ending": "ими", "dropHowMany": "1"} 
+                "Single": {"oper": "replace", "ending": "енем","dropHowMany": "1"},
+                "Plural": {"oper": "replace", "ending": "енами", "dropHowMany": "1"} 
             },"предложный": {
-                "F": {"oper": "replace", "ending": "ой", "dropHowMany": "1"},
-                "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}   
+                "Single": {"oper": "replace", "ending": "ени", "dropHowMany": "1"},
+                "Plural": {"oper": "replace", "ending": "енах", "dropHowMany": "1"}   
             },
-            "description": "rule set for neuter demonstrative adjectives, like это"
+            "description": "rule set for neuter nouns ending in мя",
+            "example": "время"
+        },
+        "32": {
+            "именительный": {                
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "add", "ending": "и", "dropHowMany": "1"} 
+            },"винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "add", "ending": "а"},
+                    "Plural": {"oper": "add", "ending": "ей"}
+                },
+                "Animate": {
+                    "Single": {"oper": "add", "ending": "а"},
+                    "Plural": {"oper": "add", "ending": "ей"}      
+                }
+            },"родительный": {
+                "Single": {"oper": "add", "ending": "а"},
+                "Plural": {"oper": "add", "ending": "ей"}  
+            },"дательный": {
+                "Single": {"oper": "add", "ending": "у"},
+                "Plural": {"oper": "add", "ending": "ям"} 
+            },"творительный": {
+                "Single": {"oper": "add", "ending": "ом"},
+                "Plural": {"oper": "add", "ending": "ями"} 
+            },"предложный": {
+                "Single": {"oper": "add", "ending": "е"},
+                "Plural": {"oper": "add", "ending": "ях"}  
+            },
+            "description": "rule set for male nouns with soft plurals",
+            "example": "чёрт"
         }
 
     }

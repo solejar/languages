@@ -24,25 +24,28 @@
 
 <body ng-controller="headerController as header" >     
     <div  layout="column" style="background-color: #ccffff; height: 100%; %" layout-align="start" >
-        <div id= "nav-bar" style="background-color: #FAFAFA">        
+        <div id= "nav-bar"   style="background-color: #FAFAFA" ng-init="header.setLabels()"> 
+                
             <md-nav-bar  
-            md-selected-nav-item="currentNavItem"
+            md-selected-nav-item="header.currPage"
             nav-bar-aria-label="navigation links">
 
-                <md-nav-item md-nav-click="header.changePage('home')" name="homeTab">
-                    Home
+                <md-nav-item md-nav-click="header.changePage('home')" name="home">
+                    <md-icon  md-svg-icon="./images/home.svg">
+                    </md-icon>
                 </md-nav-item>
-                <md-nav-item md-nav-click="header.changePage('declension')" name="declensionTab">
-                    Склонения
+                <md-nav-item md-nav-click="header.changePage('declension')" name="declension">
+                    {{header.labels.declension}}
                 </md-nav-item>
-                <md-nav-item md-nav-click="header.changePage('readings')" name="readingsTab">
-                    Чтения
+                <md-nav-item md-nav-click="header.changePage('readings')" name="readings">
+                    <md-icon  md-svg-icon="./images/book_k.svg">
+                    </md-icon>
                 </md-nav-item>
-                <md-nav-item md-nav-click="header.changePage('study')" name="readingsTab">
-                    Изучение
+                <md-nav-item md-nav-click="header.changePage('study')" name="study">
+                    {{header.labels.study}}
                 </md-nav-item>
-                <md-nav-item md-nav-click="header.changePage('about')" name="aboutTab">
-                    About
+                <md-nav-item md-nav-click="header.changePage('about')" name="about">
+                    {{header.labels.about}}
                 </md-nav-item>                
             </md-nav-bar>
         </div>
@@ -54,7 +57,7 @@
                 </md-button>
                 <md-button>
                     Log in
-                </md-button>
+                </md-button>  
             
         </div>
 
@@ -76,98 +79,99 @@
             </div>
             
             <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.currPage=='declension'" layout-margin ng-init="ending.init()" ng-controller="endingCtrl as ending" layout="column" >
-                <md-whiteframe flex="noshrink" style="background-color: #FAFAFA"class="md-whiteframe-12dp" layout="column">
-                   
-                    <md-toolbar>
-                        <div class="md-toolbar-tools" style="text-align: center">
-                            Русское Склонение
+                <md-whiteframe  style="background-color: #FAFAFA"class="md-whiteframe-12dp" layout="column">
+                    <div layout="column" flex="noshrink">
+                        <md-toolbar>
+                            <div class="md-toolbar-tools" ng-if="ending.pageInitialized" style="text-align: center">
+                                {{ending.labels.header.display}}
+                            </div>
+                        </md-toolbar>
+                        <br>
+                         
+                        <div layout="row" flex="noshrink" style="height: 10px" layout-align="end center">
+                            <md-button class="md-accent" ng-click="ending.clearToInitial()" ng-hide="ending.disableClear()">Clear
+                            </md-button>
+                        </div>       
+                        <div layout="row" ng-if="ending.pageInitialized" id="phrase-input" layout-align="center" layout-wrap>
+
+                            <md-input-container flex-gt-md="20" flex-md="15" flex-sm="20" flex-xs="20" layout-align="end">
+                                
+                                <label>
+                                {{ending.labels.prepSelect.display}}
+                                </label>
+                                <md-select  ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)" aria-label="Предлог" >
+                                    <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep" >
+                                    {{prep.name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>          
+                            <md-input-container flex-gt-md="25" flex-md="20"flex-sm="40" flex-xs="40" >
+                                <label>
+                                {{ending.labels.adjSelect.display}}
+                                </label>
+                                <input ng-model="ending.currAdj" ng-change="ending.checkGender(ending.currAdj,'adj')" >
+                            </md-input-container>
+                            <md-input-container flex-gt-sm="25" flex-sm="40" >
+                                <label>
+                                {{ending.labels.nounSelect.display}}
+                                </label>
+                                <input ng-model="ending.currNoun" ng-change="ending.checkGender(ending.currNoun,'noun')&&ending.checkAnimate(ending.currNoun)">
+                            </md-input-container>
                         </div>
-                    </md-toolbar>
-                    <br>
-                     
-                    <div layout="row" flex="noshrink" style="height: 10px" layout-align="end center">
-                        <md-button class="md-accent" ng-click="ending.clearToInitial()" ng-hide="ending.disableClear()">Clear
-                        </md-button>
-                    </div>       
-                    <div layout="row" ng-if="ending.pageInitialized" id="phrase-input" layout-align="center" layout-wrap>
-
-                        <md-input-container flex-gt-md="20" flex-md="15" flex-sm="20" flex-xs="20" layout-align="end">
+                        <div layout="row" layout-align="center" ng-if="ending.pageInitialized" layout-wrap id="quality-select">
                             
-                            <label>
-                            {{ending.labels.prepSelect.display}}
-                            </label>
-                            <md-select  ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)" aria-label="Предлог" >
-                                <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep" >
-                                {{prep.name}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>          
-                        <md-input-container flex-gt-md="25" flex-md="20"flex-sm="40" flex-xs="40" >
-                            <label>
-                            {{ending.labels.adjSelect.display}}
-                            </label>
-                            <input ng-model="ending.currAdj" ng-change="ending.checkGender(ending.currAdj,'adj')" >
-                        </md-input-container>
-                        <md-input-container flex-gt-sm="25" flex-sm="40" >
-                            <label>
-                            {{ending.labels.nounSelect.display}}
-                            </label>
-                            <input ng-model="ending.currNoun" ng-change="ending.checkGender(ending.currNoun,'noun')&&ending.checkAnimate(ending.currNoun)">
-                        </md-input-container>
-                    </div>
-                    <div layout="row" layout-align="center" ng-if="ending.pageInitialized" layout-wrap id="quality-select">
-                        
-                        <md-input-container flex-gt-sm="20" flex-sm="25" ng-init="ending.logName(ending.labels.caseSelect.display)">
-                            <md-tooltip ng-show="ending.onlyOneCase" md-delay="230">{{ending.labels.caseForcedTooltip.display}}
-                            </md-tooltip>
-                            <label >
-                            {{ending.labels.caseSelect.display}}
-                            </label>
-                            <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase" aria-label="Падеж">
-                                <md-option ng-repeat="case in ending.currPrep.cases" ng-value="case" >
-                                {{ending.labels.caseSelect.options[case].display}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                        <md-input-container ng-if="ending.currCase=='винительный'" flex-gt-sm="25" >
-                            <label>{{ending.labels.animateSelect.display}}</label>
-                            <md-tooltip ng-show="ending.animateKnown()" md-delay="230">{{ending.labels.animateForcedTooltip.display}}</md-tooltip>
-                            <md-select ng-model="ending.currAnimate" aria-label="Одушевленность" ng-disabled="ending.animateKnown()" >
-                                <md-option ng-repeat="state in ending.labels.animateSelect.options"  ng-value="state.value">
-                                {{state.display}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                        <md-input-container flex-gt-sm="15" >
-                            <md-tooltip ng-show="ending.genderKnown()" md-delay="230">{{ending.labels.genderForcedTooltip.display}}</md-tooltip>
-                            <label>{{ending.labels.genderSelect.display}}</label>
-                            <md-select ng-model="ending.currGender" ng-disabled="ending.genderKnown()" aria-label="Род" >
-                                <md-option ng-repeat="gender in ending.labels.genderSelect.options" ng-value="gender.value">
-                                {{gender.display}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                        <md-input-container flex-gt-sm="20">
-                            <label>{{ending.labels.plurSelect.display}}</label>
-                            <md-select ng-model="ending.currPlurality" aria-label="Множество" >
-                                <md-option ng-repeat="plurality in ending.labels.plurSelect.options" ng-value="plurality.value">
-                                {{plurality.display[ending.currGender]}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                    </div>
+                            <md-input-container flex-gt-sm="20" flex-sm="25" ng-init="ending.logName(ending.labels.caseSelect.display)">
+                                <md-tooltip ng-show="ending.onlyOneCase" md-delay="230">{{ending.labels.caseForcedTooltip.display}}
+                                </md-tooltip>
+                                <label >
+                                {{ending.labels.caseSelect.display}}
+                                </label>
+                                <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase" aria-label="Падеж">
+                                    <md-option ng-repeat="case in ending.currPrep.cases" ng-value="case" >
+                                    {{ending.labels.caseSelect.options[case].display}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container ng-if="ending.currCase=='винительный'" flex-gt-sm="25" >
+                                <label>{{ending.labels.animateSelect.display}}</label>
+                                <md-tooltip ng-show="ending.animateKnown()" md-delay="230">{{ending.labels.animateForcedTooltip.display}}</md-tooltip>
+                                <md-select ng-model="ending.currAnimate" aria-label="Одушевленность" ng-disabled="ending.animateKnown()" >
+                                    <md-option ng-repeat="state in ending.labels.animateSelect.options"  ng-value="state.value">
+                                    {{state.display}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container flex-gt-sm="15" >
+                                <md-tooltip ng-show="ending.genderKnown()" md-delay="230">{{ending.labels.genderForcedTooltip.display}}</md-tooltip>
+                                <label>{{ending.labels.genderSelect.display}}</label>
+                                <md-select ng-model="ending.currGender" ng-disabled="ending.genderKnown()" aria-label="Род" >
+                                    <md-option ng-repeat="gender in ending.labels.genderSelect.options" ng-value="gender.value">
+                                    {{gender.display}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container flex-gt-sm="20">
+                                <label>{{ending.labels.plurSelect.display}}</label>
+                                <md-select ng-model="ending.currPlurality" aria-label="Множество" >
+                                    <md-option ng-repeat="plurality in ending.labels.plurSelect.options" ng-value="plurality.value">
+                                    {{plurality.display[ending.currGender]}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
 
-                    <div id="interact-bar" layout="row" layout-align="start center">
-                        
-                        <md-button class="md-primary md-raised" ng-click="ending.generateCard()" ng-disabled="ending.disableDecline()">
+                        <div id="interact-bar" layout="row" layout-align="start center">
+                            
+                            <md-button class="md-primary md-raised" ng-click="ending.generateCard()" ng-disabled="ending.disableDecline()">
 
-                        Decline Phrase
-                        </md-button>         
-                        <!--{{'valid adj: '+ending.validInputs('adj') + ' valid noun: ' + ending.validInputs('noun')}}-->
+                            Decline Phrase
+                            </md-button>         
+                            <!--{{'valid adj: '+ending.validInputs('adj') + ' valid noun: ' + ending.validInputs('noun')}}-->
 
+                        </div>
+                        <br>
+                        <md-divider class="md-primary"></md-divider>
                     </div>
-                    <br>
-                    <md-divider class="md-primary"></md-divider>
                     <div id="tessellated-outputs" ng-repeat="(key,phrase) in ending.phrases" layout-margin>
                         <md-divider style="color: white" ng-if="!$first" ></md-divider>
                         <md-white-frame class="md-whiteframe-12dp" style="background-color: #ffffb3" layout="column">
@@ -182,8 +186,13 @@
                                 </h3>
                                 <div flex layout="row" layout-align="end">
 
-                                    <md-button class="md-raised" >
-                                        <md-icon md-svg-icon="./images/plus_k.svg">
+                                    <md-button class="md-raised" ng-click="ending.savePhrase(phrase)" >
+                                        <md-icon ng-if="!phrase.saved" md-svg-icon="./images/plus_k.svg">
+                                        </md-icon>
+                                        <md-icon ng-if="phrase.saved" md-svg-icon="./images/satisfaction_k.svg">
+                                    </md-button>
+                                    <md-button ng-click="ending.removePhrase(phrase)" class="md-raised md-warn" >
+                                        <md-icon md-svg-icon="./images/garbage_k.svg">
                                         </md-icon>
                                     </md-button>
                                 </div>
@@ -191,15 +200,6 @@
                             </div>
                             <div layout="column" id="expanded-phrase" ng-if="phrase.expanded">
                                 <div layout="row" layout-align="end">
-                                    <div flex="45" layout="row">
-                                        <md-button class="md-raised"  ng-click="ending.saveCard()">
-                                            {{'Save'}}
-                                        </md-button>
-                                        <md-button ng-click="ending.removePhrase(phrase)" class="md-raised md-warn" >
-                                            <md-icon md-svg-icon="./images/garbage_k.svg">
-                                            </md-icon>
-                                        </md-button>
-                                    </div>
 
                                 </div>
                                 <div layout="row" layout-margin>
@@ -227,6 +227,9 @@
             </div>
             <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.currPage=='readings'" >
                 You are on the Readings page! This page is still under development. Come back later for more :3
+            </div>  
+            <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.currPage=='study'" >
+                You are on the Study page! This page is still under development. Come back later for more :3
             </div>  
             <div flex-gt-md="25" flex-md="15" flex-sm="5" hide-xs style="width: 550px">
             </div>

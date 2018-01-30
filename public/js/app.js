@@ -2,8 +2,36 @@
     var app = angular.module('lang',['ngMaterial']);
     //this basic file is eventually for dependency injection and page control only.
 
+
+
     //this controller is just for page switching on a larger scope.
-    app.controller('headerController',function(){
+    app.controller('headerController',function($window){
+
+        this.initialLabels = {
+            'en': {
+                'declension': 'declension',
+                'readings': 'readings',
+                'study': 'study',
+                'about': 'about'
+            },
+            'ru': {
+                'declension': 'склонения',
+                'readings': 'чтения',
+                'study': 'изучение',
+                'about': 'о сайте'
+            }
+        }
+
+        this.setLabels = function(){
+            var urlPath = $window.location.href;
+            var pathSplit = urlPath.split('/')
+            console.log(pathSplit[3])
+            var lang = pathSplit[3]
+            
+            this.labels = this.initialLabels[lang];
+
+        }
+
         this.pages = ['declension','readings','about','home','study'];
 
         this.currPage = 'declension'
@@ -17,6 +45,8 @@
             }
         }
     })
+
+    
 
     app.controller('footerController',function(){
         this.langs = [

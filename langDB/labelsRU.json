@@ -2,6 +2,10 @@
     "labels": 
     {
         "en": {
+            
+            "header": {
+                "display": "Russian Declension"
+            },
             "adjSelect": {
                 "display": "Adjective"
             },
@@ -105,6 +109,9 @@
             }
         },
         "ru": {
+            "header": {
+                "display": "Русское Склонение"
+            },
             "adjSelect": {
                 "display": "Прилагательное"
             },
