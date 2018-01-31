@@ -33,19 +33,14 @@ Decliner:
 
         Add remaining exceptions:
 
-            Male group that ends in -ин
-                гражданин
-                христианин
-                крестьянин
-
             solo exceptions:
                 господин М
                 болгарин М
-                татарин М 
+                татарин М
                 хозяин М
-                человек
-                ребёнок
+
                 ухо N
+
                 колено N
                 око N
                 небо N
@@ -56,21 +51,6 @@ Decliner:
             Young animals:
                 котёнок -> котята
                 медвежонок -> медвежата  
-
-            Male group fleeting, no ь
-                отец
-                кусок
-
-            Male group fleeting, ь
-                день
-
-            Weird male nouns:
-                друг
-                сын
-
-            Feminine Nouns
-                мать
-                дочь  
             
             Weird fleeting insertions
                 лев

@@ -5,7 +5,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     //list of prepositions and their associated case options
     this.prepositions = []
     
-    this.exceptions = {}//if word is exception, use rules from exception dict 
+    this.adjException = {}//if word is exception, use rules from exception dict 
+    this.nounException = {}
     this.endings = {} //if not, just use general rules
 
     this.labels = {} //contains labels in curr language
@@ -50,6 +51,21 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
     }
 
+    this.inputBlur = function(word,PoS){
+        console.log(word + ' with PoS: '+ PoS + ' has just blurred')
+        if(PoS=='adj'){
+           this.checkException(word,PoS).then(function(res){
+                this.checkGender(word,PoS)
+           }.bind(this)) 
+           
+        }else if(PoS=='noun'){
+            this.checkException(word,PoS).then(function(res){
+                this.checkGender(word,PoS)
+                this.checkAnimate(word,PoS)
+           }.bind(this))             
+        }
+    }
+
     this.logName = function(word){
         console.log(word)
     }
@@ -79,13 +95,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             params: {},
             method: 'GET'
         }
-
-        var exceptionsOptions = {
-            url: '/ru/exceptions',
-            params: {},
-            method: 'GET'
-        }
-
+        
         var promises = [];
         console.log('about to fetch exceptions, endings, preps, and labels!');
 
@@ -93,15 +103,12 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         
         promises.push(sharedProps.httpReq(labelOptions))
         promises.push(sharedProps.httpReq(prepositionOptions))        
-        promises.push(sharedProps.httpReq(exceptionsOptions))
 
         //async timeout until all promise completion
         $q.all(promises).then(function(res){
             //set data structs equal to responses
             this.labels = res[0].content 
             this.prepositions = res[1].content.prepositions 
-            this.exceptions = res[2].content.exceptions
-            console.log(this.labels)
              
             deferred.resolve('200')
 
@@ -112,6 +119,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     //clear out select vals
     this.clearToInitial = function(){
          
+        this.adjException = {}
+        this.nounException = {}
 
         this.currAdj = ''
         this.currNoun = ''
@@ -249,6 +258,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         }.bind(this))
     }
 
+
+
     this.translatePhrase = function(phrase){
         var deferred = $q.defer()
 
@@ -365,12 +376,52 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         }
     }
 
+    this.checkException = function(word,PoS){
+
+        var deferred = $q.defer()
+
+        console.log('getting an exception')
+        
+        var exceptionOptions = {
+            url: '/ru/exceptions',
+            params: {
+                q: word
+            },
+            method: 'GET'
+        }
+
+        var promises = []
+
+        promises.push(sharedProps.httpReq(exceptionOptions))
+
+        if(PoS=='noun'){
+            $q.all(promises).then(function(res){
+                console.log(res[0])
+                this.nounException = res[0].content
+                deferred.resolve('200')
+            }.bind(this))
+            
+        }else if (PoS=='adj'){
+            $q.all(promises).then(function(res){
+                console.log(res[0])
+                this.adjException = res[0].content
+                deferred.resolve('200')
+                //console.log(this.adjException)
+            }.bind(this))
+            
+        }
+
+        return deferred.promise
+    }
+
     //aim to replace enumerated rulegroups with named ones
     this.determineRuleSet = function(word,PoS){
         //if this is an exception, get its rule set number from exceptions dict
-        if(this.exceptions.hasOwnProperty(word)){
-            var ruleSetNumber = this.exceptions[word].ruleSet
+        if(this.adjException.word!='default' && PoS =='adj'){
+            var ruleSetNumber = this.adjException.ruleSet
 
+        }else if(this.adjException.word!='default' && PoS =='noun'){
+            var ruleSetNumber = this.nounException.ruleSet
         }else{ //we're gonna have to use general rules
 
             var ruleSetNumber = ""
@@ -410,7 +461,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                         ruleSetNumber = "11"
                     }else if(this.consonants.includes(lastChar)){
                         if(isFleeting){
-                            ruleSetNumber = "0" //haven't made this rule set up yet
+                            ruleSetNumber = "16" 
                         }
                         if(this.hushers.includes(lastChar)){
                             ruleSetNumber = "14"
@@ -435,8 +486,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                             ruleSetNumber = "6"
                         }else if(isFleeting){
                             ruleSetNumber = "7"
-                        }else{ //this might never be reached
-                            ruleSetNumber = "0" //haven't made this rule set yet
+                        }else{ 
+                            ruleSetNumber = "0" //don't think this case exists
                         }
                     }else{
                         ruleSetNumber = "0" //default if nothing found
@@ -498,21 +549,31 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
     this.checkGender = function(word,PoS){
 
+        console.log('checking for gender')
         if(PoS=='noun'){
-            if(this.exceptions.hasOwnProperty(word)){
-                var gender = this.exceptions[word]['gender']
-                this.currGender = gender
+            if(typeof this.nounException !== null){
+                if(this.nounException.gender!=''){
+                     var gender = this.nounException.gender
+                    this.currGender = gender
+                }
+               
             }else{
+                console.log('no nounexception yet')
                 var gender = ''
             }
 
             this.nounGender = gender
             
         }else if(PoS=='adj'){
-            if(this.exceptions.hasOwnProperty(word)){
-                var gender = this.exceptions[word]['gender']
-                this.currGender = gender
+            if(typeof this.adjException !== null){
+                console.log(this.adjException.gender)
+                if(this.adjException.gender!=''){
+                    var gender = this.adjException.gender
+                    this.currGender = gender
+                }
+                
             }else{
+                console.log('no adj exception yet')
                 var len = word.length;
                 if(len>=2){
                     var ending = word.substring(len-2,len)
@@ -537,8 +598,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     }
 
     this.checkAnimate = function(word){
-        if(this.exceptions.hasOwnProperty(word)){
-            this.nounAnimate = this.exceptions[noun].animate
+        if(typeof this.nounException !== null){
+            this.nounAnimate = this.nounException.animate
         }else{
             this.nounAnimate = ''
         }
@@ -562,7 +623,6 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             return false
         }
     }
-
 
     //figure out if soft or hard adjective (short currently not considered)
     this.getAdjType = function(adj){

@@ -651,6 +651,110 @@
             "animate": "Inanimate",
             "word": "сук",
             "ruleSet": "34"  
+        },
+        "друг": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "друг",
+            "ruleSet": "35"  
+        },
+        "сын": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "сын",
+            "ruleSet": "36"  
+        },
+        "мать": {
+            "gender": "F",
+            "animate": "Animate",
+            "word": "мать",
+            "ruleSet": "37"  
+        },
+        "дочь": {
+            "gender": "F",
+            "animate": "Animate",
+            "word": "дочь",
+            "ruleSet": "37"  
+        },
+        "гражданин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "гражданин",
+            "ruleSet": "38"  
+        },
+        "крестьянин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "крестьянин",
+            "ruleSet": "38"  
+        },
+        "христианин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "христианин",
+            "ruleSet": "38"  
+        },
+        "славянин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "славянин",
+            "ruleSet": "38"  
+        },
+        "англичанин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "англичанин",
+            "ruleSet": "38"  
+        },
+        "армянин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "гражданин",
+            "ruleSet": "38"  
+        },
+        "датчанин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "датчанин",
+            "ruleSet": "38"  
+        },
+        "россиянин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "россиянин",
+            "ruleSet": "38"  
+        },
+        "лютеранин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "лютеранин",
+            "ruleSet": "38"  
+        },
+        "день": {
+            "gender": "M",
+            "animate": "Inanimate",
+            "word": "день",
+            "ruleSet": "39"  
+        },
+        "человек": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "человек",
+            "ruleSet": "40"  
+        },
+        "ребёнок": {
+            "gender": "М",
+            "animate": "Animate",
+            "word": "ребёнок",
+            "ruleSet": "41"  
+        },
+        "ребeнок": {
+            "gender": "М",
+            "animate": "Animate",
+            "word": "ребёнок",
+            "ruleSet": "41"  
         }
+
+        
     }
 }

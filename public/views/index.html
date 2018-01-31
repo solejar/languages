@@ -58,7 +58,8 @@
                 <md-button>
                     Log in
                 </md-button>  
-            
+                {{ending.adjException}}
+                {{ending.nounException}}
         </div>
 
         <div layout="row" flex="60" layout-align="center">
@@ -109,13 +110,13 @@
                                 <label>
                                 {{ending.labels.adjSelect.display}}
                                 </label>
-                                <input ng-model="ending.currAdj" ng-change="ending.checkGender(ending.currAdj,'adj')" >
+                                <input ng-model="ending.currAdj" ng-blur="ending.inputBlur(ending.currAdj,'adj')" >
                             </md-input-container>
                             <md-input-container flex-gt-sm="25" flex-sm="40" >
                                 <label>
                                 {{ending.labels.nounSelect.display}}
                                 </label>
-                                <input ng-model="ending.currNoun" ng-change="ending.checkGender(ending.currNoun,'noun')&&ending.checkAnimate(ending.currNoun)">
+                                <input ng-model="ending.currNoun" ng-blur="ending.inputBlur(ending.currNoun,'noun')">
                             </md-input-container>
                         </div>
                         <div layout="row" layout-align="center" ng-if="ending.pageInitialized" layout-wrap id="quality-select">
