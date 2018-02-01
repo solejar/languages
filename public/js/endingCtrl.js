@@ -20,6 +20,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     this.targetLang = 'en'
 
     this.init = function(){
+
         var initPhrase = {
             adj: 'твоя',
             noun: 'помощь',
@@ -33,6 +34,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             stars: 0,
             saved: false
         }
+
         this.phrases[(initPhrase.preposition+' '+initPhrase.adj+' '+initPhrase.noun)]=initPhrase
 
         var urlPath = $window.location.href;
@@ -45,7 +47,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         this.initializeValues(options).then(function(statusCode){
             this.pageInitialized = true
         }.bind(this)) //pull data from Mongo   
-        console.log(this.labels) 
+        //console.log(this.labels) 
 
         this.clearToInitial()   //initialize select vals
 
@@ -64,10 +66,6 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                 this.checkAnimate(word,PoS)
            }.bind(this))             
         }
-    }
-
-    this.logName = function(word){
-        console.log(word)
     }
 
     this.removePhrase = function(phraseObj){

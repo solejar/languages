@@ -3,15 +3,14 @@ Decliner:
 
     Functional:
 
-        WOW
-        https://www.youtube.com/watch?v=KlLMlJ2tDkg
-        ng blur allows me to perform an event on an element losing focus!
-
         Credit the icon artists lol
             <div>Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
         Need to change key to be more than just the declined phrase
             as it needs to be completely unique.
+
+        Perhaps give option to only see most common prepositions
+        (In my mind this potentially means moving to an autocomplete model)
 
         Card:
             View
@@ -29,32 +28,7 @@ Decliner:
                 Removal
                 Saving (download icon?)
 
-            Ellipsis drop-down? 
-
-        Add remaining exceptions:
-
-            solo exceptions:
-                господин М
-                болгарин М
-                татарин М
-                хозяин М
-
-                ухо N
-
-                колено N
-                око N
-                небо N
-                судно N
-                чудо N
-                плечо? N
-
-            Young animals:
-                котёнок -> котята
-                медвежонок -> медвежата  
-            
-            Weird fleeting insertions
-                лев
-                боец              
+            Ellipsis drop-down?             
 
         Edge Cases:
             Flesh out what to do if oper indicated is 'else' (L)
@@ -99,7 +73,6 @@ Decliner:
             Think about what different view will be served to non-authenticated user
 
         Readings
-            Change icon to a book(?)
             Let user upload some text (file upload, copy paste)
                 Tokenize input
                 paginate (as needed)
@@ -153,6 +126,10 @@ Decliner:
         Mongo:
             Look at adding schema validation
             Consider removing 'word ' field from exception
+            For specific exceptions, remove animate/inanimate if not needed (maybe this is not worth the trouble, it's a really trivial amount of space)
+
+            Exceptions :
+            Consider generalizing a 'stem change' case, let's use remove like 10-15 rule groups, but adds more controller logic (might not be worth it)
 
         Testing:
             Run each rulegroup on its example for each case, manually verify

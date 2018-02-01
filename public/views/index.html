@@ -30,16 +30,18 @@
             md-selected-nav-item="header.currPage"
             nav-bar-aria-label="navigation links">
 
-                <md-nav-item md-nav-click="header.changePage('home')" name="home">
+                <md-nav-item md-nav-click="header.changePage('home')"  name="home" aria-label="home-nav">
                     <md-icon  md-svg-icon="./images/home.svg">
                     </md-icon>
+                    {{''}}
                 </md-nav-item>
                 <md-nav-item md-nav-click="header.changePage('declension')" name="declension">
                     {{header.labels.declension}}
                 </md-nav-item>
-                <md-nav-item md-nav-click="header.changePage('readings')" name="readings">
+                <md-nav-item md-nav-click="header.changePage('readings')" name="readings" aria-label="reading-nav">
                     <md-icon  md-svg-icon="./images/book_k.svg">
                     </md-icon>
+                    {{''}}
                 </md-nav-item>
                 <md-nav-item md-nav-click="header.changePage('study')" name="study">
                     {{header.labels.study}}
@@ -121,7 +123,7 @@
                         </div>
                         <div layout="row" layout-align="center" ng-if="ending.pageInitialized" layout-wrap id="quality-select">
                             
-                            <md-input-container flex-gt-sm="20" flex-sm="25" ng-init="ending.logName(ending.labels.caseSelect.display)">
+                            <md-input-container flex-gt-sm="20" flex-sm="25" >
                                 <md-tooltip ng-show="ending.onlyOneCase" md-delay="230">{{ending.labels.caseForcedTooltip.display}}
                                 </md-tooltip>
                                 <label >
@@ -182,19 +184,22 @@
                                     </md-icon>
                                     <md-icon ng-if="phrase.expanded" md-svg-icon="./images/down-arrow_k.svg">
                                     </md-icon>
+                                    {{''}}
                                 </md-button>
                                 <h3 flex="70" ng-click="phrase.expanded=!phrase.expanded">{{phrase.declinedPhrase| prepositionFilter}}
                                 </h3>
                                 <div flex layout="row" layout-align="end">
 
-                                    <md-button class="md-raised" ng-click="ending.savePhrase(phrase)" >
+                                    <md-button class="md-raised" ng-click="ending.savePhrase(phrase)" aria-label="save-button" >
                                         <md-icon ng-if="!phrase.saved" md-svg-icon="./images/plus_k.svg">
                                         </md-icon>
                                         <md-icon ng-if="phrase.saved" md-svg-icon="./images/satisfaction_k.svg">
+                                        
                                     </md-button>
                                     <md-button ng-click="ending.removePhrase(phrase)" class="md-raised md-warn" >
                                         <md-icon md-svg-icon="./images/garbage_k.svg">
                                         </md-icon>
+                                        
                                     </md-button>
                                 </div>
                                 

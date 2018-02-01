@@ -3,7 +3,6 @@
     //this basic file is eventually for dependency injection and page control only.
 
 
-
     //this controller is just for page switching on a larger scope.
     app.controller('headerController',function($window){
 
@@ -25,7 +24,7 @@
         this.setLabels = function(){
             var urlPath = $window.location.href;
             var pathSplit = urlPath.split('/')
-            console.log(pathSplit[3])
+            //console.log(pathSplit[3])
             var lang = pathSplit[3]
             
             this.labels = this.initialLabels[lang];
@@ -45,8 +44,6 @@
             }
         }
     })
-
-    
 
     app.controller('footerController',function(){
         this.langs = [

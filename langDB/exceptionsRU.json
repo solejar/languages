@@ -295,12 +295,6 @@
             "word": "очко",
             "ruleSet": "-1"
         },
-        "колено": {
-            "gender": "Н",
-            "animate": "Inanimate",
-            "word": "колено",
-            "ruleSet": "-1"
-        },
         "плечо": {
             "gender": "Н",
             "animate": "Inanimate",
@@ -736,6 +730,12 @@
             "word": "день",
             "ruleSet": "39"  
         },
+        "церковь": {
+            "gender": "F",
+            "animate": "Inanimate",
+            "word": "церковь",
+            "ruleSet": "39"  
+        },
         "человек": {
             "gender": "M",
             "animate": "Animate",
@@ -753,8 +753,115 @@
             "animate": "Animate",
             "word": "ребёнок",
             "ruleSet": "41"  
+        },
+        "ухо": {
+            "gender": "N",
+            "animate": "Inanimate",
+            "word": "ухо",
+            "ruleSet": "42"
+        },
+        "небо": {
+            "gender": "N",
+            "animate": "Inanimate",
+            "word": "небо",
+            "ruleSet": "43"
+        },
+        "чудо": {
+            "gender": "N",
+            "animate": "Inanimate",
+            "word": "чудо",
+            "ruleSet": "43"
+        },
+        "судно": {
+            "gender": "N",
+            "animate": "Inanimate",
+            "word": "судно",
+            "ruleSet": "44"
+        },
+        "око": {
+            "gender": "N",
+            "animate": "Inanimate",
+            "word": "око",
+            "ruleSet": "45"
+        },
+        "колено": {
+            "gender": "N",
+            "animate": "Inanimate",
+            "word": "колено",
+            "ruleSet": "46"  
+        },
+        "господин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "господин",
+            "ruleSet": "47"
+        },
+        "хозяин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "господин",
+            "ruleSet": "48"
+        },
+        "татарин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "татарин",
+            "ruleSet": "49"
+        },
+        "болгарин": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "болгарин",
+            "ruleSet": "49"
+        },
+        "котёнок": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "котёнок",
+            "ruleSet": "50"
+        },
+        "котенок": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "котенок",
+            "ruleSet": "50"
+        },
+        "телёнок": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "котёнок",
+            "ruleSet": "50"
+        },
+        "теленок": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "теленок",
+            "ruleSet": "50"
+        },
+        "медвежонок": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "медвежонок",
+            "ruleSet": "50"
+        },
+        "лев": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "лев",
+            "ruleSet": "51"
+        },
+        "боец": {
+            "gender": "M",
+            "animate": "Animate",
+            "word": "боец",
+            "ruleSet": "52"  
+        },
+         "путь": {
+            "gender": "M",
+            "animate": "Inanimate",
+            "word": "путь",
+            "ruleSet": "53"  
         }
 
-        
     }
 }

@@ -81,7 +81,7 @@
                 },
                 "Animate": {
                     "Single": {"oper": "none"},
-                    "Plural": {"oper": "drop"}
+                    "Plural": {"oper": "replace","ending": "и", "dropHowMany": "1"}
                 }
             },
             "родительный": {
@@ -1494,32 +1494,440 @@
             },
             "винительный": {
                 "Inanimate": {
-                    "Single": {"oper": "add","ending": "а"},
+                    "Single": {"oper": "fleeting","fleetingType": "remove"},
                     "Plural": {"oper": "replace","ending": "детей", "dropHowMany": "7"}
                 },
                 "Animate": {
-                    "Single": {"oper": "add","ending": "а"},
+                    "Single": {"oper": "fleeting","fleetingType": "remove"},
                     "Plural": {"oper": "replace","ending": "детей", "dropHowMany": "7"}
                 }
             },
             "родительный": {
-                "Single": {"oper": "add","ending": "а"},
+                "Single": {"oper": "fleeting","fleetingType": "remove"},
                 "Plural": {"oper": "replace","ending": "детей", "dropHowMany": "7"}
             },
             "дательный": {
-                "Single": {"oper": "add","ending": "у"},
+                "Single": {"oper": "fleeting","fleetingType": "remove"},
                 "Plural": {"oper": "replace","ending": "детям", "dropHowMany": "7"}
             },
             "творительный": {
-                "Single": {"oper": "add","ending": "ом"},
+                "Single": {"oper": "fleeting","fleetingType": "remove"},
                 "Plural": {"oper": "replace","ending": "детьми", "dropHowMany": "7"}
             },
             "предложный": {
-                "Single": {"oper": "add","ending": "е"},
+                "Single": {"oper": "fleeting","fleetingType": "remove"},
                 "Plural": {"oper": "replace","ending": "детях", "dropHowMany": "7"}
             },
             "description": "rule set for ребёнок",
             "example": "ребёнок"
+        },
+        "42": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "ши", "dropHowMany": "2"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "ши", "dropHowMany": "2"}
+                },
+                "Animate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "ши", "dropHowMany": "2"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "replace","ending": "а", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "шей", "dropHowMany": "2"}
+            },
+            "дательный": {
+                "Single": {"oper": "replace","ending": "у", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "шам", "dropHowMany": "2"}
+            },
+            "творительный": {
+                "Single": {"oper": "replace","ending": "ом", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "шами", "dropHowMany": "2"}
+            },
+            "предложный": {
+                "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "шах", "dropHowMany": "2"}
+            },
+            "description": "rule set for ухо",
+            "example": "ухо"
+        },
+        "43": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "еса", "dropHowMany": "1"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "еса", "dropHowMany": "1"}
+                },
+                "Animate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "еса", "dropHowMany": "1"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "replace","ending": "а", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ес", "dropHowMany": "1"}
+            },
+            "дательный": {
+                "Single": {"oper": "replace","ending": "у", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "есам", "dropHowMany": "1"}
+            },
+            "творительный": {
+                "Single": {"oper": "replace","ending": "ом", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "шами", "dropHowMany": "1"}
+            },
+            "предложный": {
+                "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "есах", "dropHowMany": "1"}
+            },
+            "description": "rule set for небо",
+            "example": "небо"
+        },
+        "44": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "а", "dropHowMany": "2"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "а", "dropHowMany": "2"}
+                },
+                "Animate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "а", "dropHowMany": "2"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "replace", "ending": "а", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ов", "dropHowMany": "2"}
+            },
+            "дательный": {
+                "Single": {"oper": "replace","ending": "у", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ам", "dropHowMany": "2"}
+            },
+            "творительный": {
+                "Single": {"oper": "replace","ending": "ом", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ами", "dropHowMany": "2"}
+            },
+            "предложный": {
+                "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ах", "dropHowMany": "2"}
+            },
+            "description": "rule set for судно",
+            "example": "судно"
+        },
+        "45": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "чи", "dropHowMany": "2"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "чи", "dropHowMany": "2"}
+                },
+                "Animate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "чи", "dropHowMany": "2"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "replace","ending": "а","dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "чей", "dropHowMany": "2"}
+            },
+            "дательный": {
+                "Single": {"oper": "replace","ending": "у", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "чам", "dropHowMany": "2"}
+            },
+            "творительный": {
+                "Single": {"oper": "replace","ending": "ом", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "чами", "dropHowMany": "2"}
+            },
+            "предложный": {
+                "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "чах", "dropHowMany": "2"}
+            },
+            "description": "rule set for око",
+            "example": "око"
+        },
+        "46": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "и", "dropHowMany": "1"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "и", "dropHowMany": "1"}
+                },
+                "Animate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "и", "dropHowMany": "1"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "replace","ending": "а","dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ей", "dropHowMany": "1"}
+            },
+            "дательный": {
+                "Single": {"oper": "replace","ending": "у", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ям", "dropHowMany": "1"}
+            },
+            "творительный": {
+                "Single": {"oper": "replace","ending": "ом", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ями", "dropHowMany": "1"}
+            },
+            "предложный": {
+                "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ях", "dropHowMany": "1"}
+            },
+            "description": "rule set for колено",
+            "example": "колено"
+        },
+        "47": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "а", "dropHowMany": "2"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "add","ending": "а"},
+                "Plural": {"oper": "replace", "ending": "д", "dropHowMany": "3"}
+                },
+                "Animate": {
+                    "Single": {"oper": "add","ending": "а"},
+                    "Plural": {"oper": "replace", "ending": "д", "dropHowMany": "3"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "add","ending": "а"},
+                "Plural": {"oper": "replace", "ending": "д", "dropHowMany": "3"}
+            },
+            "дательный": {
+                "Single": {"oper": "add","ending": "у"},
+                "Plural": {"oper": "replace", "ending": "ам", "dropHowMany": "2"}
+            },
+            "творительный": {
+                "Single": {"oper": "add","ending": "ом"},
+                "Plural": {"oper": "replace","ending": "ами", "dropHowMany": "2"}
+            },
+            "предложный": {
+                "Single": {"oper": "add", "ending": "е"},
+                "Plural": {"oper": "replace","ending": "ах", "dropHowMany": "2"}
+            },
+            "description": "rule set for господин",
+            "example": "господин"
+        },
+        "48": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "ева", "dropHowMany": "2"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "add","ending": "а"},
+                "Plural": {"oper": "replace", "ending": "ев", "dropHowMany": "2"}
+                },
+                "Animate": {
+                    "Single": {"oper": "add","ending": "а"},
+                    "Plural": {"oper": "replace", "ending": "ев", "dropHowMany": "2"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "add","ending": "а"},
+                "Plural": {"oper": "replace", "ending": "ев", "dropHowMany": "2"}
+            },
+            "дательный": {
+                "Single": {"oper": "add","ending": "у"},
+                "Plural": {"oper": "replace", "ending": "евам", "dropHowMany": "2"}
+            },
+            "творительный": {
+                "Single": {"oper": "add","ending": "ом"},
+                "Plural": {"oper": "replace","ending": "евами", "dropHowMany": "2"}
+            },
+            "предложный": {
+                "Single": {"oper": "add", "ending": "е"},
+                "Plural": {"oper": "replace","ending": "евах", "dropHowMany": "2"}
+            },
+            "description": "rule set for хозяин",
+            "example": "хозяин"
+        },
+        "49": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "ы", "dropHowMany": "2"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "add","ending": "а"},
+                    "Plural": {"oper": "replace", "ending": "р", "dropHowMany": "3"}
+                },
+                "Animate": {
+                    "Single": {"oper": "add","ending": "а"},
+                    "Plural": {"oper": "replace", "ending": "р", "dropHowMany": "3"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "add","ending": "а"},
+                "Plural": {"oper": "replace", "ending": "р", "dropHowMany": "3"}
+            },
+            "дательный": {
+                "Single": {"oper": "add","ending": "у"},
+                "Plural": {"oper": "replace", "ending": "ам", "dropHowMany": "2"}
+            },
+            "творительный": {
+                "Single": {"oper": "add","ending": "ом"},
+                "Plural": {"oper": "replace","ending": "ами", "dropHowMany": "2"}
+            },
+            "предложный": {
+                "Single": {"oper": "add", "ending": "е"},
+                "Plural": {"oper": "replace","ending": "ах", "dropHowMany": "2"}
+            },
+            "description": "rule set for татарин",
+            "example": "татарин"
+        },
+        "50": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "ята", "dropHowMany": "4"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "fleeting","fleetingType": "remove"},
+                    "Plural": {"oper": "replace","ending": "ят", "dropHowMany": "4"}
+                },
+                "Animate": {
+                    "Single": {"oper": "fleeting","fleetingType": "remove"},
+                    "Plural": {"oper": "replace","ending": "ят", "dropHowMany": "4"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "fleeting","fleetingType": "remove"},
+                "Plural": {"oper": "replace","ending": "ят", "dropHowMany": "4"}
+            },
+            "дательный": {
+                "Single": {"oper": "fleeting","fleetingType": "remove"},
+                "Plural": {"oper": "replace","ending": "ятам", "dropHowMany": "4"}
+            },
+            "творительный": {
+                "Single": {"oper": "fleeting","fleetingType": "remove"},
+                "Plural": {"oper": "replace","ending": "ятами", "dropHowMany": "4"}
+            },
+            "предложный": {
+                "Single": {"oper": "fleeting","fleetingType": "remove"},
+                "Plural": {"oper": "replace","ending": "ятах", "dropHowMany": "4"}
+            },
+            "description": "rule set for котёнок, телёнок",
+            "example": "котёнок"
+        },
+        "51": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "ьвы", "dropHowMany": "2"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "replace","ending": "ьва","dropHowMany": "2"},
+                    "Plural": {"oper": "replace","ending": "ьвов", "dropHowMany": "2"}
+                },
+                "Animate": {
+                    "Single": {"oper": "replace","ending": "ьва","dropHowMany": "2"},
+                    "Plural": {"oper": "replace","ending": "ьвов", "dropHowMany": "2"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "replace","ending": "ьва","dropHowMany": "2"},
+                "Plural": {"oper": "replace","ending": "ьвов", "dropHowMany": "2"}
+            },
+            "дательный": {
+                "Single": {"oper": "replace","ending": "ьву", "dropHowMany": "2"},
+                "Plural": {"oper": "replace","ending": "ьвам", "dropHowMany": "2"}
+            },
+            "творительный": {
+                "Single": {"oper": "replace","ending": "ьвом", "dropHowMany": "2"},
+                "Plural": {"oper": "replace","ending": "ьвами", "dropHowMany": "2"}
+            },
+            "предложный": {
+                "Single": {"oper": "replace","ending": "ьве", "dropHowMany": "2"},
+                "Plural": {"oper": "replace","ending": "ьвах", "dropHowMany": "2"}
+            },
+            "description": "rule set for лев",
+            "example": "лев"
+        },
+        "52": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "йцы", "dropHowMany": "2"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "replace","ending": "йца","dropHowMany": "2"},
+                    "Plural": {"oper": "replace","ending": "йцов", "dropHowMany": "2"}
+                },
+                "Animate": {
+                    "Single": {"oper": "replace","ending": "йца","dropHowMany": "2"},
+                    "Plural": {"oper": "replace","ending": "йцов", "dropHowMany": "2"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "replace","ending": "йца","dropHowMany": "2"},
+                "Plural": {"oper": "replace","ending": "йцов", "dropHowMany": "2"}
+            },
+            "дательный": {
+                "Single": {"oper": "replace","ending": "йцу", "dropHowMany": "2"},
+                "Plural": {"oper": "replace","ending": "йцам", "dropHowMany": "2"}
+            },
+            "творительный": {
+                "Single": {"oper": "replace","ending": "йцом", "dropHowMany": "2"},
+                "Plural": {"oper": "replace","ending": "йцами", "dropHowMany": "2"}
+            },
+            "предложный": {
+                "Single": {"oper": "replace","ending": "йце", "dropHowMany": "2"},
+                "Plural": {"oper": "replace","ending": "йцах", "dropHowMany": "2"}
+            },
+            "description": "rule set for боец",
+            "example": "боец"
+        },
+        "53": {
+            "именительный": {
+                "Single": {"oper": "none"},
+                "Plural": {"oper": "replace","ending": "и", "dropHowMany": "1"}
+            },
+            "винительный": {
+                "Inanimate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "и", "dropHowMany": "1"}
+                },
+                "Animate": {
+                    "Single": {"oper": "none"},
+                    "Plural": {"oper": "replace","ending": "и", "dropHowMany": "1"}
+                }
+            },
+            "родительный": {
+                "Single": {"oper": "replace","ending": "и","dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ей", "dropHowMany": "1"}
+            },
+            "дательный": {
+                "Single": {"oper": "replace","ending": "и", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ям", "dropHowMany": "1"}
+            },
+            "творительный": {
+                "Single": {"oper": "replace","ending": "ём", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ями", "dropHowMany": "1"}
+            },
+            "предложный": {
+                "Single": {"oper": "replace","ending": "и", "dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ях", "dropHowMany": "1"}
+            },
+            "description": "rule set for путь",
+            "example": "путь"
         }
 
     }
