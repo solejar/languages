@@ -76,7 +76,7 @@ app.get('/ru/ruleGroups',function(req,res){
     }else{
         var options = {
             db: 'ru',
-            q: '0'
+            q: 'all'
         }
     }
     

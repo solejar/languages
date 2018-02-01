@@ -51,7 +51,7 @@ exports.getExceptions = function(options,onResult){
                 }
 
             }else{
-                var content = items[0] //i'm not really sure if this default makes sense
+                var content = items[0].exceptions //i'm not really sure if this default makes sense
             }
 
             var response = {
@@ -74,6 +74,22 @@ exports.getRuleGroups = function(options,onResult){
         var db = database.db(options.db);
         var collection = db.collection('ruleGroups')
 
+        if(options.q=='all'){
+            collection.find().toArray(function(err,items){
+                if(err){onResult({'statusCode': '400','errMsg': err})}
+
+                var content = items[0].ruleGroups
+                console.log(content)
+                var response = {
+                    'statusCode': '200',
+                    'content': content
+                }
+
+                onResult(response)
+                database.close()
+            })
+        }
+
         var projection = "ruleGroups." + options.q
         var params = {}
         params[projection] = 1
@@ -83,7 +99,7 @@ exports.getRuleGroups = function(options,onResult){
                 onResult({'statusCode': '400', 'errMsg': err})
             }
 
-            var content = items[0]
+            var content = items[0].ruleGroups
 
             var response = {
                 'statusCode': '200',
@@ -116,7 +132,7 @@ exports.getPrepositions = function(options,onResult){
                 )
             }
             
-            var content = items[0] //return that one element
+            var content = items[0].prepositions //return that one element
             var response = {
                 'statusCode': '200',
                 'content': content

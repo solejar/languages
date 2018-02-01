@@ -8,6 +8,8 @@ Decliner:
         Credit the icon artists lol
             <div>Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
+            <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+
         Need to change key to be more than just the declined phrase
             as it needs to be completely unique.
 
@@ -101,14 +103,6 @@ Decliner:
                     How should components reorder here to effectively use space real estate? 
                     (try to) remove borders around whiteframe for only mobile view.
 
-                Decliner
-                    decide between growing page, or scrollable container
-                    growing page
-                        P: Potential to improve the quality of mobile UX
-                        C: A little more difficult to make cooperate with rest of the page sizing 
-                    scrollable
-                        P:easier to do component design around fixed container
-                        C: Potential to lower the quality of mobile user UX
                 Card
                     make collapsed view more compact
                     expansion should push down, not up

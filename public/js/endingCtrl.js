@@ -105,8 +105,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         //async timeout until all promise completion
         $q.all(promises).then(function(res){
             //set data structs equal to responses
-            this.labels = res[0].content 
-            this.prepositions = res[1].content.prepositions 
+            this.labels = res[0].content
+            this.prepositions = res[1].content 
              
             deferred.resolve('200')
 
@@ -256,7 +256,33 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         }.bind(this))
     }
 
+    this.openMenu = function($mdMenu,ev){
+        $mdMenu.open(ev);
+    }
 
+    //this needs to get finished up
+    this.testGroups = function(){
+        var groupOptions = {
+            url : '/ru/ruleGroups',
+            params: {},
+            method: 'GET'
+        }
+
+        var promises = []
+
+        promises.push(sharedProps.httpReq(groupOptions))
+        $q.all(promises).then(function(res){
+
+        });
+    }
+
+    this.markPhrase = function(phrase){
+
+    }
+
+    this.reportPhrase = function(phrase){
+
+    }
 
     this.translatePhrase = function(phrase){
         var deferred = $q.defer()
