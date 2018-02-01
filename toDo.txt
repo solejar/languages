@@ -3,6 +3,8 @@ Decliner:
 
     Functional:
 
+        Blurring is overwriting gender innappropriately
+
         Credit the icon artists lol
             <div>Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
@@ -133,6 +135,8 @@ Decliner:
 
         Testing:
             Run each rulegroup on its example for each case, manually verify
+
+            Right up list of component features and run systematic unit tests on them.
 
         Admin:
             Buy a domain, some online mongo allocation as well

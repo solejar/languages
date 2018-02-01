@@ -117,8 +117,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     //clear out select vals
     this.clearToInitial = function(){
          
-        this.adjException = {}
-        this.nounException = {}
+        this.adjException = {exists: false}
+        this.nounException = {exists: false}
 
         this.currAdj = ''
         this.currNoun = ''
@@ -307,7 +307,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     }
 
     this.declineWord = function(currWord,PoS){
-
+        console.log(currWord)
+        console.log(PoS)
         var deferred = $q.defer()
 
         if(currWord){
@@ -403,6 +404,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             $q.all(promises).then(function(res){
                 console.log(res[0])
                 this.adjException = res[0].content
+                this.adjException.exists = true;
                 deferred.resolve('200')
                 //console.log(this.adjException)
             }.bind(this))
@@ -418,8 +420,10 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         if(this.adjException.word!='default' && PoS =='adj'){
             var ruleSetNumber = this.adjException.ruleSet
 
-        }else if(this.adjException.word!='default' && PoS =='noun'){
+
+        }else if(this.nounException.word!='default' && PoS =='noun'){
             var ruleSetNumber = this.nounException.ruleSet
+            console.log(this.nounException)
         }else{ //we're gonna have to use general rules
 
             var ruleSetNumber = ""
@@ -549,10 +553,14 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
         console.log('checking for gender')
         if(PoS=='noun'){
-            if(typeof this.nounException !== null){
-                if(this.nounException.gender!=''){
+            if(!(this.nounException=='default')){
+                console.log(this.nounException.gender)
+                if(this.nounException.gender){
                      var gender = this.nounException.gender
                     this.currGender = gender
+                }else{
+                    console.log('no gender found')
+                    var gender = ''
                 }
                
             }else{
@@ -563,31 +571,33 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             this.nounGender = gender
             
         }else if(PoS=='adj'){
-            if(typeof this.adjException !== null){
-                console.log(this.adjException.gender)
-                if(this.adjException.gender!=''){
+            if(!(this.adjException.word=='default')){
+                console.log(this.adjException)
+                
+                if(this.adjException.gender){
                     var gender = this.adjException.gender
                     this.currGender = gender
-                }
-                
-            }else{
-                console.log('no adj exception yet')
-                var len = word.length;
-                if(len>=2){
-                    var ending = word.substring(len-2,len)
-                    if (this.adjEndingGenders.hasOwnProperty(ending)){
-                        var gender = this.adjEndingGenders[ending]
-                        this.currGender = gender
-                    }else{
-                        //return 'all' //if for some reason ending not in there (this is weird, but will happen if user picks params before writing adj)
-                        var gender = ''
-                    }
-                }else{
-                    var gender = ''
+                    this.adjGender = gender
+                    return
                 }
                 
             }
-            
+
+            console.log('no adj exception yet')
+            var len = word.length;
+            if(len>=2){
+                var ending = word.substring(len-2,len)
+                if (this.adjEndingGenders.hasOwnProperty(ending)){
+                    var gender = this.adjEndingGenders[ending]
+                    this.currGender = gender
+                }else{
+                    //return 'all' //if for some reason ending not in there (this is weird, but will happen if user picks params before writing adj)
+                    var gender = ''
+                }
+            }else{
+                var gender = ''
+            }
+                
             this.adjGender = gender          
         }
     }
@@ -654,8 +664,15 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
             return stem+ruleAdjustedEnding
         }else if(oper=='drop'){
+            var len = word.length
+            var temp_word = word.substring(0,len-1)
+            len--;
+            var ending = temp_word.substring(len-2,len)
+            var word = temp_word.substring(0,len-2)
+            var ruleAdjustedEnding = this.checkSpellingRules(word,ending)
 
-            return word.substring(0,word.length-1)
+            //return word.substring(0,word.length-1)
+            return word+ruleAdjustedEnding;
         }else if(oper=='add'){
 
             var ending = declension['ending']
