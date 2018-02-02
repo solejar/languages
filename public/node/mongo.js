@@ -24,6 +24,81 @@ exports.postErrorReports = function(options,onResult){
     })
 }
 
+exports.getErrorReports = function(options,onResult){
+    MongoClient.connect(url,function(err,database){
+        if(err){onResult({'statusCode': '400','errMsg': err})}
+        var db = database.db(options.db);
+        var collection = db.collection('errorReports')
+
+        collection.find().project({}).toArray(function(err,items){
+        //collection.find().toArray(function(err,items){
+            if (err) {
+                onResult(
+                    {'statusCode': '400','errMsg': err }
+                )
+            }
+            
+            var content = items //return that one element
+            var response = {
+                'statusCode': '200',
+                'content': content
+            }
+            console.log(content)
+            onResult(response)
+            database.close();    
+        });
+    })
+}
+
+exports.postTestResults = function(options,onResult){
+    MongoClient.connect(url,function(err,database){
+        if(err){onResult({'statusCode': '400','errMsg': err})}
+        var db = database.db(options.db);
+        var collection = db.collection('testResults')
+
+        var testResultObj = options.body
+        collection.insertOne(testResultObj,function(err,res){
+            if(err){onResult({'statusCode': '400','errMsg': err})}
+            console.log('one set of test inserted!')
+
+            var response = {
+                'statusCode': '200',
+                'content': {'nInserted': 1}
+            }
+
+            onResult(response)
+
+            database.close();
+        })
+    })
+}
+
+exports.getTestResults = function(options,onResult){
+    MongoClient.connect(url,function(err,database){
+        if(err){onResult({'statusCode': '400','errMsg': err})}
+        var db = database.db(options.db);
+        var collection = db.collection('testResults')
+
+        collection.find().project({}).toArray(function(err,items){
+        //collection.find().toArray(function(err,items){
+            if (err) {
+                onResult(
+                    {'statusCode': '400','errMsg': err }
+                )
+            }
+            
+            var content = items //return that one element
+            var response = {
+                'statusCode': '200',
+                'content': content
+            }
+            console.log(content)
+            onResult(response)
+            database.close();    
+        });
+    })
+}
+
 exports.getExceptions = function(options,onResult){
     MongoClient.connect(url,function(err,database){
         if(err){onResult({'statusCode': '400', 'errMsg': err})}
@@ -82,7 +157,7 @@ exports.getRuleGroups = function(options,onResult){
                 }
 
                 var content = items[0].ruleGroups
-                console.log('all acquired')
+                //console.log('all acquired')
                 //console.log(content)
                 var response = {
                     'statusCode': '200',
@@ -103,7 +178,7 @@ exports.getRuleGroups = function(options,onResult){
                     onResult({'statusCode': '400', 'errMsg': err})
                 }
 
-                console.log('why am I here')
+                //console.log('why am I here')
                 var content = items[0].ruleGroups
 
                 var response = {

@@ -119,6 +119,36 @@ app.get('/ru/exceptions',function(req,res){
     })
 })
 
+app.get('/ru/testResults',function(req,res){
+    var options = {
+        db: 'ru'
+    }
+
+    res.set('Content-Type','application/json')
+
+    mongo.getTestResults(options,function(result){
+        console.log('onResult: (' + result.statusCode + ')')
+        res.statusCode = result.statusCode;
+        res.send(result);
+    })
+
+    
+})
+
+app.get('/ru/errorReports',function(req,res){
+    var options = {
+        db: 'ru'
+    }
+
+    res.set('Content-Type','application/json')
+
+    mongo.getErrorReports(options,function(result){
+        console.log('onResult: (' + result.statusCode + ')')
+        res.statusCode = result.statusCode;
+        res.send(result);
+    })
+})
+
 app.post('/ru/errorReports',function(req,res){
     var body = req.body
     res.set('Content-Type','application/json')
@@ -136,6 +166,28 @@ app.post('/ru/errorReports',function(req,res){
         res.send(result); //i'm not even sure what I should be sending back for POST requests
     })
 })
+
+
+
+app.post('/ru/testResults',function(req,res){
+    var body = req.body
+    res.set('Content-Type','application/json')
+
+    console.log(req.body)
+
+    var options = {
+        body: body,
+        db: 'ru'
+    }
+
+    mongo.postTestResults(options,function(result){
+        console.log('onResult: (' + result.statusCode + ')');
+        res.statusCode = result.statusCode;
+        res.send(result);
+    })
+})
+
+
 
 app.listen(port,(err)=>{
     if(err){

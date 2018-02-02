@@ -21,6 +21,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
     this.init = function(){
 
+        this.testGroups()
+
         var initPhrase = {
             adj: 'твоя',
             noun: 'помощь',
@@ -86,12 +88,14 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             url: '/ru/prepositions',
             params: {},
             method: 'GET',
+            verbose: false
         }
 
         var labelOptions = {
             url: '/'+options.lang+'/labels',
             params: {},
-            method: 'GET'
+            method: 'GET',
+            verbose: false
         }
         
         var promises = [];
@@ -218,7 +222,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         var errorReportOptions = {
             url: '/ru/errorReports',
             data: data,
-            method: 'POST'
+            method: 'POST',
+            verbose: false
         }
 
         console.log('submitting an error report!')
@@ -265,15 +270,83 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         var groupOptions = {
             url : '/ru/ruleGroups',
             params: {},
-            method: 'GET'
+            method: 'GET',
+            verbose: false
         }
 
         var promises = []
 
         promises.push(sharedProps.httpReq(groupOptions))
         $q.all(promises).then(function(res){
-            var ruleGroups = res[0]
-        });
+            var ruleGroups = res[0].content
+            //console.log(ruleGroups)
+
+            var declinedWords = {}
+
+            angular.forEach(ruleGroups,function(ruleSet,ruleSetNumber){
+                var word = ruleSet.example
+                declinedWords[ruleSetNumber] = {}
+                declinedWords[ruleSetNumber].word = word
+                //console.log(ruleSet)
+
+                angular.forEach(ruleSet,function(padexDict,padex){
+                    if(padex!='example' && padex!='description'){
+                        declinedWords[ruleSetNumber][padex] = {}
+                        if(padex=='винительный'){
+                            declinedWords[ruleSetNumber][padex].animate = {}
+                            declinedWords[ruleSetNumber][padex].inanimate = {}
+
+                            var animSingleOper = padexDict.Animate.Single
+                            var animPluralOper = padexDict.Animate.Plural
+
+                            var declinedWordAnimSingle = this.applyEnding(word,animSingleOper)
+                            var declinedWordAnimPlural = this.applyEnding(word,animPluralOper)
+                            declinedWords[ruleSetNumber][padex].animate.single = declinedWordAnimSingle
+                            declinedWords[ruleSetNumber][padex].animate.plural = declinedWordAnimPlural
+
+                            var inanimSingleOper = padexDict.Inanimate.Single
+                            var inanimPluralOper = padexDict.Inanimate.Plural
+
+                            var declinedWordInanimSingle = this.applyEnding(word,inanimSingleOper)
+                            var declinedWordInanimPlural = this.applyEnding(word,inanimPluralOper)
+                            declinedWords[ruleSetNumber][padex].inanimate.single = declinedWordInanimSingle
+                            declinedWords[ruleSetNumber][padex].inanimate.plural = declinedWordInanimPlural
+
+                        }else{
+                            var singleOper = padexDict.Single
+                            var declinedWordSingle = this.applyEnding(word,singleOper)
+                            
+                            declinedWords[ruleSetNumber][padex].single = declinedWordSingle
+
+                            var pluralOper = padexDict.Plural
+                            var declinedWordPlural = this.applyEnding(word,pluralOper)
+                            declinedWords[ruleSetNumber][padex].plural = declinedWordPlural
+                        }
+                    }
+
+                }.bind(this))
+
+                
+            }.bind(this));
+            console.log('about to print declinedWords')
+            //console.log(declinedWords)
+
+            var data = {}
+            
+            data['testResults'] = declinedWords
+            var testingPostOptions = {
+                url: '/ru/testResults',
+                data: data,
+                method: 'POST',
+                verbose: false
+            }
+
+            sharedProps.httpReq(testingPostOptions).then(function(res){
+                console.log('Testing results posted successfully!')
+            });
+
+        }.bind(this));
+        //console.log('finished declining the words')
     }
 
     this.markPhrase = function(phrase){
@@ -293,7 +366,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                 phrase: phrase,
                 targetLang: this.targetLang
             },
-            method: 'GET'
+            method: 'GET',
+            verbose: false
         }
 
         var promises = []
@@ -313,7 +387,11 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
         this.nounReady = false
         this.adjReady = false;
-        this.declineWord(this.currNoun,'noun').then(function(declinedNoun){
+        var gen = this.currGender
+        var padex = this.currCase
+        var anim = this.currAnimate
+        var plur = this.currPlurality
+        this.declineWord(this.currNoun,'noun', gen,padex,anim,plur).then(function(declinedNoun){
             this.declinedNoun = declinedNoun
             this.nounReady = true;
             if(this.adjReady){
@@ -321,7 +399,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             }
         }.bind(this))
 
-        this.declineWord(this.currAdj,'adj').then(function(declinedAdj){
+        this.declineWord(this.currAdj,'adj',gen,padex,anim,plur).then(function(declinedAdj){
             this.declinedAdj = declinedAdj
             this.adjReady = true;
             if(this.nounReady){
@@ -332,30 +410,40 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         return deferred.promise
     }
 
-    this.declineWord = function(currWord,PoS){
+    this.declineWord = function(currWord,PoS,gender,padex,anim,plur){
+
         console.log(currWord)
         console.log(PoS)
         var deferred = $q.defer()
 
         if(currWord){
 
-            this.determineRuleSet(currWord,PoS).then(function(ruleSet){
-                console.log(ruleSet)
+            this.determineRuleSet(currWord,PoS,gender,padex,anim,plur).then(function(ruleSet){
+                //console.log(ruleSet)
                 this.ruleSet = ruleSet
 
-                var plur = this.currPlurality
-                var anim = this.currAnimate
-                var padex = this.currCase
+                //var plur = this.currPlurality
+                //var anim = this.currAnimate
+                //var padex = this.currCase
 
                 if(ruleSet){
                     if(padex =='винительный'){
+
                         if(anim){
+                            /*if(anim!=="Animate"){
+                                console.log(anim + ', doesnt equal Animate')
+
+                            }else if(anim!=="Inanimate"){
+                                console.log(anim + ', doesnt seem to be quite right')
+                            }*/
+                            //console.log()
+                            //console.log('anim: ' + anim + ' , plur: ' + plur)
                             var declensionObj = ruleSet[padex][anim][plur]
                         }else{
                             deferred.resolve('')
                         }
                     }else{
-                        console.log(padex)
+                        //console.log(padex)
                         var declensionObj = ruleSet[padex][plur]
                     }
                 }else{
@@ -363,7 +451,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                     //this should never be reached i'm pretty sure
                 }
                 
-                console.log(declensionObj)
+                //console.log(declensionObj)
                 deferred.resolve(this.applyEnding(currWord,declensionObj))
 
             }.bind(this))
@@ -412,7 +500,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             params: {
                 q: word
             },
-            method: 'GET'
+            method: 'GET',
+            verbose: false
         }
 
         var promises = []
@@ -441,19 +530,22 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     }
 
     //aim to replace enumerated rulegroups with named ones
-    this.determineRuleSet = function(word,PoS){
+    //using nounException and adjException from outside is really dangerous
+    //try to fix
+    this.determineRuleSet = function(word,PoS,gender){
         //if this is an exception, get its rule set number from exceptions dict
+        var ruleSetNumber = "0"
+        //console.log(ruleSetNumber)
         if(this.adjException.word!='default' && PoS =='adj'){
-            var ruleSetNumber = this.adjException.ruleSet
-
+            ruleSetNumber = this.adjException.ruleSet
 
         }else if(this.nounException.word!='default' && PoS =='noun'){
+            //console.log(word + ' was found to be an exception')
             var ruleSetNumber = this.nounException.ruleSet
-            console.log(this.nounException)
+            
         }else{ //we're gonna have to use general rules
-
-            var ruleSetNumber = ""
-            var gen = this.currGender
+            //console.log(ruleSetNumber)
+            var gen = gender
 
             if(PoS=='adj'){
                 var adjType = this.getAdjType(word)
@@ -475,6 +567,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                     }
                 }
             }else if(PoS=='noun'){
+                //console.log('checking noun rule group')
                 var len = word.length
 
                 var lastChar = word[len-1]
@@ -541,10 +634,12 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
         }
 
+        //console.log('about to get rule groups for ' + word + ' with ruleSet number of ' + ruleSetNumber + ' and gender: ' + gender)
         var ruleSetOptions = {
             url: '/ru/ruleGroups/',
             params: {q: ruleSetNumber},
-            method: 'GET'
+            method: 'GET',
+            verbose: false
         }
 
         var promises = []
@@ -554,8 +649,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         var deferred = $q.defer()
 
         $q.all(promises).then(function(res){
-            console.log(res[0].content.ruleGroups)
-            deferred.resolve(res[0].content.ruleGroups[ruleSetNumber]) //this is kind of ugly, but not really a need to return anything in this case.
+            //console.log(res[0].content[ruleSetNumber])
+            deferred.resolve(res[0].content[ruleSetNumber]) //this is kind of ugly, but not really a need to return anything in this case.
             //i'd like to change that in the future
 
         });
@@ -677,15 +772,15 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     this.fleetingCons =  ['б','в','г','д','ж','з','к','л','м','н','п','т','х','ц','ч','ш','щ']
 
     this.applyEnding = function(word, declension){
-        var oper = declension['oper'];
+        var oper = declension.oper;
         if(oper=='none'){
 
             return word;
         }else if(oper=='replace'){
 
-            var howMany = declension['dropHowMany']
+            var howMany = declension.dropHowMany
             var stem = word.substring(0,word.length-howMany)
-            var ending = declension['ending']
+            var ending = declension.ending
             var ruleAdjustedEnding = this.checkSpellingRules(stem,ending);
 
             return stem+ruleAdjustedEnding
@@ -701,7 +796,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             return word+ruleAdjustedEnding;
         }else if(oper=='add'){
 
-            var ending = declension['ending']
+            var ending = declension.ending
             var ruleAdjustedEnding = this.checkSpellingRules(word,ending)
 
             return word+ruleAdjustedEnding;
@@ -715,12 +810,21 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                 var right = word.substring(len-2,len)
                 var newStem = left + 'о' + right
 
-                return this.declineWord(newStem,'noun')
+                this.nounException.word = 'default' //this is a temp measure
+
+                //console.log(declension)
+                //return newStem
+                return this.declineWord(newStem,'noun',declension.gender,declension.padex, declension.animate,declension.plur)
             }else if(fleetingType=='remove'){
                 var left = word.substring(0,len-2)
                 var last = word[len-1]
                 var newStem = left + last
-                return this.declineWord(newStem,'noun')
+
+                this.nounException.word = 'default' //this is a temp measure
+               
+                //console.log(declension)
+                //return newStem
+                return this.declineWord(newStem,'noun',declension.gender,declension.padex,declension.animate,declension.plur)
             }
         }
     }
@@ -744,7 +848,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     //see if attempted ending is compliant with spelling rules
     //tbh this is only necessary for some fringe cases, most of the spelling rules are already incorporated
     this.checkSpellingRules = function(origStem, origEnding){
-        console.log(origStem + ' ' + origEnding)
+        //console.log(origStem + ' ' + origEnding)
 
         //доро+г
         var stemLen = origStem.length;
@@ -758,7 +862,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         var endingLen = origEnding.length
         var endingRemainder = origEnding.substring(1,endingLen) //either blank or the last letter
 
-        console.log(lastStemLetter + ' ' + firstEndingLetter + ' ' + endingRemainder)
+        //console.log(lastStemLetter + ' ' + firstEndingLetter + ' ' + endingRemainder)
 
         if(this.softConsList.includes(lastStemLetter)){
             if(firstEndingLetter=='ы'){

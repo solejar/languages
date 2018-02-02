@@ -20,7 +20,10 @@ app.factory('sharedProps',function($http, $location){
                 params: options.params,
                 data: options.data
             }).then(function mySuccess(response){
-                console.log('the request went well!');
+                if(options.verbose){
+                    console.log('the request of' + path+options.url + ' with params: ' + options.params.q + 'went well!');
+                    console.log(response.data)
+                }
                 return response.data;
             },function myError(response){
                 console.log('the function failed horribly');

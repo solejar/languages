@@ -1,6 +1,10 @@
 Decliner:
     Backlog in order:        
 
+    Really need to change system so that objects are getting passed around, not global scope accessing, this is lazy
+
+    Get rid of overly verbose promise pushback
+    
     Functional:
 
         Blurring is overwriting gender innappropriately

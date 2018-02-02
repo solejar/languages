@@ -115,12 +115,26 @@
                 },
                 "Animate": {
                     "Single": {"oper": "none"},
-                    "Plural": {"oper": "fleeting","fleetingType": "inject"}
+                    "Plural": {
+                        "oper": "fleeting",
+                        "fleetingType": "inject", 
+                        "gender": "N",
+                        "animate": "Animate",
+                        "padex": "винительный",
+                        "plur": "Plural"  
+                    }
                 }
             },
             "родительный": {
                 "Single": {"oper": "replace","ending": "а", "dropHowMany": "1"},
-                "Plural": {"oper": "fleeting","fleetingType": "inject"}
+                "Plural": {
+                        "oper": "fleeting",
+                        "fleetingType": "inject", 
+                        "gender": "N",
+                        "animate": "",
+                        "padex": "родительный",
+                        "plur": "Plural"  
+                    }
             },
             "дательный": {
                 "Single": {"oper": "replace","ending": "у", "dropHowMany": "1"},
@@ -343,12 +357,26 @@
                 },
                 "Animate": {
                     "Single": {"oper": "replace","ending": "ю", "dropHowMany": "1"},
-                    "Plural": {"oper": "fleeting","fleetingType": "inject"}
+                    "Plural": {
+                        "oper": "fleeting",
+                        "fleetingType": "inject", 
+                        "gender": "F",
+                        "animate": "Animate",
+                        "padex": "винительный",
+                        "plur": "Plural"  
+                    }
                 }
             },
             "родительный": {
                 "Single": {"oper": "replace", "ending": "и", "dropHowMany": "1"},
-                "Plural": {"oper": "fleeting","fleetingType": "inject"}
+                "Plural": {
+                        "oper": "fleeting",
+                        "fleetingType": "inject", 
+                        "gender": "F",
+                        "animate": "",
+                        "padex": "родительный",
+                        "plur": "Plural"  
+                    }
             },
             "дательный": {
                 "Single": {"oper": "replace", "ending": "е", "dropHowMany": "1"},
@@ -377,12 +405,26 @@
                 },
                 "Animate": {
                     "Single": {"oper": "replace","ending": "у", "dropHowMany": "1"},
-                    "Plural": {"oper": "fleeting","fleetingType": "inject"}
+                    "Plural": {
+                        "oper": "fleeting",
+                        "fleetingType": "inject", 
+                        "gender": "F",
+                        "animate": "Animate",
+                        "padex": "винительный",
+                        "plur": "Plural"  
+                    }
                 }
             },
             "родительный": {
                 "Single": {"oper": "replace", "ending": "ы", "dropHowMany": "1"},
-                "Plural": {"oper": "fleeting","fleetingType": "inject"}
+                "Plural": {
+                        "oper": "fleeting",
+                        "fleetingType": "inject", 
+                        "gender": "F",
+                        "animate": "",
+                        "padex": "родительный",
+                        "plur": "Plural"  
+                    }
             },
             "дательный": {
                 "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
@@ -679,33 +721,117 @@
         "16": {
             "именительный": {
                 "Single": {"oper": "none"},
-                "Plural": {"oper": "fleeting","fleetingType": "remove"}
+                "Plural": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "именительный",
+                    "animate": "",
+                    "plur": "Plural"
+                }
             },
             "винительный": {
                 "Inanimate": {
                     "Single": {"oper": "none"},
-                    "Plural": {"oper": "fleeting","fleetingType": "remove"}
+                    "Plural": {
+                        "oper": "fleeting",
+                        "fleetingType": "remove", 
+                        "gender": "M",
+                        "padex": "винительный",
+                        "animate": "Inanimate",
+                        "plur": "Plural"
+                    }
                 },
                 "Animate": {
-                    "Single": {"oper": "fleeting","fleetingType": "remove"},
-                    "Plural": {"oper": "fleeting","fleetingType": "remove"}
+                    "Single": {
+                        "oper": "fleeting",
+                        "fleetingType": "remove", 
+                        "gender": "M",
+                        "padex": "винительный",
+                        "animate": "Animate",
+                        "plur": "Single"
+                    },
+                    "Plural":{
+                        "oper": "fleeting",
+                        "fleetingType": "remove", 
+                        "gender": "M",
+                        "padex": "винительный",
+                        "animate": "Animate",
+                        "plur": "Plural"
+                    }
                 }
             },
             "родительный": {
-                "Single": {"oper": "fleeting","fleetingType": "remove"},
-                "Plural": {"oper": "fleeting","fleetingType": "remove"}
+                "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "родительный",
+                    "animate": "",
+                    "plur": "Single"
+                },
+                "Plural": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "родительный",
+                    "animate": "",
+                    "plur": "Plural"
+                }
             },
             "дательный": {
-                "Single": {"oper": "fleeting","fleetingType": "remove"},
-                "Plural": {"oper": "fleeting","fleetingType": "remove"}
+                "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "дательный",
+                    "animate": "",
+                    "plur": "Single"
+                },
+                "Plural": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "дательный",
+                    "animate": "",
+                    "plur": "Plural"
+                }
             },
             "творительный": {
-                "Single": {"oper": "fleeting","fleetingType": "remove"},
-                "Plural": {"oper": "fleeting","fleetingType": "remove"}
+                "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "творительный",
+                    "animate": "",
+                    "plur": "Single"
+                },
+                "Plural": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "творительный",
+                    "animate": "",
+                    "plur": "Plural"
+                }
             },
             "предложный": {
-                "Single": {"oper": "fleeting","fleetingType": "remove"},
-                "Plural": {"oper": "fleeting","fleetingType": "remove"}
+                "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "предложный",
+                    "animate": "",
+                    "plur": "Single"
+                },
+                "Plural": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "предложный",
+                    "animate": "",
+                    "plur": "Plural"
+                }
             },
             "description": "rule set for fleeting vowel male nouns",
             "example": "кусок"
@@ -1494,28 +1620,70 @@
             },
             "винительный": {
                 "Inanimate": {
-                    "Single": {"oper": "fleeting","fleetingType": "remove"},
+                    "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "винительный",
+                    "animate": "Inanimate",
+                    "plur": "Single"
+                },
                     "Plural": {"oper": "replace","ending": "детей", "dropHowMany": "7"}
                 },
                 "Animate": {
-                    "Single": {"oper": "fleeting","fleetingType": "remove"},
+                    "Single": {
+                        "oper": "fleeting",
+                        "fleetingType": "remove", 
+                        "gender": "M",
+                        "padex": "винительный",
+                        "animate": "Animate",
+                        "plur": "Single"
+                    },
                     "Plural": {"oper": "replace","ending": "детей", "dropHowMany": "7"}
                 }
             },
             "родительный": {
-                "Single": {"oper": "fleeting","fleetingType": "remove"},
+                "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "родительный",
+                    "animate": "",
+                    "plur": "Single"
+                },
                 "Plural": {"oper": "replace","ending": "детей", "dropHowMany": "7"}
             },
             "дательный": {
-                "Single": {"oper": "fleeting","fleetingType": "remove"},
+                "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "дательный",
+                    "animate": "",
+                    "plur": "Single"
+                },
                 "Plural": {"oper": "replace","ending": "детям", "dropHowMany": "7"}
             },
             "творительный": {
-                "Single": {"oper": "fleeting","fleetingType": "remove"},
+                "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "творительный",
+                    "animate": "",
+                    "plur": "Single"
+                },
                 "Plural": {"oper": "replace","ending": "детьми", "dropHowMany": "7"}
             },
             "предложный": {
-                "Single": {"oper": "fleeting","fleetingType": "remove"},
+                "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "предложный",
+                    "animate": "",
+                    "plur": "Single"
+                },
                 "Plural": {"oper": "replace","ending": "детях", "dropHowMany": "7"}
             },
             "description": "rule set for ребёнок",
@@ -1800,28 +1968,70 @@
             },
             "винительный": {
                 "Inanimate": {
-                    "Single": {"oper": "fleeting","fleetingType": "remove"},
+                    "Single": {
+                        "oper": "fleeting",
+                        "fleetingType": "remove", 
+                        "gender": "M",
+                        "padex": "винительный",
+                        "animate": "Inanimate",
+                        "plur": "Single"
+                    },
                     "Plural": {"oper": "replace","ending": "ят", "dropHowMany": "4"}
                 },
                 "Animate": {
-                    "Single": {"oper": "fleeting","fleetingType": "remove"},
+                    "Single": {
+                        "oper": "fleeting",
+                        "fleetingType": "remove", 
+                        "gender": "M",
+                        "padex": "винительный",
+                        "animate": "Animate",
+                        "plur": "Single"
+                    },
                     "Plural": {"oper": "replace","ending": "ят", "dropHowMany": "4"}
                 }
             },
             "родительный": {
-                "Single": {"oper": "fleeting","fleetingType": "remove"},
+                "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "родительный",
+                    "animate": "",
+                    "plur": "Single"
+                },
                 "Plural": {"oper": "replace","ending": "ят", "dropHowMany": "4"}
             },
             "дательный": {
-                "Single": {"oper": "fleeting","fleetingType": "remove"},
+                "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "дательный",
+                    "animate": "",
+                    "plur": "Single"
+                },
                 "Plural": {"oper": "replace","ending": "ятам", "dropHowMany": "4"}
             },
             "творительный": {
-                "Single": {"oper": "fleeting","fleetingType": "remove"},
+                "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "творительный",
+                    "animate": "",
+                    "plur": "Single"
+                },
                 "Plural": {"oper": "replace","ending": "ятами", "dropHowMany": "4"}
             },
             "предложный": {
-                "Single": {"oper": "fleeting","fleetingType": "remove"},
+                "Single": {
+                    "oper": "fleeting",
+                    "fleetingType": "remove", 
+                    "gender": "M",
+                    "padex": "предложный",
+                    "animate": "",
+                    "plur": "Single"
+                },
                 "Plural": {"oper": "replace","ending": "ятах", "dropHowMany": "4"}
             },
             "description": "rule set for котёнок, телёнок",
