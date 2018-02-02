@@ -68,6 +68,7 @@ exports.getExceptions = function(options,onResult){
 }
 
 exports.getRuleGroups = function(options,onResult){
+    console.log('this function was called once')
     MongoClient.connect(url,function(err,database){
         if(err){onResults({'statusCode': '400', 'errMsg': err})}
 
@@ -75,11 +76,14 @@ exports.getRuleGroups = function(options,onResult){
         var collection = db.collection('ruleGroups')
 
         if(options.q=='all'){
-            collection.find().toArray(function(err,items){
-                if(err){onResult({'statusCode': '400','errMsg': err})}
+            collection.find().project({ruleGroups: 1}).toArray(function(err,items){
+                if(err){
+                    onResult({'statusCode': '400','errMsg': err})
+                }
 
                 var content = items[0].ruleGroups
-                console.log(content)
+                console.log('all acquired')
+                //console.log(content)
                 var response = {
                     'statusCode': '200',
                     'content': content
@@ -87,30 +91,35 @@ exports.getRuleGroups = function(options,onResult){
 
                 onResult(response)
                 database.close()
+                
+            })
+        }else{
+            var projection = "ruleGroups." + options.q
+            var params = {}
+            params[projection] = 1
+            //console.log(projection)
+            collection.find().project(params).toArray(function(err,items){
+                if(err){
+                    onResult({'statusCode': '400', 'errMsg': err})
+                }
+
+                console.log('why am I here')
+                var content = items[0].ruleGroups
+
+                var response = {
+                    'statusCode': '200',
+                    'content': content
+                }
+                
+                //console.log(content)
+
+                onResult(response)
+                database.close()
+                
             })
         }
 
-        var projection = "ruleGroups." + options.q
-        var params = {}
-        params[projection] = 1
-        //console.log(projection)
-        collection.find().project(params).toArray(function(err,items){
-            if(err){
-                onResult({'statusCode': '400', 'errMsg': err})
-            }
-
-            var content = items[0].ruleGroups
-
-            var response = {
-                'statusCode': '200',
-                'content': content
-            }
-            
-            console.log(content)
-
-            onResult(response)
-            database.close()
-        })
+        
 
     })
 }

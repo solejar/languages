@@ -272,7 +272,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
         promises.push(sharedProps.httpReq(groupOptions))
         $q.all(promises).then(function(res){
-
+            var ruleGroups = res[0]
         });
     }
 

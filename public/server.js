@@ -61,7 +61,7 @@ app.get('/en/labels',function(req,res){
     }
     mongo.getLabels(options,function(result){
         console.log('onResult: (' + result.statusCode + ')');
-        res.statusCode = result.statusCode;
+        
         res.send(result);
     });
 });
@@ -81,11 +81,11 @@ app.get('/ru/ruleGroups',function(req,res){
     }
     
 
-    console.log(req)
+    //console.log(req)
     mongo.getRuleGroups(options,function(result){
         //console.log('just finished getting the result')
         console.log('onResult: (' + result.statusCode + ')');
-        res.statusCode = result.statusCode;
+        //res.statusCode = result.statusCode;
         res.send(result);
     });
 });
