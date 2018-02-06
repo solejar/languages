@@ -81,9 +81,10 @@ app.get('/ru/ruleGroups',function(req,res){
     }
     
 
-    //console.log(req)
+    console.log(options)
     mongo.getRuleGroups(options,function(result){
-        //console.log('just finished getting the result')
+        console.log('just finished getting the ruleGroup')
+        console.log(result)
         console.log('onResult: (' + result.statusCode + ')');
         //res.statusCode = result.statusCode;
         res.send(result);
@@ -129,7 +130,7 @@ app.get('/ru/testResults',function(req,res){
     mongo.getTestResults(options,function(result){
         console.log('onResult: (' + result.statusCode + ')')
         res.statusCode = result.statusCode;
-        res.send(result);
+        res.send(JSON.stringify(result,null,4));
     })
 
     

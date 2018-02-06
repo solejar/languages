@@ -33,6 +33,7 @@
     "google-translate": "^2.0.5",
     "google-translate-api": "^2.3.0",
     "mongodb": "^3.0.1",
-    "node": "^9.3.0"
+    "node": "^9.3.0",
+    "nodemon": "^1.14.12"
   }
 }

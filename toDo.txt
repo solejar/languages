@@ -1,10 +1,24 @@
 Decliner:
-    Backlog in order:        
+    Backlog in order: 
+
+    Turn results of this testing into set of assertions for Jasmine framework testing
+
+    Figure out how to integrate Tatoeba
+
+    Unuppercase Single/Plural, Animate/Inanimate, percolate changes throughout app
+
+    Errors:
+    -о fix attempted, not tested, -x fix attempted, tested and working
+
+        Fleeting vowels not working
 
     Really need to change system so that objects are getting passed around, not global scope accessing, this is lazy
 
     Get rid of overly verbose promise pushback
-    
+
+    Move declension to a factory, also separate out this ending controller
+
+    Use for each simply to push promise onto array, then use $q.all to wait for all the promises to resolve
     Functional:
 
         Blurring is overwriting gender innappropriately

@@ -281,13 +281,13 @@
             "gender": "N",
             "animate": "Inanimate",
             "word": "колечко",
-            "ruleSet": "-1.1"
+            "ruleSet": "-11"
         },
         "яблочко": {
             "gender": "N",
             "animate": "Inanimate",
             "word": "яблочко",
-            "ruleSet": "-1.1"
+            "ruleSet": "-11"
         },
         "очко": {
             "gender": "N",
@@ -314,7 +314,7 @@
         "это": {
             "gender": "N",
             "word": "это",
-            "ruleSet": "29.5"
+            "ruleSet": "295"
         },
         "тот": {
             "gender": "M",
@@ -329,7 +329,7 @@
         "то": {
             "gender": "N",
             "word": "то",
-            "ruleSet": "29.5"
+            "ruleSet": "295"
         },
         "ваш": {
             "gender": "M",
@@ -376,6 +376,11 @@
             "word": "мое",
             "ruleSet": "25"
         },
+        "моё": {
+            "gender": "N",
+            "word": "моё",
+            "ruleSet": "25"
+        },
         "твой": {
             "gender": "M",
             "word": "твой",
@@ -391,6 +396,11 @@
             "word": "твое",
             "ruleSet": "25"
         },
+        "твоё": {
+            "gender": "N",
+            "word": "твоё",
+            "ruleSet": "25"
+        },
         "свой": {
             "gender": "M",
             "word": "свой",
@@ -404,6 +414,11 @@
         "свое": {
             "gender": "N",
             "word": "свое",
+            "ruleSet": "25"
+        },
+        "своё": {
+            "gender": "N",
+            "word": "своё",
             "ruleSet": "25"
         },
         "виски": {

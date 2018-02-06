@@ -21,7 +21,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
     this.init = function(){
 
-        this.testGroups()
+        //this.testGroups()
 
         var initPhrase = {
             adj: 'твоя',
@@ -121,8 +121,10 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     //clear out select vals
     this.clearToInitial = function(){
          
-        this.adjException = {exists: false}
-        this.nounException = {exists: false}
+        //this.adjException = {exists: false}
+        //this.nounException = {exists: false}
+        this.adjException = {}
+        this.nounException = {}
 
         this.currAdj = ''
         this.currNoun = ''
@@ -283,13 +285,19 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
             var declinedWords = {}
 
+            var promiseArr = []
+
             angular.forEach(ruleGroups,function(ruleSet,ruleSetNumber){
                 var word = ruleSet.example
                 declinedWords[ruleSetNumber] = {}
                 declinedWords[ruleSetNumber].word = word
                 //console.log(ruleSet)
 
+                
                 angular.forEach(ruleSet,function(padexDict,padex){
+
+                    var promiseObj = {}
+
                     if(padex!='example' && padex!='description'){
                         declinedWords[ruleSetNumber][padex] = {}
                         if(padex=='винительный'){
@@ -299,28 +307,61 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                             var animSingleOper = padexDict.Animate.Single
                             var animPluralOper = padexDict.Animate.Plural
 
-                            var declinedWordAnimSingle = this.applyEnding(word,animSingleOper)
-                            var declinedWordAnimPlural = this.applyEnding(word,animPluralOper)
-                            declinedWords[ruleSetNumber][padex].animate.single = declinedWordAnimSingle
-                            declinedWords[ruleSetNumber][padex].animate.plural = declinedWordAnimPlural
+                            //var declinedWordAnimSingle = 
+                            /*if(animSingleOper=='fleeting'){
+                                console.log('found a fleeter')
+                                console.log()
+                            }
+                            animSingleObj = {}
+                            animPluralObj = {}
+                            inanimSingleObj = {}
+                            inanimPluralObj = {}*/
+
+                            //animSingleObj.promise = this.applyEnding(word,animSingleOper)
+                            this.applyEnding(word,animSingleOper).then(function(declinedWord){
+                                declinedWords[ruleSetNumber][padex].animate.single = declinedWord
+                            })
+
+                            //var declinedWordAnimPlural = 
+                            //promiseObj.promise = this.applyEnding(word,animPluralOper)
+                            this.applyEnding(word,animPluralOper).then(function(declinedWord){
+                                console.log('about to print')
+                                declinedWords[ruleSetNumber][padex].animate.plural = declinedWord
+
+                            })
+
+                            //declinedWords[ruleSetNumber][padex].animate.single = declinedWordAnimSingle
+                            //declinedWords[ruleSetNumber][padex].animate.plural = declinedWordAnimPlural
 
                             var inanimSingleOper = padexDict.Inanimate.Single
                             var inanimPluralOper = padexDict.Inanimate.Plural
 
-                            var declinedWordInanimSingle = this.applyEnding(word,inanimSingleOper)
-                            var declinedWordInanimPlural = this.applyEnding(word,inanimPluralOper)
-                            declinedWords[ruleSetNumber][padex].inanimate.single = declinedWordInanimSingle
-                            declinedWords[ruleSetNumber][padex].inanimate.plural = declinedWordInanimPlural
+                            //var declinedWordInanimSingle = 
+                            this.applyEnding(word,inanimSingleOper).then(function(declinedWord){
+                                declinedWords[ruleSetNumber][padex].inanimate.single = declinedWord
+                            })
+                            //var declinedWordInanimPlural = 
+                            this.applyEnding(word,inanimPluralOper).then(function(declinedWord){
+                                declinedWords[ruleSetNumber][padex].inanimate.plural = declinedWord
+                            })
+                            //declinedWords[ruleSetNumber][padex].inanimate.single = declinedWordInanimSingle
+                            //declinedWords[ruleSetNumber][padex].inanimate.plural = declinedWordInanimPlural
 
                         }else{
                             var singleOper = padexDict.Single
-                            var declinedWordSingle = this.applyEnding(word,singleOper)
+                            //var declinedWordSingle = 
+                            this.applyEnding(word,singleOper).then(function(declinedWord){
+                                declinedWords[ruleSetNumber][padex].single = declinedWord
+                            })
                             
-                            declinedWords[ruleSetNumber][padex].single = declinedWordSingle
+                            //declinedWords[ruleSetNumber][padex].single = declinedWordSingle
 
                             var pluralOper = padexDict.Plural
-                            var declinedWordPlural = this.applyEnding(word,pluralOper)
-                            declinedWords[ruleSetNumber][padex].plural = declinedWordPlural
+                            //var declinedWordPlural = 
+                            this.applyEnding(word,pluralOper).then(function(declinedWord){
+                                declinedWords[ruleSetNumber][padex].plural = declinedWord
+                            })
+                            //declinedWords[ruleSetNumber][padex].plural = declinedWordPlural
                         }
                     }
 
@@ -331,19 +372,22 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             console.log('about to print declinedWords')
             //console.log(declinedWords)
 
-            var data = {}
-            
-            data['testResults'] = declinedWords
-            var testingPostOptions = {
-                url: '/ru/testResults',
-                data: data,
-                method: 'POST',
-                verbose: false
-            }
+            $timeout(function(){
+                var data = {}
 
-            sharedProps.httpReq(testingPostOptions).then(function(res){
-                console.log('Testing results posted successfully!')
-            });
+                data['testResults'] = declinedWords
+                var testingPostOptions = {
+                    url: '/ru/testResults',
+                    data: data,
+                    method: 'POST',
+                    verbose: false
+                }
+
+                sharedProps.httpReq(testingPostOptions).then(function(res){
+                    console.log('Testing results posted successfully!')
+                });
+            },10000); //just gonna stick this behind a timeout
+            
 
         }.bind(this));
         //console.log('finished declining the words')
@@ -391,21 +435,27 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         var padex = this.currCase
         var anim = this.currAnimate
         var plur = this.currPlurality
-        this.declineWord(this.currNoun,'noun', gen,padex,anim,plur).then(function(declinedNoun){
-            this.declinedNoun = declinedNoun
-            this.nounReady = true;
-            if(this.adjReady){
-                deferred.resolve(this.currPrep.name+' '+ this.declinedAdj+' '+this.declinedNoun)
-            }
+
+        this.checkException(this.currNoun,'noun').then(function(res){
+            this.declineWord(this.currNoun,'noun', gen,padex,anim,plur).then(function(declinedNoun){
+                this.declinedNoun = declinedNoun
+                this.nounReady = true;
+                if(this.adjReady){
+                    deferred.resolve(this.currPrep.name+' '+ this.declinedAdj+' '+this.declinedNoun)
+                }
+            }.bind(this))
         }.bind(this))
 
-        this.declineWord(this.currAdj,'adj',gen,padex,anim,plur).then(function(declinedAdj){
-            this.declinedAdj = declinedAdj
-            this.adjReady = true;
-            if(this.nounReady){
-                deferred.resolve(this.currPrep.name+' '+this.declinedAdj+' ' + this.declinedNoun)
-            }
-        }.bind(this))
+        this.checkException(this.currAdj,'adj').then(function(res){
+
+            this.declineWord(this.currAdj,'adj',gen,padex,anim,plur).then(function(declinedAdj){
+                this.declinedAdj = declinedAdj
+                this.adjReady = true;
+                if(this.nounReady){
+                    deferred.resolve(this.currPrep.name+' '+this.declinedAdj+' ' + this.declinedNoun)
+                }
+            }.bind(this))
+        }.bind(this));
 
         return deferred.promise
     }
@@ -414,12 +464,16 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
         console.log(currWord)
         console.log(PoS)
+        console.log(gender)
+        console.log(padex)
+        console.log(anim)
+        console.log(plur)
         var deferred = $q.defer()
 
         if(currWord){
 
             this.determineRuleSet(currWord,PoS,gender,padex,anim,plur).then(function(ruleSet){
-                //console.log(ruleSet)
+                console.log(ruleSet)
                 this.ruleSet = ruleSet
 
                 //var plur = this.currPlurality
@@ -445,6 +499,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                     }else{
                         //console.log(padex)
                         var declensionObj = ruleSet[padex][plur]
+
                     }
                 }else{
                     deferred.resolve('')
@@ -452,9 +507,15 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                 }
                 
                 //console.log(declensionObj)
-                deferred.resolve(this.applyEnding(currWord,declensionObj))
+                //console.log(currWord)
+                //console.log(declensionObj)
+                this.applyEnding(currWord,declensionObj).then(function(declinedWord){
+                    deferred.resolve(declinedWord)
+                })
+                //deferred.resolve(this.applyEnding(currWord,declensionObj))
 
             }.bind(this))
+           
 
         }else{
             deferred.resolve('')
@@ -494,6 +555,8 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         var deferred = $q.defer()
 
         console.log('getting an exception')
+        console.log(word)
+        console.log(PoS)
         
         var exceptionOptions = {
             url: '/ru/exceptions',
@@ -512,6 +575,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             $q.all(promises).then(function(res){
                 console.log(res[0])
                 this.nounException = res[0].content
+                //this.nounException.exists = true;
                 deferred.resolve('200')
             }.bind(this))
             
@@ -519,7 +583,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             $q.all(promises).then(function(res){
                 console.log(res[0])
                 this.adjException = res[0].content
-                this.adjException.exists = true;
+                //this.adjException.exists = true;
                 deferred.resolve('200')
                 //console.log(this.adjException)
             }.bind(this))
@@ -535,16 +599,21 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     this.determineRuleSet = function(word,PoS,gender){
         //if this is an exception, get its rule set number from exceptions dict
         var ruleSetNumber = "0"
+
+    
         //console.log(ruleSetNumber)
+        console.log(word)
+        console.log(PoS)
+        console.log(this.nounException)
         if(this.adjException.word!='default' && PoS =='adj'){
             ruleSetNumber = this.adjException.ruleSet
 
         }else if(this.nounException.word!='default' && PoS =='noun'){
-            //console.log(word + ' was found to be an exception')
-            var ruleSetNumber = this.nounException.ruleSet
+            console.log(word + ' was found to be an exception')
+            ruleSetNumber = this.nounException.ruleSet
             
         }else{ //we're gonna have to use general rules
-            //console.log(ruleSetNumber)
+            console.log('using general rules')
             var gen = gender
 
             if(PoS=='adj'){
@@ -634,13 +703,15 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
         }
 
-        //console.log('about to get rule groups for ' + word + ' with ruleSet number of ' + ruleSetNumber + ' and gender: ' + gender)
+        console.log('about to get rule groups for ' + word + ' with ruleSet number of ' + ruleSetNumber + ' and gender: ' + gender)
         var ruleSetOptions = {
             url: '/ru/ruleGroups/',
             params: {q: ruleSetNumber},
             method: 'GET',
             verbose: false
         }
+
+        //console.log(ruleSetOptions)
 
         var promises = []
 
@@ -772,10 +843,12 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
     this.fleetingCons =  ['б','в','г','д','ж','з','к','л','м','н','п','т','х','ц','ч','ш','щ']
 
     this.applyEnding = function(word, declension){
+        var deferred = $q.defer()
+
         var oper = declension.oper;
         if(oper=='none'){
 
-            return word;
+            deferred.resolve(word);
         }else if(oper=='replace'){
 
             var howMany = declension.dropHowMany
@@ -783,50 +856,71 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             var ending = declension.ending
             var ruleAdjustedEnding = this.checkSpellingRules(stem,ending);
 
-            return stem+ruleAdjustedEnding
+            //return stem+ruleAdjustedEnding
+            deferred.resolve(stem+ruleAdjustedEnding)
         }else if(oper=='drop'){
             var len = word.length
             var temp_word = word.substring(0,len-1)
-            len--;
+            len = len -1;
             var ending = temp_word.substring(len-2,len)
             var word = temp_word.substring(0,len-2)
             var ruleAdjustedEnding = this.checkSpellingRules(word,ending)
 
             //return word.substring(0,word.length-1)
-            return word+ruleAdjustedEnding;
+            //return word+ruleAdjustedEnding;
+            deferred.resolve(word+ruleAdjustedEnding)
         }else if(oper=='add'){
 
             var ending = declension.ending
             var ruleAdjustedEnding = this.checkSpellingRules(word,ending)
 
-            return word+ruleAdjustedEnding;
+            deferred.resolve(word+ruleAdjustedEnding);
         }else if(oper=='fleeting'){
+
             var len = word.length
             //need to figure out what the fuck to do here
             var fleetingType = declension.fleetingType
             if(fleetingType=='inject'){
                 
                 var left = word.substring(0,len-2)
-                var right = word.substring(len-2,len)
-                var newStem = left + 'о' + right
+                var right = word.substring(len-2,len-1)
+
+                var newEnding = this.checkSpellingRules(left ,'о' + right)
 
                 this.nounException.word = 'default' //this is a temp measure
 
                 //console.log(declension)
-                //return newStem
-                return this.declineWord(newStem,'noun',declension.gender,declension.padex, declension.animate,declension.plur)
+                console.log(left+newEnding)
+                deferred.resolve(left+newEnding)
+                //console.log('about to decline '+ newStem )
+                //console.log(declension)
+                /*this.declineWord(newStem,'noun',declension.gender,declension.padex, declension.animate,declension.plur).then(function(declinedWord){
+                    console.log(declinedWord)
+                    deferred.resolve(declinedWord)
+                })*/
+                
             }else if(fleetingType=='remove'){
                 var left = word.substring(0,len-2)
                 var last = word[len-1]
                 var newStem = left + last
 
-                this.nounException.word = 'default' //this is a temp measure
+                //this.nounException.word = 'default' //this is a temp measure
                
                 //console.log(declension)
                 //return newStem
-                return this.declineWord(newStem,'noun',declension.gender,declension.padex,declension.animate,declension.plur)
+                console.log('about to decline '+ newStem )
+                console.log(declension)
+                this.checkException(newStem,'noun').then(function(res){
+                    this.declineWord(newStem,'noun',declension.gender,declension.padex,declension.animate,declension.plur).then(function(declinedWord){
+                        console.log(declinedWord)
+                        deferred.resolve(declinedWord)
+                    })
+                }.bind(this))
+                
             }
         }
+
+        return deferred.promise
     }
 
     this.validInputs = function(currPoS){

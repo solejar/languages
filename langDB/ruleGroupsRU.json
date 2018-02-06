@@ -103,7 +103,7 @@
             "description": "rule set for neuter nouns ending in ко, like яблоко, or плечо",
             "example": "плечо"        
         },
-        "-1.1": {
+        "-11": {
             "именительный": {
                 "Single": {"oper": "none"},
                 "Plural": {"oper": "replace","ending": "и", "dropHowMany": "1"}
@@ -305,7 +305,7 @@
                 "Plural": {"oper": "add", "ending": "ми"}
             },
             "предложный": {
-                "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
+                "Single": {"oper": "replace","ending": "и", "dropHowMany": "1"},
                 "Plural": {"oper": "add", "ending": "х"}
             },
             "description": "rule set for female nouns ending in ия, like партия",
@@ -523,12 +523,12 @@
                 },
                 "Animate": {
                     "Single": {"oper": "replace","ending": "я", "dropHowMany": "1"},
-                    "Plural": {"oper": "replace","ending": "ев", "dropHowMany": "1"}
+                    "Plural": {"oper": "replace","ending": "ёв", "dropHowMany": "1"}
                 }
             },
             "родительный": {
                 "Single": {"oper": "replace", "ending": "я", "dropHowMany": "1"},
-                "Plural": {"oper": "replace","ending": "ев", "dropHowMany": "1"}
+                "Plural": {"oper": "replace","ending": "ёв", "dropHowMany": "1"}
             },
             "дательный": {
                 "Single": {"oper": "replace","ending": "ю", "dropHowMany": "1"},
@@ -543,12 +543,12 @@
                 "Plural": {"oper": "replace","ending": "ях", "dropHowMany": "1"}
             },
             "description": "rule set for male nouns ending in й, like чёрный",
-            "example": "чёрный"
+            "example": "чай"
         },
         "12": {
             "именительный": {
                 "Single": {"oper": "none"},
-                "Plural": {"oper": "replace","ending": "я", "dropHowMany": "1"}
+                "Plural": {"oper": "replace","ending": "и", "dropHowMany": "1"}
             },
             "винительный": {
                 "Inanimate": {
@@ -556,12 +556,12 @@
                     "Plural": {"oper": "replace","ending": "и", "dropHowMany": "1"}
                 },
                 "Animate": {
-                    "Single": {"oper": "replace","ending": "я", "dropHowMany": "1"},
+                    "Single": {"oper": "replace","ending": "и", "dropHowMany": "1"},
                     "Plural": {"oper": "replace","ending": "ей", "dropHowMany": "1"}
                 }
             },
             "родительный": {
-                "Single": {"oper": "replace", "ending": "я", "dropHowMany": "1"},
+                "Single": {"oper": "replace", "ending": "и", "dropHowMany": "1"},
                 "Plural": {"oper": "replace","ending": "ей", "dropHowMany": "1"}
             },
             "дательный": {
@@ -637,7 +637,7 @@
                 "Plural": {"oper": "add", "ending": "ам"}
             },
             "творительный": {
-                "Single": {"oper": "add", "ending": "ем"},
+                "Single": {"oper": "add", "ending": "ом"},
                 "Plural": {"oper": "add","ending": "ами"}
             },
             "предложный": {
@@ -647,6 +647,7 @@
             "description": "rule set for male nouns ending in a husher, like падеж",
             "example": "падеж"
         },
+
 
         "15": {
             "именительный": {
@@ -694,25 +695,25 @@
                     "Plural": {"oper": "replace","ending": "я","dropHowMany": "1"}
                 },
                 "Animate": {
-                    "Single": {"oper": "add","ending": "а"},
-                    "Plural": {"oper": "add","ending": "ов"}
+                    "Single": {"oper": "replace","ending": "я","dropHowMany": "1"},
+                    "Plural": {"oper": "replace","ending": "ей","dropHowMany": "1"}
                 }
             },
             "родительный": {
-                "Single": {"oper": "add","ending": "а"},
-                "Plural": {"oper": "add","ending": "ов"}
+                "Single": {"oper": "replace","ending": "я","dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ей","dropHowMany": "1"}
             },
             "дательный": {
-                "Single": {"oper": "add","ending": "у"},
-                "Plural": {"oper": "add", "ending": "ам"}
+                "Single": {"oper": "replace","ending": "ю","dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ям","dropHowMany": "1"}
             },
             "творительный": {
-                "Single": {"oper": "add", "ending": "ом"},
-                "Plural": {"oper": "add","ending": "ами"}
+                "Single": {"oper": "replace","ending": "ем","dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ями","dropHowMany": "1"}
             },
             "предложный": {
-                "Single": {"oper": "add","ending": "е"},
-                "Plural": {"oper": "add","ending": "ах"}
+                "Single": {"oper": "replace","ending": "е","dropHowMany": "1"},
+                "Plural": {"oper": "replace","ending": "ях","dropHowMany": "1"}
             },
             "description": "rule set for male nouns with plurals ending in я, like якорь",
             "example": "якорь"
@@ -864,7 +865,7 @@
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ых"}
             },
             "description": "rule set for hard, male adjectives",
-            "example": "новой"
+            "example": "новый"
         },
         "18": {
             "именительный": {
@@ -902,7 +903,7 @@
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ые"}
             },"винительный": {
                 "Inanimate": {
-                    "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ое"},
+                    "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ого"},
                     "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ые"}
                 },
                 "Animate": {
@@ -976,7 +977,7 @@
                 "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ей"},
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "им"}
             },"творительный": {
-                "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ей/ею"},
+                "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ей"},
                 "Plural": {"oper": "replace", "dropHowMany": "2", "ending": "ими"}
             },"предложный": {
                 "Single": {"oper": "replace", "dropHowMany": "2", "ending": "ей"},
@@ -1019,7 +1020,7 @@
         "23": {
             "именительный": {                
                 "Single": {"oper": "none"},
-                "Plural": {"oper": "replace", "ending": "и", "howMany": "1"} 
+                "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"} 
             },"винительный": {
                 "Inanimate": {
                     "Single": {"oper": "none"},
@@ -1049,7 +1050,7 @@
         "24": {
             "именительный": {                
                 "Single": {"oper": "none"},
-                "Plural": {"oper": "replace", "ending": "и", "howMany": "1"} 
+                "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"} 
             },"винительный": {
                 "Inanimate": {
                     "Single": {"oper": "replace", "ending": "ю", "dropHowMany": "1"},
@@ -1078,7 +1079,7 @@
         "25": {
             "именительный": {                
                 "Single": {"oper": "none"},
-                "Plural": {"oper": "replace", "ending": "и", "howMany": "1"} 
+                "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"} 
             },"винительный": {
                 "Inanimate": {
                     "Single": {"oper": "none"},
@@ -1107,28 +1108,28 @@
         "26": {
             "именительный": {                
                 "Single": {"oper": "none"},
-                "Plural": {"oper": "replace", "ending": "и", "howMany": "1"} 
+                "Plural": {"oper": "add", "ending": "и"} 
             },"винительный": {
                 "Inanimate": {
                     "Single": {"oper": "none"},
-                    "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"}    
+                    "Plural": {"oper": "add", "ending": "и"}    
                 },
                 "Animate": {
-                    "Single": {"oper": "none"},
-                    "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}      
+                    "Single": {"oper": "add", "ending": "его"},
+                    "Plural": {"oper": "add", "ending": "их"}      
                 }
             },"родительный": {
-                "Single": {"oper": "replace", "ending": "его", "dropHowMany": "1"},
-                "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}    
+                "Single": {"oper": "add", "ending": "его"},
+                "Plural": {"oper": "add", "ending": "их"}    
             },"дательный": {
-                "Single": {"oper": "replace", "ending": "ему", "dropHowMany": "1"},
-                "Plural": {"oper": "replace", "ending": "им", "dropHowMany": "1"}   
+                "Single": {"oper": "add", "ending": "ему"},
+                "Plural": {"oper": "add", "ending": "им"}   
             },"творительный": {
-                "Single": {"oper": "replace", "ending": "им", "dropHowMany": "1"},
-                "Plural": {"oper": "replace", "ending": "ими", "dropHowMany": "1"} 
+                "Single": {"oper": "add", "ending": "им"},
+                "Plural": {"oper": "add", "ending": "ими"} 
             },"предложный": {
-                "Single": {"oper": "replace", "ending": "ём", "dropHowMany": "1"},
-                "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}   
+                "Single": {"oper": "add", "ending": "ем"},
+                "Plural": {"oper": "add", "ending": "их"}   
             },
             "description": "rule set for male possessive adjectives, like наш",
             "example": "наш"
@@ -1137,7 +1138,7 @@
         "27": {
             "именительный": {                
                 "Single": {"oper": "none"},
-                "Plural": {"oper": "replace", "ending": "и", "howMany": "1"} 
+                "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"} 
             },"винительный": {
                 "Inanimate": {
                     "Single": {"oper": "replace","ending": "у", "dropHowMany": "1"},
@@ -1148,16 +1149,16 @@
                     "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}      
                 }
             },"родительный": {
-                "Single": {"oper": "replace", "ending": "его", "dropHowMany": "1"},
+                "Single": {"oper": "replace", "ending": "ей", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}    
             },"дательный": {
-                "Single": {"oper": "replace", "ending": "ему", "dropHowMany": "1"},
+                "Single": {"oper": "replace", "ending": "ей", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "им", "dropHowMany": "1"}   
             },"творительный": {
-                "Single": {"oper": "replace", "ending": "им", "dropHowMany": "1"},
+                "Single": {"oper": "replace", "ending": "ей", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "ими", "dropHowMany": "1"} 
             },"предложный": {
-                "Single": {"oper": "replace", "ending": "ём", "dropHowMany": "1"},
+                "Single": {"oper": "replace", "ending": "ей", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}   
             },
             "description": "rule set for female possessive adjectives, like наша",
@@ -1167,7 +1168,7 @@
         "28": {
             "именительный": {                
                 "Single": {"oper": "none"},
-                "Plural": {"oper": "replace", "ending": "и", "howMany": "1"} 
+                "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"} 
             },"винительный": {
                 "Inanimate": {
                     "Single": {"oper": "none"},
@@ -1208,7 +1209,7 @@
                     "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "2"}      
                 }
             },"родительный": {
-                "Single": {"oper": "replace", "ending": "oго", "dropHowMany": "1"},
+                "Single": {"oper": "replace", "ending": "го", "dropHowMany": "1"},
                 "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "2"}
             },"дательный": {
                 "Single": {"oper": "replace", "ending": "му", "dropHowMany": "1"},
@@ -1223,7 +1224,7 @@
             "description": "rule set for male demonstrative adjectives, like этот",
             "example": "этот"
         },
-        "29.5": {
+        "295": {
             "именительный": {                
                 "Single": {"oper": "none"},
                 "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"} 
@@ -1233,7 +1234,7 @@
                     "Plural": {"oper": "replace", "ending": "и", "dropHowMany": "1"}    
                 },
                 "Animate": {
-                    "Single": {"oper": "add", "ending": "го"},
+                    "Single": {"oper": "none"},
                     "Plural": {"oper": "replace", "ending": "их", "dropHowMany": "1"}      
                 }
             },"родительный": {
@@ -1553,7 +1554,7 @@
             "винительный": {
                 "Inanimate": {
                     "Single": {"oper": "none"},
-                    "Plural": {"oper": "add","ending": "ы"}
+                    "Plural": {"oper": "replace","ending": "ни", "dropHowMany": "3"}
                 },
                 "Animate": {
                     "Single": {"oper": "add","ending": "а"},
@@ -1570,11 +1571,11 @@
             },
             "творительный": {
                 "Single": {"oper": "replace","ending": "нём", "dropHowMany": "3"},
-                "Plural": {"oper": "replace","ending": "нях", "dropHowMany": "3"}
+                "Plural": {"oper": "replace","ending": "нями", "dropHowMany": "3"}
             },
             "предложный": {
-                "Single": {"oper": "add","ending": "е"},
-                "Plural": {"oper": "add","ending": "ах"}
+                "Single": {"oper": "replace","ending": "не", "dropHowMany": "3"},
+                "Plural": {"oper": "replace","ending": "нях", "dropHowMany": "3"}
             },
             "description": "rule set for день",
             "example": "день"
@@ -1748,7 +1749,7 @@
             },
             "творительный": {
                 "Single": {"oper": "replace","ending": "ом", "dropHowMany": "1"},
-                "Plural": {"oper": "replace","ending": "шами", "dropHowMany": "1"}
+                "Plural": {"oper": "replace","ending": "есами", "dropHowMany": "1"}
             },
             "предложный": {
                 "Single": {"oper": "replace","ending": "е", "dropHowMany": "1"},
