@@ -229,13 +229,9 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         }
 
         console.log('submitting an error report!')
-        var promises = []
-
-        promises.push(sharedProps.httpReq(errorReportOptions))
-        $q.all(promises).then(function(res){
-            console.log('appears to have worked!')
-            //alert that things went well
-        })
+        sharedProps.httpReq(errorReportOptions).then(function(res){
+            console.log('successfully submitted a report!')
+        });
     }
 
     //just QoL, disables case select when there's only one case option
@@ -276,10 +272,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             verbose: false
         }
 
-        var promises = []
-
-        promises.push(sharedProps.httpReq(groupOptions))
-        $q.all(promises).then(function(res){
+        sharedProps.httpReq(groupOptions).then(function(res){
             var ruleGroups = res[0].content
             //console.log(ruleGroups)
 
@@ -293,7 +286,6 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                 declinedWords[ruleSetNumber].word = word
                 //console.log(ruleSet)
 
-                
                 angular.forEach(ruleSet,function(padexDict,padex){
 
                     var promiseObj = {}
@@ -306,16 +298,6 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
                             var animSingleOper = padexDict.Animate.Single
                             var animPluralOper = padexDict.Animate.Plural
-
-                            //var declinedWordAnimSingle = 
-                            /*if(animSingleOper=='fleeting'){
-                                console.log('found a fleeter')
-                                console.log()
-                            }
-                            animSingleObj = {}
-                            animPluralObj = {}
-                            inanimSingleObj = {}
-                            inanimPluralObj = {}*/
 
                             //animSingleObj.promise = this.applyEnding(word,animSingleOper)
                             this.applyEnding(word,animSingleOper).then(function(declinedWord){
@@ -330,9 +312,6 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
                             })
 
-                            //declinedWords[ruleSetNumber][padex].animate.single = declinedWordAnimSingle
-                            //declinedWords[ruleSetNumber][padex].animate.plural = declinedWordAnimPlural
-
                             var inanimSingleOper = padexDict.Inanimate.Single
                             var inanimPluralOper = padexDict.Inanimate.Plural
 
@@ -344,8 +323,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                             this.applyEnding(word,inanimPluralOper).then(function(declinedWord){
                                 declinedWords[ruleSetNumber][padex].inanimate.plural = declinedWord
                             })
-                            //declinedWords[ruleSetNumber][padex].inanimate.single = declinedWordInanimSingle
-                            //declinedWords[ruleSetNumber][padex].inanimate.plural = declinedWordInanimPlural
+                            
 
                         }else{
                             var singleOper = padexDict.Single
@@ -353,15 +331,12 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
                             this.applyEnding(word,singleOper).then(function(declinedWord){
                                 declinedWords[ruleSetNumber][padex].single = declinedWord
                             })
-                            
-                            //declinedWords[ruleSetNumber][padex].single = declinedWordSingle
 
                             var pluralOper = padexDict.Plural
                             //var declinedWordPlural = 
                             this.applyEnding(word,pluralOper).then(function(declinedWord){
                                 declinedWords[ruleSetNumber][padex].plural = declinedWord
                             })
-                            //declinedWords[ruleSetNumber][padex].plural = declinedWordPlural
                         }
                     }
 
@@ -414,11 +389,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             verbose: false
         }
 
-        var promises = []
-
-        promises.push(sharedProps.httpReq(options))
-
-        $q.all(promises).then(function(res){
+        sharedProps.httpeReq(options).then(function(res){
             deferred.resolve(res[0].text)
             console.log(res[0])
         }.bind(this))
@@ -567,28 +538,22 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             verbose: false
         }
 
-        var promises = []
+        sharedProps.httpReq(exceptionOptions).then(function(res){
+            console.log(res[0])
+            if(PoS=='noun'){
 
-        promises.push(sharedProps.httpReq(exceptionOptions))
-
-        if(PoS=='noun'){
-            $q.all(promises).then(function(res){
-                console.log(res[0])
                 this.nounException = res[0].content
-                //this.nounException.exists = true;
+
                 deferred.resolve('200')
-            }.bind(this))
-            
-        }else if (PoS=='adj'){
-            $q.all(promises).then(function(res){
-                console.log(res[0])
+                
+            }else if (PoS=='adj'){
+                    
                 this.adjException = res[0].content
-                //this.adjException.exists = true;
+                
                 deferred.resolve('200')
-                //console.log(this.adjException)
-            }.bind(this))
-            
-        }
+                
+            }
+        }.bind(this))
 
         return deferred.promise
     }
@@ -600,11 +565,10 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         //if this is an exception, get its rule set number from exceptions dict
         var ruleSetNumber = "0"
 
-    
         //console.log(ruleSetNumber)
-        console.log(word)
-        console.log(PoS)
-        console.log(this.nounException)
+        //console.log(word)
+        //console.log(PoS)
+        //console.log(this.nounException)
         if(this.adjException.word!='default' && PoS =='adj'){
             ruleSetNumber = this.adjException.ruleSet
 
@@ -703,7 +667,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
         }
 
-        console.log('about to get rule groups for ' + word + ' with ruleSet number of ' + ruleSetNumber + ' and gender: ' + gender)
+        //console.log('about to get rule groups for ' + word + ' with ruleSet number of ' + ruleSetNumber + ' and gender: ' + gender)
         var ruleSetOptions = {
             url: '/ru/ruleGroups/',
             params: {q: ruleSetNumber},
@@ -711,20 +675,11 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             verbose: false
         }
 
+        sharedProps.httpReq(ruleSetOptions).then(function(res){
+            deferred.resolve(res[0].content[rulSetNumber])
+        })
         //console.log(ruleSetOptions)
 
-        var promises = []
-
-        promises.push(sharedProps.httpReq(ruleSetOptions))
-
-        var deferred = $q.defer()
-
-        $q.all(promises).then(function(res){
-            //console.log(res[0].content[ruleSetNumber])
-            deferred.resolve(res[0].content[ruleSetNumber]) //this is kind of ugly, but not really a need to return anything in this case.
-            //i'd like to change that in the future
-
-        });
         return deferred.promise;
     }
 
@@ -887,17 +842,11 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
 
                 var newEnding = this.checkSpellingRules(left ,'о' + right)
 
-                this.nounException.word = 'default' //this is a temp measure
+                //this.nounException.word = 'default' //this is a temp measure
 
                 //console.log(declension)
                 console.log(left+newEnding)
                 deferred.resolve(left+newEnding)
-                //console.log('about to decline '+ newStem )
-                //console.log(declension)
-                /*this.declineWord(newStem,'noun',declension.gender,declension.padex, declension.animate,declension.plur).then(function(declinedWord){
-                    console.log(declinedWord)
-                    deferred.resolve(declinedWord)
-                })*/
                 
             }else if(fleetingType=='remove'){
                 var left = word.substring(0,len-2)
