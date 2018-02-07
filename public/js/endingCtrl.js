@@ -273,7 +273,7 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         }
 
         sharedProps.httpReq(groupOptions).then(function(res){
-            var ruleGroups = res[0].content
+            var ruleGroups = res.content
             //console.log(ruleGroups)
 
             var declinedWords = {}
@@ -389,9 +389,9 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             verbose: false
         }
 
-        sharedProps.httpeReq(options).then(function(res){
-            deferred.resolve(res[0].text)
-            console.log(res[0])
+        sharedProps.httpReq(options).then(function(res){
+            deferred.resolve(res.text)
+            console.log(res)
         }.bind(this))
 
         return deferred.promise
@@ -539,16 +539,16 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
         }
 
         sharedProps.httpReq(exceptionOptions).then(function(res){
-            console.log(res[0])
+            console.log(res)
             if(PoS=='noun'){
 
-                this.nounException = res[0].content
+                this.nounException = res.content
 
                 deferred.resolve('200')
                 
             }else if (PoS=='adj'){
                     
-                this.adjException = res[0].content
+                this.adjException = res.content
                 
                 deferred.resolve('200')
                 
@@ -675,8 +675,13 @@ app.controller('endingCtrl',function(sharedProps, $q, $timeout, $window){
             verbose: false
         }
 
+        var deferred = $q.defer()
+
         sharedProps.httpReq(ruleSetOptions).then(function(res){
-            deferred.resolve(res[0].content[rulSetNumber])
+            //console.log(ruleSetOptions)
+            var output = res.content[ruleSetNumber]
+            console.log(output)
+            deferred.resolve(output)
         })
         //console.log(ruleSetOptions)
 

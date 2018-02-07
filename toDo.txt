@@ -3,6 +3,9 @@ Decliner:
 
     Turn results of this testing into set of assertions for Jasmine framework testing
 
+    EXCEPTIONS
+        some weird adjs don't work, like numerals
+        
     Figure out how to integrate Tatoeba
 
     Unuppercase Single/Plural, Animate/Inanimate, percolate changes throughout app
@@ -15,7 +18,7 @@ Decliner:
     Move declension to a factory, also separate out this ending controller
 
     Use for each simply to push promise onto array, then use $q.all to wait for all the promises to resolve //for now solution not worth cost
-    
+
     Functional:
 
         Blurring is overwriting gender innappropriately

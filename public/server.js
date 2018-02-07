@@ -1,22 +1,40 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-
-const app = express()
-
+const morgan = require('morgan')
+const path = require('path')
 const translate = require('google-translate-api')
 
+const passport = require('passport');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
+
+const app = express()
 const port = 8080
+
 var rest = require('./node/getJSON.js') //this is a manual rest implementation because i am a sorry man who does not understand express
 var mongo = require('./node/mongo.js')
 
 app.set('port', (process.env.PORT || 5000)); //set port to what is set or 5000 as default
 app.use(express.static(__dirname + '/')) //this line let's me include files as if my index html was at the /public/ level
+app.use(flash());
 
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 
 app.use(bodyParser.json());
+
+app.use(session({secret: 'our secret string'}));
+app.use(cookieParser());
+app.use(passport.initialize());
+
+app.use(function(req,res,next){
+    res.setHeader('Access-Control-Allow-Oirigin','*');
+    res.setHeader('Access-Control-Allow-Methods','GET, POST');
+    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type, Authorization');
+    next();
+})
 
 app.set('views',__dirname + '/views/'); //sets default render dir
 app.engine('html',require('ejs').renderFile);

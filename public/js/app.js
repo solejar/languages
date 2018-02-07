@@ -2,7 +2,6 @@
     var app = angular.module('lang',['ngMaterial']);
     //this basic file is eventually for dependency injection and page control only.
 
-
     //this controller is just for page switching on a larger scope.
     app.controller('headerController',function($window){
 
