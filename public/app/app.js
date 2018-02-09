@@ -34,7 +34,7 @@
 
         this.pages = ['declension','readings','about','home','study','login','profile'];
 
-        this.currPage = 'login'
+        this.currPage = 'declension'
 
         this.changePage = function(newPage){
             if (this.pages.includes(newPage)){

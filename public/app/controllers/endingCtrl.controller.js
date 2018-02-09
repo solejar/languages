@@ -1,17 +1,17 @@
 var app = angular.module('lang');
 
-app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $window, accountModifier){
+app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, $q, $timeout, $window, accountModifier){
 
     //list of prepositions and their associated case options
     this.prepositions = []
     
-    this.adjException = {}//if word is exception, use rules from exception dict 
-    this.nounException = {}
+    this.currPhrase = {}
+
+    this.currPhrase.adjException = {}//if word is exception, use rules from exception dict 
+    this.currPhrase.nounException = {}
     this.endings = {} //if not, just use general rules
 
     this.labels = {} //contains labels in curr language
-
-    this.currPhrase = {}
 
     this.cards = []
 
@@ -60,14 +60,24 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
     this.inputBlur = function(word,PoS){
         console.log(word + ' with PoS: '+ PoS + ' has just blurred')
         if(PoS=='adj'){
-           this.checkException(word,PoS).then(function(res){
+           decliner.checkException(word,PoS).then(function(res){
+                this.currPhrase.adjException = res
                 this.checkGender(word,PoS)
+                decliner.determineRuleSet(this.currPhrase,'adj').then(function(ruleSet){
+                    console.log(ruleSet)
+                    this.currPhrase.adjRuleSet = ruleSet
+                }.bind(this))
            }.bind(this)) 
            
         }else if(PoS=='noun'){
-            this.checkException(word,PoS).then(function(res){
+            decliner.checkException(word,PoS).then(function(res){
+                this.currPhrase.nounException = res
                 this.checkGender(word,PoS)
                 this.checkAnimate(word,PoS)
+                decliner.determineRuleSet(this.currPhrase,'noun').then(function(ruleSet){
+                    console.log(ruleSet)
+                    this.currPhrase.nounRuleSet = ruleSet
+                }.bind(this))
            }.bind(this))             
         }
     }
@@ -125,8 +135,8 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
         //this.adjException = {exists: false}
         //this.nounException = {exists: false}
         this.currPhrase = {}
-        this.adjException = {}
-        this.nounException = {}
+        this.currPhrase.adjException = {}
+        this.currPhrase.nounException = {}
 
         this.currPhrase.adj = ''
         this.currPhrase.noun = ''
@@ -226,7 +236,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
     }
 
     this.generateCard = function(){
-        this.declinePhrase().then(function(declinedPhrase){
+        decliner.declinePhrase(this.currPhrase).then(function(declinedPhrase){
             this.currPhrase.declinedPhrase = declinedPhrase
             this.translatePhrase(declinedPhrase).then(function(translation){
                 this.currPhrase.translation = translation
@@ -323,7 +333,6 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
                     }
 
                 }.bind(this))
-
                 
             }.bind(this));
             console.log('about to print declinedWords')
@@ -350,8 +359,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
         //console.log('finished declining the words')
     }
 
-    
-
+    //this can probably be moved to a service
     this.translatePhrase = function(phrase){
         var deferred = $q.defer()
 
@@ -371,90 +379,6 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
         }.bind(this))
 
         return deferred.promise
-    }
-
-    this.declinePhrase = function(){
-        var deferred = $q.defer()
-
-        this.nounReady = false
-        this.adjReady = false;
-        var gen = this.currPhrase.gender
-        var padex = this.currPhrase.padex
-        var anim = this.currPhrase.animate
-        var plur = this.currPhrase.plurality
-
-        this.checkException(this.currPhrase.noun,'noun').then(function(res){
-            this.declineWord(this.currPhrase.noun,'noun', gen,padex,anim,plur).then(function(declinedNoun){
-                this.currPhrase.declinedNoun = declinedNoun
-                this.nounReady = true;
-                if(this.adjReady){
-                    deferred.resolve(this.currPhrase.prep.name+' '+ this.currPhrase.declinedAdj+' '+this.currPhrase.declinedNoun)
-                }
-            }.bind(this))
-        }.bind(this))
-
-        this.checkException(this.currPhrase.adj,'adj').then(function(res){
-
-            this.declineWord(this.currPhrase.adj,'adj',gen,padex,anim,plur).then(function(declinedAdj){
-                this.currPhrase.declinedAdj = declinedAdj
-                this.adjReady = true;
-                if(this.nounReady){
-                    deferred.resolve(this.currPhrase.prep.name+' '+this.currPhrase.declinedAdj+' ' + this.currPhrase.declinedNoun)
-                }
-            }.bind(this))
-        }.bind(this));
-
-        return deferred.promise
-    }
-
-    this.declineWord = function(currWord,PoS,gender,padex,anim,plur){
-
-        console.log(currWord)
-        console.log(PoS)
-        console.log(gender)
-        console.log(padex)
-        console.log(anim)
-        console.log(plur)
-        var deferred = $q.defer()
-
-        if(currWord){
-
-            this.determineRuleSet(currWord,PoS,gender,padex,anim,plur).then(function(ruleSet){
-                console.log(ruleSet)
-                this.currPhrase.ruleSet = ruleSet
-
-                if(ruleSet){
-                    if(padex =='винительный'){
-
-                        if(anim){
-                            var declensionObj = ruleSet[padex][anim][plur]
-                        }else{
-                            deferred.resolve('')
-                        }
-                    }else{
-                        //console.log(padex)
-                        var declensionObj = ruleSet[padex][plur]
-
-                    }
-                }else{
-                    deferred.resolve('')
-                    //this should never be reached i'm pretty sure
-                }
-
-                this.applyEnding(currWord,declensionObj).then(function(declinedWord){
-                    deferred.resolve(declinedWord)
-                })
-
-            }.bind(this))
-           
-
-        }else{
-            deferred.resolve('')
-            
-        }
-
-        return deferred.promise
-        
     }
 
     this.inputsFresh = true
@@ -481,173 +405,6 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
         }
     }
 
-    this.checkException = function(word,PoS){
-
-        var deferred = $q.defer()
-
-        console.log('getting an exception')
-        console.log(word)
-        console.log(PoS)
-        
-        var exceptionOptions = {
-            url: '/ru/exceptions',
-            params: {
-                q: word
-            },
-            method: 'GET',
-            verbose: false
-        }
-
-        sharedProps.httpReq(exceptionOptions).then(function(res){
-            console.log(res)
-            if(PoS=='noun'){
-
-                this.nounException = res.content
-
-                deferred.resolve('200')
-                
-            }else if (PoS=='adj'){
-                    
-                this.adjException = res.content
-                
-                deferred.resolve('200')
-                
-            }
-        }.bind(this))
-
-        return deferred.promise
-    }
-
-    //aim to replace enumerated rulegroups with named ones
-    //using nounException and adjException from outside is really dangerous
-    //try to fix
-    this.determineRuleSet = function(word,PoS,gender){
-        //if this is an exception, get its rule set number from exceptions dict
-        var ruleSetNumber = "0"
-
-        //console.log(ruleSetNumber)
-        //console.log(word)
-        //console.log(PoS)
-        //console.log(this.nounException)
-        if(this.adjException.word!='default' && PoS =='adj'){
-            ruleSetNumber = this.adjException.ruleSet
-
-        }else if(this.nounException.word!='default' && PoS =='noun'){
-            console.log(word + ' was found to be an exception')
-            ruleSetNumber = this.nounException.ruleSet
-            
-        }else{ //we're gonna have to use general rules
-            console.log('using general rules')
-            var gen = gender
-
-            if(PoS=='adj'){
-                var adjType = spellingRules.getAdjType(word)
-                if(adjType=='hard'){
-                    if(gen=='M'){
-                        ruleSetNumber = "17"
-                    }else if(gen=='F'){
-                        ruleSetNumber = "18"
-                    }else if(gen=='N'){
-                        ruleSetNumber = "19"
-                    }
-                }else if(adjType=='soft'){
-                    if(gen=='M'){
-                        ruleSetNumber = "20"
-                    }else if(gen=='F'){
-                        ruleSetNumber = "21"
-                    }else if(gen=='N'){
-                        ruleSetNumber = "22"
-                    }
-                }
-            }else if(PoS=='noun'){
-                //console.log('checking noun rule group')
-                var len = word.length
-
-                var lastChar = word[len-1]
-                var secondLastChar = word[len-2]
-                var thirdLastChar = word[len-3]
-
-                if(gen=='M'){
-                    var isFleeting = !!(this.fleetingCons.includes(lastChar)&&this.fleetingCons.includes(thirdLastChar))
-                    if (lastChar=='ь'){
-                        ruleSetNumber = "12"
-                    }else if(lastChar=='й'){
-                        ruleSetNumber = "11"
-                    }else if(this.consonants.includes(lastChar)){
-                        if(isFleeting){
-                            ruleSetNumber = "16" 
-                        }
-                        if(this.hushers.includes(lastChar)){
-                            ruleSetNumber = "14"
-                        }else{
-                            ruleSetNumber = "13"
-                        }
-                    }else{
-                        ruleSetNumber = "0" //default if nothing found
-                    }
-                }else if(gen=='F'){
-                    var isFleeting = !!(this.fleetingCons.includes(secondLastChar)&&this.fleetingCons.includes(thirdLastChar))
-                    if(lastChar=='ь'){
-                        ruleSetNumber = "10"
-                    }else if(lastChar =='а'){
-                        if(isFleeting){
-                            ruleSetNumber = "8"
-                        }else{
-                            ruleSetNumber = "9"
-                        }
-                    }else if(lastChar == 'я'){
-                        if(secondLastChar=='и'){
-                            ruleSetNumber = "6"
-                        }else if(isFleeting){
-                            ruleSetNumber = "7"
-                        }else{ 
-                            ruleSetNumber = "0" //don't think this case exists
-                        }
-                    }else{
-                        ruleSetNumber = "0" //default if nothing found
-                    }
-                }else if(gen=='N'){
-                    if(lastChar=='е'){
-                        if(secondLastChar=='и'){
-                            ruleSetNumber ="5"
-                        }else if(secondLastChar=='о'){
-                            ruleSetNumber = "2"
-                        }else{
-                            ruleSetNumber = "3"
-                        }
-                    }else if(lastChar=='о'){
-                        ruleSetNumber = "1"
-                    }else if((secondLastChar+lastChar)=='мя'){
-                        ruleSetNumber = "31"
-                    }else{
-                        ruleSetNumber = "0" //default if nothing found
-                    }
-                }
-            }
-
-        }
-
-        //console.log('about to get rule groups for ' + word + ' with ruleSet number of ' + ruleSetNumber + ' and gender: ' + gender)
-        var ruleSetOptions = {
-            url: '/ru/ruleGroups/',
-            params: {q: ruleSetNumber},
-            method: 'GET',
-            verbose: false
-        }
-
-        var deferred = $q.defer()
-
-        sharedProps.httpReq(ruleSetOptions).then(function(res){
-            //console.log(ruleSetOptions)
-            var output = res.content[ruleSetNumber]
-            console.log(output)
-            deferred.resolve(output)
-        })
-        //console.log(ruleSetOptions)
-
-        return deferred.promise;
-    }
-
     //function to determine expected gender,
     //so if user picks мой and says F, then we'll mention there's probably an issue
 
@@ -655,10 +412,10 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
 
         console.log('checking for gender')
         if(PoS=='noun'){
-            if(!(this.nounException=='default')){
-                console.log(this.nounException.gender)
-                if(this.nounException.gender){
-                     var gender = this.nounException.gender
+            if(!(this.currPhrase.nounException=='default')){
+                console.log(this.currPhrase.nounException.gender)
+                if(this.currPhrase.nounException.gender){
+                     var gender = this.currPhrase.nounException.gender
                     this.currPhrase.gender = gender
                 }else{
                     console.log('no gender found')
@@ -673,11 +430,11 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
             this.nounGender = gender
             
         }else if(PoS=='adj'){
-            if(!(this.adjException.word=='default')){
-                console.log(this.adjException)
+            if(!(this.currPhrase.adjException.word=='default')){
+                console.log(this.currPhrase.adjException)
                 
-                if(this.adjException.gender){
-                    var gender = this.adjException.gender
+                if(this.currPhrase.adjException.gender){
+                    var gender = this.currPhrsae.adjException.gender
                     this.currPhrase.gender = gender
                     this.adjGender = gender
                     return
@@ -695,13 +452,14 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
             this.adjGender = gender          
         }
     }
+
     this.genderKnown = function(){
         return !!(this.adjGender||this.nounGender)
     }
 
     this.checkAnimate = function(word){
-        if(typeof this.nounException !== null){
-            this.nounAnimate = this.nounException.animate
+        if(typeof this.currPhrase.nounException !== null){
+            this.nounAnimate = this.currPhrase.nounException.animate
         }else{
             this.nounAnimate = ''
         }
@@ -725,88 +483,12 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
             return false
         }
     }
-
     
     //used to determine if ending is a cons or vowel
     this.consonants = ['б','в','г','д','ж','з','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ']
 
     //it's a smaller subset of consonants which trigger the fleeting vowel exceptions
     this.fleetingCons =  ['б','в','г','д','ж','з','к','л','м','н','п','т','х','ц','ч','ш','щ']
-
-    this.applyEnding = function(word, declension){
-        var deferred = $q.defer()
-
-        var oper = declension.oper;
-        if(oper=='none'){
-
-            deferred.resolve(word);
-        }else if(oper=='replace'){
-
-            var howMany = declension.dropHowMany
-            var stem = word.substring(0,word.length-howMany)
-            var ending = declension.ending
-            var ruleAdjustedEnding = spellingRules.check(stem,ending);
-
-            //return stem+ruleAdjustedEnding
-            deferred.resolve(stem+ruleAdjustedEnding)
-        }else if(oper=='drop'){
-            var len = word.length
-            var temp_word = word.substring(0,len-1)
-            len = len -1;
-            var ending = temp_word.substring(len-2,len)
-            var word = temp_word.substring(0,len-2)
-            var ruleAdjustedEnding = spellingRules.check(word,ending)
-
-            //return word.substring(0,word.length-1)
-            //return word+ruleAdjustedEnding;
-            deferred.resolve(word+ruleAdjustedEnding)
-        }else if(oper=='add'){
-
-            var ending = declension.ending
-            var ruleAdjustedEnding = spellingRules.check(word,ending)
-
-            deferred.resolve(word+ruleAdjustedEnding);
-        }else if(oper=='fleeting'){
-
-            var len = word.length
-            //need to figure out what the fuck to do here
-            var fleetingType = declension.fleetingType
-            if(fleetingType=='inject'){
-                
-                var left = word.substring(0,len-2)
-                var right = word.substring(len-2,len-1)
-
-                var newEnding = spellingRules.check(left ,'о' + right)
-
-                //this.nounException.word = 'default' //this is a temp measure
-
-                //console.log(declension)
-                console.log(left+newEnding)
-                deferred.resolve(left+newEnding)
-                
-            }else if(fleetingType=='remove'){
-                var left = word.substring(0,len-2)
-                var last = word[len-1]
-                var newStem = left + last
-
-                //this.nounException.word = 'default' //this is a temp measure
-               
-                //console.log(declension)
-                //return newStem
-                console.log('about to decline '+ newStem )
-                console.log(declension)
-                this.checkException(newStem,'noun').then(function(res){
-                    this.declineWord(newStem,'noun',declension.gender,declension.padex,declension.animate,declension.plur).then(function(declinedWord){
-                        console.log(declinedWord)
-                        deferred.resolve(declinedWord)
-                    })
-                }.bind(this))
-                
-            }
-        }
-
-        return deferred.promise
-    }
 
     this.validInputs = function(currPoS){
         if(this.currPhrase.padex){
