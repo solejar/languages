@@ -21,6 +21,7 @@
     <script type="text/javascript" src="./app/controllers/endingCtrl.controller.js"></script>
     <script type="text/javascript" src="./app/controllers/loginCtrl.controller.js"></script>
     <script type="text/javascript" src="./app/services/spellingRules.factory.js"></script>
+    <script type="text/javascript" src="./app/services/accountModifier.factory.js"></script>
 
 </head>
 
@@ -175,7 +176,7 @@
                                     <label>
                                     {{ending.labels.prepSelect.display}}
                                     </label>
-                                    <md-select  ng-model="ending.currPrep" ng-change="ending.checkCaseCount(ending.currPrep.cases)" aria-label="Предлог" >
+                                    <md-select  ng-model="ending.currPhrase.prep" ng-change="ending.checkCaseCount(ending.currPhrase.prep.cases)" aria-label="Предлог" >
                                         <md-option ng-repeat="prep in ending.prepositions|orderBy: 'name'" ng-value="prep" >
                                         {{prep.name}}
                                         </md-option>
@@ -185,13 +186,13 @@
                                     <label>
                                     {{ending.labels.adjSelect.display}}
                                     </label>
-                                    <input ng-model="ending.currAdj" ng-blur="ending.inputBlur(ending.currAdj,'adj')" >
+                                    <input ng-model="ending.currPhrase.adj" ng-blur="ending.inputBlur(ending.currPhrase.adj,'adj')" >
                                 </md-input-container>
                                 <md-input-container flex-gt-sm="25" flex-sm="40" >
                                     <label>
                                     {{ending.labels.nounSelect.display}}
                                     </label>
-                                    <input ng-model="ending.currNoun" ng-blur="ending.inputBlur(ending.currNoun,'noun')">
+                                    <input ng-model="ending.currPhrase.noun" ng-blur="ending.inputBlur(ending.currPhrase.noun,'noun')">
                                 </md-input-container>
                             </div>
                             <div layout="row" layout-align="center" ng-if="ending.pageInitialized" layout-wrap id="quality-select">
@@ -202,16 +203,16 @@
                                     <label >
                                     {{ending.labels.caseSelect.display}}
                                     </label>
-                                    <md-select ng-model="ending.currCase" ng-disabled="ending.onlyOneCase" aria-label="Падеж">
-                                        <md-option ng-repeat="case in ending.currPrep.cases" ng-value="case" >
+                                    <md-select ng-model="ending.currPhrase.padex" ng-disabled="ending.onlyOneCase" aria-label="Падеж">
+                                        <md-option ng-repeat="case in ending.currPhrase.prep.cases" ng-value="case" >
                                         {{ending.labels.caseSelect.options[case].display}}
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
-                                <md-input-container ng-if="ending.currCase=='винительный'" flex-gt-sm="25" >
+                                <md-input-container ng-if="ending.currPhrase.padex=='винительный'" flex-gt-sm="25" >
                                     <label>{{ending.labels.animateSelect.display}}</label>
                                     <md-tooltip ng-show="ending.animateKnown()" md-delay="230">{{ending.labels.animateForcedTooltip.display}}</md-tooltip>
-                                    <md-select ng-model="ending.currAnimate" aria-label="Одушевленность" ng-disabled="ending.animateKnown()" >
+                                    <md-select ng-model="ending.currPhrase.animate" aria-label="Одушевленность" ng-disabled="ending.animateKnown()" >
                                         <md-option ng-repeat="state in ending.labels.animateSelect.options"  ng-value="state.value">
                                         {{state.display}}
                                         </md-option>
@@ -220,7 +221,7 @@
                                 <md-input-container flex-gt-sm="15" >
                                     <md-tooltip ng-show="ending.genderKnown()" md-delay="230">{{ending.labels.genderForcedTooltip.display}}</md-tooltip>
                                     <label>{{ending.labels.genderSelect.display}}</label>
-                                    <md-select ng-model="ending.currGender" ng-disabled="ending.genderKnown()" aria-label="Род" >
+                                    <md-select ng-model="ending.currPhrase.gender" ng-disabled="ending.genderKnown()" aria-label="Род" >
                                         <md-option ng-repeat="gender in ending.labels.genderSelect.options" ng-value="gender.value">
                                         {{gender.display}}
                                         </md-option>
@@ -228,9 +229,9 @@
                                 </md-input-container>
                                 <md-input-container flex-gt-sm="20">
                                     <label>{{ending.labels.plurSelect.display}}</label>
-                                    <md-select ng-model="ending.currPlurality" aria-label="Множество" >
+                                    <md-select ng-model="ending.currPhrase.plurality" aria-label="Множество" >
                                         <md-option ng-repeat="plurality in ending.labels.plurSelect.options" ng-value="plurality.value">
-                                        {{plurality.display[ending.currGender]}}
+                                        {{plurality.display[ending.currPhrase.gender]}}
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
@@ -248,27 +249,27 @@
                             <md-divider class="md-primary"></md-divider>
                         </div>
                         <div  id="tessellated-outputs" layout-margin>
-                            <div ng-repeat="(key,phrase) in ending.phrases">
+                            <div ng-repeat="card in ending.cards">
                                 <md-white-frame  class="md-whiteframe-12dp" style="background-color: #ffffb3" layout="column">
                                     <div id="main-phrase" layout="row" layout-align = "left center"  layout-margin>
-                                        <md-button ng-click="phrase.expanded=!(phrase.expanded)">
-                                            <md-icon ng-if="!phrase.expanded" md-svg-icon="./images/right-arrow_k.svg">
+                                        <md-button ng-click="card.expanded=!(card.expanded)">
+                                            <md-icon ng-if="!card.expanded" md-svg-icon="./images/right-arrow_k.svg">
                                             </md-icon>
-                                            <md-icon ng-if="phrase.expanded" md-svg-icon="./images/down-arrow_k.svg">
+                                            <md-icon ng-if="card.expanded" md-svg-icon="./images/down-arrow_k.svg">
                                             </md-icon>
                                             {{''}}
                                         </md-button>
-                                        <h3 flex="70" ng-click="phrase.expanded=!phrase.expanded">{{phrase.declinedPhrase| prepositionFilter}}
+                                        <h3 flex="70" ng-click="card.expanded=!card.expanded">{{card.phrase.declinedPhrase| prepositionFilter}}
                                         </h3>
                                         <div flex layout="row" layout-align="end">
 
-                                            <md-button class="md-raised" ng-click="ending.savePhrase(phrase)" aria-label="save-button" >
-                                                <md-icon ng-if="!phrase.saved" md-svg-icon="./images/plus_k.svg">
+                                            <md-button class="md-raised" ng-click="ending.savePhrase(card)" aria-label="save-button" >
+                                                <md-icon ng-if="!card.saved" md-svg-icon="./images/plus_k.svg">
                                                 </md-icon>
-                                                <md-icon ng-if="phrase.saved" md-svg-icon="./images/satisfaction_k.svg">
+                                                <md-icon ng-if="card.saved" md-svg-icon="./images/satisfaction_k.svg">
                                                 
                                             </md-button>
-                                            <md-button ng-click="ending.removePhrase(phrase)" class="md-raised md-warn" >
+                                            <md-button ng-click="ending.removeCard(card)" class="md-raised md-warn" >
                                                 <md-icon md-svg-icon="./images/garbage_k.svg">
                                                 </md-icon>
                                                 
@@ -276,7 +277,7 @@
                                         </div>
                                         
                                     </div>
-                                    <div layout="row" id="expanded-phrase" ng-if="phrase.expanded">
+                                    <div layout="row" id="expanded-phrase" ng-if="card.expanded">
                                         <div flex="90" layout="column" >
                                             <div flex="100" layout="row" layout-margin layout-wrap>
                                                 <div flex="30"  layout="column">
@@ -297,7 +298,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <div flex="70"  style="font-weight: bold;">
-                                                        {{phrase.translation}}
+                                                        {{card.phrase.translation}}
                                                         </div>
                                                         <div flex="15">
                                                         </div>
@@ -321,7 +322,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{phrase.adj}}
+                                                        {{card.phrase.adj}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
@@ -345,7 +346,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{phrase.noun}}
+                                                        {{card.phrase.noun}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
@@ -369,13 +370,13 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{phrase.padex}}
+                                                        {{card.phrase.padex}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div flex="30" ng-if="phrase.animate"  layout="column">
+                                                <div flex="30" ng-if="card.phrase.animate"  layout="column">
                                                     <div flex="40" style="background-color: #3F51B5; color: white;"" class="md-primary" layout-align="center" layout="column" >
                                                         <div flex="25">
                                                         </div>
@@ -393,7 +394,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{phrase.animate}}
+                                                        {{card.phrase.animate}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
@@ -417,7 +418,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{phrase.gender}}
+                                                        {{card.phrase.gender}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
@@ -441,7 +442,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{phrase.plurality}}
+                                                        {{card.phrase.plurality}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
@@ -456,12 +457,12 @@
                                                 </md-button>
                                                 <md-menu-content width="2">
                                                     <md-menu-item >
-                                                        <md-button ng-click="ending.reportPhrase(phrase)">
+                                                        <md-button ng-click="ending.reportCard(card)">
                                                             Report
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
-                                                        <md-button ng-click="ending.markPhrase(phrase)">
+                                                        <md-button ng-click="ending.markCard(card)">
                                                             Mark
                                                         </md-button>
                                                     </md-menu-item>

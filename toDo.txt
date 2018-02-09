@@ -1,6 +1,7 @@
 Decliner:
     Backlog in order: 
 
+    Not worth worrying about card keys anymore, duplicates are okay
     REFACTOR
         Clean up ending controller
             move things into factories as needed

@@ -1,6 +1,6 @@
 var app = angular.module('lang');
 
-app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $window){
+app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $window, accountModifier){
 
     //list of prepositions and their associated case options
     this.prepositions = []
@@ -11,9 +11,9 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
 
     this.labels = {} //contains labels in curr language
 
-    this.phrases = {}
+    this.currPhrase = {}
 
-    this.currGender = 'M'
+    this.cards = []
 
     this.pageInitialized = false
 
@@ -24,20 +24,22 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
         //this.testGroups()
 
         var initPhrase = {
-            adj: 'твоя',
-            noun: 'помощь',
-            preposition: 'без',
-            translation: 'without your help',
-            declinedPhrase: 'без твоей помощи',
-            plurality: 'Single',
-            gender: 'F',
-            padex: 'родительный',
+            phrase: {
+                adj: 'твоя',
+                noun: 'помощь',
+                preposition: 'без',
+                translation: 'without your help',
+                declinedPhrase: 'без твоей помощи',
+                plurality: 'Single',
+                gender: 'F',
+                padex: 'родительный'
+            },
             expanded: true,
             stars: 0,
             saved: false
         }
 
-        this.phrases[(initPhrase.preposition+' '+initPhrase.adj+' '+initPhrase.noun)]=initPhrase
+        this.cards.push(initPhrase)
 
         var urlPath = $window.location.href;
         var pathSplit = urlPath.split('/')
@@ -70,12 +72,11 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
         }
     }
 
-    this.removePhrase = function(phraseObj){
-        var key = phraseObj.preposition + ' ' + phraseObj.adj + ' ' + phraseObj.noun
-        //console.log(key)
-        if(this.phrases.hasOwnProperty(key)){
-            delete this.phrases[key]
-        }
+    this.removeCard = function(card){
+        
+        var index = this.cards.indexOf(card);
+        this.cards.splice(index,1);
+        
     }
 
     //GET requests made on page init, gives the page everything it needs to run
@@ -123,33 +124,34 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
          
         //this.adjException = {exists: false}
         //this.nounException = {exists: false}
+        this.currPhrase = {}
         this.adjException = {}
         this.nounException = {}
 
-        this.currAdj = ''
-        this.currNoun = ''
-        this.currCase = ''
+        this.currPhrase.adj = ''
+        this.currPhrase.noun = ''
+        this.currPhrase.padex = ''
 
-        this.declinedNoun = ''
-        this.declinedAdj = ''
+        this.currPhrase.declinedNoun = ''
+        this.currPhrase.declinedAdj = ''
 
-        this.currTranslation = ''
+        this.currPhrase.translation = ''
 
         this.nounAnimate = ''
 
-        this.ruleSet = {}
+        this.currPhrase.ruleSet = {}
 
         //this JSON is basically equivalent to a blank prep
-        this.currPrep = {
+        this.currPhrase.prep = {
             'name': '',
             'cases': [
                 'винительный','родительный','творительный','предложный','именительный','дательный'
             ]
         }
 
-        this.currGender = ''
-        this.currPlurality = ''
-        this.currAnimate = ''
+        this.currPhrase.gender = ''
+        this.currPhrase.plurality = ''
+        this.currPhrase.animate = ''
 
         this.adjGender = ''
         this.nounGender = ''
@@ -159,13 +161,13 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
 
     //can only clear when something is there!
     this.disableClear = function(){
-        var a = this.currAdj
-        var b = this.currNoun
-        var c = this.currGender
-        var d = this.currPrep.name
-        var e = this.currCase
-        var f = this.currPlurality
-        var g = this.currAnimate
+        var a = this.currPhrase.adj
+        var b = this.currPhrase.noun
+        var c = this.currPhrase.gender
+        var d = this.currPhrase.prep.name
+        var e = this.currPhrase.padex
+        var f = this.currPhrase.plurality
+        var g = this.currPhrase.animate
 
         return !(a||b||c||d||e||f||g);
     }
@@ -175,51 +177,29 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
     this.savePhrase  = function(phrase){
         console.log(phrase.saved)
         if(phrase.saved == true){
-            this.removePhraseFromUser(phrase,this.user)
+            accountModifier.removeCard(phrase,this.user)
             phrase.saved = false
         }else{
-            this.addPhraseToUser(phrase,this.user)
+            accountModifier.addCard(phrase,this.user)
             phrase.saved = true;
-        } 
-        
+        }    
     }
 
-    this.removePhraseFromUser= function(phrase,user){
+    //these are all good candidates for directives
+    this.markCard = function(phrase){
 
     }
-    this.addPhraseToUser =function(phrase,user){
+
+    this.reportCard = function(phrase){
 
     }
-    //just a function to collate all inputs, maybe this isn't necessary
-    //maybe I will flesh this out for more of the other functions
-    //maybe I will just make this an objet to begin with, that would save me the trouble
 
-    this.allInputs = function(){
-        var obj = {}
-
-        obj.gender = this.currGender
-        obj.animate = this.currAnimate
-        obj.plurality = this.currPlurality
-        obj.padex = this.currCase
-        obj.preposition = this.currPrep.name
-        obj.noun = this.currNoun
-        obj.adj = this.currAdj
-        obj.declinedNoun = this.declinedNoun
-        obj.declinedAdj = this.declinedAdj
-        obj.ruleSet = this.ruleSet
-        obj.declinedPhrase = this.declinedPhrase
-        obj.translation = this.currTranslation
-
-        return obj
-    }
-
-    this.submitReport = function(reportType){
-         this.pageInitialized = true 
-        //look at reorganizing this...
-        var allInputs = this.allInputs()
+    //this is a good candidate for a directive
+    this.submitReport = function(reportType, card){
+        this.pageInitialized = true 
 
         var data = {}
-        data['allInputs'] = allInputs
+        data['currPhraseValues'] = this.currPhrase
 
         var errorReportOptions = {
             url: '/ru/errorReports',
@@ -239,7 +219,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
     this.checkCaseCount = function(caseArr){
         if(caseArr.length == 1){
             this.onlyOneCase = true;
-            this.currCase = caseArr[0];
+            this.currPhrase.padex = caseArr[0];
         }else{
             this.onlyOneCase = false;
         }        
@@ -247,14 +227,16 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
 
     this.generateCard = function(){
         this.declinePhrase().then(function(declinedPhrase){
-            this.declinedPhrase = declinedPhrase
+            this.currPhrase.declinedPhrase = declinedPhrase
             this.translatePhrase(declinedPhrase).then(function(translation){
-                this.currTranslation = translation
-                var card = this.allInputs()
-                card.expanded = false
-                var key = card.preposition +' ' + card.adj + ' ' + card.noun
-                //console.log(key)
-                this.phrases[key]=card
+                this.currPhrase.translation = translation
+                var card = {}
+                card.phrase = this.currPhrase
+                card.expanded = false;
+                card.saved = false;
+                
+                this.cards.push(card)
+
             }.bind(this))
         }.bind(this))
     }
@@ -368,13 +350,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
         //console.log('finished declining the words')
     }
 
-    this.markPhrase = function(phrase){
-
-    }
-
-    this.reportPhrase = function(phrase){
-
-    }
+    
 
     this.translatePhrase = function(phrase){
         var deferred = $q.defer()
@@ -402,28 +378,28 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
 
         this.nounReady = false
         this.adjReady = false;
-        var gen = this.currGender
-        var padex = this.currCase
-        var anim = this.currAnimate
-        var plur = this.currPlurality
+        var gen = this.currPhrase.gender
+        var padex = this.currPhrase.padex
+        var anim = this.currPhrase.animate
+        var plur = this.currPhrase.plurality
 
-        this.checkException(this.currNoun,'noun').then(function(res){
-            this.declineWord(this.currNoun,'noun', gen,padex,anim,plur).then(function(declinedNoun){
-                this.declinedNoun = declinedNoun
+        this.checkException(this.currPhrase.noun,'noun').then(function(res){
+            this.declineWord(this.currPhrase.noun,'noun', gen,padex,anim,plur).then(function(declinedNoun){
+                this.currPhrase.declinedNoun = declinedNoun
                 this.nounReady = true;
                 if(this.adjReady){
-                    deferred.resolve(this.currPrep.name+' '+ this.declinedAdj+' '+this.declinedNoun)
+                    deferred.resolve(this.currPhrase.prep.name+' '+ this.currPhrase.declinedAdj+' '+this.currPhrase.declinedNoun)
                 }
             }.bind(this))
         }.bind(this))
 
-        this.checkException(this.currAdj,'adj').then(function(res){
+        this.checkException(this.currPhrase.adj,'adj').then(function(res){
 
-            this.declineWord(this.currAdj,'adj',gen,padex,anim,plur).then(function(declinedAdj){
-                this.declinedAdj = declinedAdj
+            this.declineWord(this.currPhrase.adj,'adj',gen,padex,anim,plur).then(function(declinedAdj){
+                this.currPhrase.declinedAdj = declinedAdj
                 this.adjReady = true;
                 if(this.nounReady){
-                    deferred.resolve(this.currPrep.name+' '+this.declinedAdj+' ' + this.declinedNoun)
+                    deferred.resolve(this.currPhrase.prep.name+' '+this.currPhrase.declinedAdj+' ' + this.currPhrase.declinedNoun)
                 }
             }.bind(this))
         }.bind(this));
@@ -445,7 +421,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
 
             this.determineRuleSet(currWord,PoS,gender,padex,anim,plur).then(function(ruleSet){
                 console.log(ruleSet)
-                this.ruleSet = ruleSet
+                this.currPhrase.ruleSet = ruleSet
 
                 if(ruleSet){
                     if(padex =='винительный'){
@@ -488,11 +464,11 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
         var b = this.validInputs('adj')||this.validInputs('noun')
 
         if(a&&b){
-            var key = this.currPrep.name + ' ' + this.currAdj + ' ' + this.currNoun
+            var key = this.currPhrase.prep.name + ' ' + this.currPhrase.adj + ' ' + this.currPhrase.noun
 
-            if(this.phrases.hasOwnProperty(key)){
-                var obj = this.phrases[key]
-                if ((this.currCase==obj.padex)&&(this.currPlurality==obj.plurality)&&(this.currGender==obj.gender)){
+            if(this.cards.hasOwnProperty(key)){
+                var obj = this.cards[key]
+                if ((this.currPhrase.padex==obj.padex)&&(this.currPhrase.plurality==obj.plurality)&&(this.currPhrase.gender==obj.gender)){
                     return true
                 }else{
                     return false
@@ -683,7 +659,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
                 console.log(this.nounException.gender)
                 if(this.nounException.gender){
                      var gender = this.nounException.gender
-                    this.currGender = gender
+                    this.currPhrase.gender = gender
                 }else{
                     console.log('no gender found')
                     var gender = ''
@@ -702,7 +678,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
                 
                 if(this.adjException.gender){
                     var gender = this.adjException.gender
-                    this.currGender = gender
+                    this.currPhrase.gender = gender
                     this.adjGender = gender
                     return
                 }
@@ -713,7 +689,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
             var gender = spellingRules.genericAdjGender(word)
             
             if(gender){
-                this.currGender = gender
+                this.currPhrase.gender = gender
             }
                 
             this.adjGender = gender          
@@ -736,7 +712,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
         return !!(this.nounAnimate)
     }
 
-    this.currGender = ''
+    this.currPhrase.gender = ''
     //basically overloading '==' for genders
     //if either one is null, it's true
     this.sameGender = function(gender1,gender2){
@@ -833,11 +809,11 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, $q, $timeout, $
     }
 
     this.validInputs = function(currPoS){
-        if(this.currCase){
-            if(this.currCase=='винительный'){
-                return !!(currPoS&&this.currGender&&this.currAnimate&&this.currPlurality)
+        if(this.currPhrase.padex){
+            if(this.currPhrase.padex=='винительный'){
+                return !!(currPoS&&this.currPhrase.gender&&this.currPhrase.animate&&this.currPhrase.plurality)
             }else{
-                return !!(currPoS&&this.currGender&&this.currPlurality)
+                return !!(currPoS&&this.currPhrase.gender&&this.currPhrase.plurality)
             }
         }else{
             return false

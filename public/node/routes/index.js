@@ -2,6 +2,7 @@ var express = require('express');
 var passport = require('passport');
 var Account = require('../models/account');
 var router = express.Router();
+var translate = require('google-translate-api')
 
 var rest = require('../getJSON.js') //this is a manual rest implementation because i am a sorry man who does not understand express
 var mongo = require('../mongo.js')
