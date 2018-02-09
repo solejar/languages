@@ -1,10 +1,17 @@
 Decliner:
     Backlog in order: 
 
+    REFACTOR
+        Clean up ending controller
+            move things into factories as needed
+            see if there's a possibility to create multiple controllers
+            move to controllers folder
+
     Turn results of this testing into set of assertions for Jasmine framework testing
 
     EXCEPTIONS
         some weird adjs don't work, like numerals
+        учитель Not the same as as писатель 
         
     Figure out how to integrate Tatoeba
 
@@ -18,6 +25,12 @@ Decliner:
     Move declension to a factory, also separate out this ending controller
 
     Use for each simply to push promise onto array, then use $q.all to wait for all the promises to resolve //for now solution not worth cost
+
+    Login-signup:
+        Make sure it requires that password and password confirmation be equal.
+
+        Change validity messages up, enhance them.
+        Improve spacing
 
     Functional:
 

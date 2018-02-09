@@ -5,29 +5,49 @@ const path = require('path')
 const translate = require('google-translate-api')
 
 const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
+const mongoose = require('mongoose');
+
+const routes = require('./node/routes/index');
+//const users = require('./node/routes/users');
 
 const app = express()
 const port = 8080
-
-var rest = require('./node/getJSON.js') //this is a manual rest implementation because i am a sorry man who does not understand express
-var mongo = require('./node/mongo.js')
 
 app.set('port', (process.env.PORT || 5000)); //set port to what is set or 5000 as default
 app.use(express.static(__dirname + '/')) //this line let's me include files as if my index html was at the /public/ level
 app.use(flash());
 
+//app.use(logger('dev'));
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+app.use('/',routes)
+
 app.use(bodyParser.json());
 
-app.use(session({secret: 'our secret string'}));
 app.use(cookieParser());
 app.use(passport.initialize());
+app.use(passport.session());
+
+var Account = require('./node/models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+
+//mongoose
+mongoose.connect('mongodb://localhost/passport_local_mongo')
+
+app.use(require('express-session')({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
 
 app.use(function(req,res,next){
     res.setHeader('Access-Control-Allow-Oirigin','*');
@@ -40,174 +60,6 @@ app.set('views',__dirname + '/views/'); //sets default render dir
 app.engine('html',require('ejs').renderFile);
 app.set('view engine','html'); //i just added these two lines cause I saw them in a tutorial
 
-app.get('/ru',function(req,res){
-    res.render('index.html');
-});
-
-app.get('/en',function(req,res){
-    res.render('index.html');
-})
-
-app.get('/ru/prepositions',function(req,res){
-    var options = {
-        db: 'ru'
-    }
-    mongo.getPrepositions(options,function(result){
-        console.log('onResult: (' + result.statusCode + ')');
-        res.statusCode = result.statusCode;
-        res.send(result);
-    });
-});
-
-//not that it really matters but eventually this should be generalized to a regex
-app.get('/ru/labels',function(req,res){
-    var options = {
-        lang: 'ru',
-        db: 'ru'
-    }
-    mongo.getLabels(options,function(result){
-        console.log('onResult: (' + result.statusCode + ')');
-        res.statusCode = result.statusCode;
-        res.send(result);
-    });
-});
-
-app.get('/en/labels',function(req,res){
-    var options = {
-        lang: 'en',
-        db: 'ru'
-    }
-    mongo.getLabels(options,function(result){
-        console.log('onResult: (' + result.statusCode + ')');
-        
-        res.send(result);
-    });
-});
-
-
-app.get('/ru/ruleGroups',function(req,res){
-    if (typeof req.query.q !== 'undefined' && req.query.q){
-        var options = {
-            db: 'ru',
-            q: req.query.q
-        }
-    }else{
-        var options = {
-            db: 'ru',
-            q: 'all'
-        }
-    }
-    
-
-    console.log(options)
-    mongo.getRuleGroups(options,function(result){
-        console.log('just finished getting the ruleGroup')
-        console.log(result)
-        console.log('onResult: (' + result.statusCode + ')');
-        //res.statusCode = result.statusCode;
-        res.send(result);
-    });
-});
-
-app.get('/ru/translations',function(req,res){
-
-    console.log(req.query.targetLang)
-    console.log(req.query.phrase)
-
-    translate(req.query.phrase,{from: 'ru',to: req.query.targetLang}).then(response =>{
-        console.log(response.text);
-        console.log(response.from.text.autoCorrected)
-        res.statusCode = '200'
-        res.send(response)
-    }).catch(err => {
-        console.error(err);
-    })
-
-})
-
-app.get('/ru/exceptions',function(req,res){
-    var options = {
-        db: 'ru',
-        query: req.query
-    }
-
-    mongo.getExceptions(options,function(result){
-        console.log('onResult: (' + result.statusCode + ')');
-        res.statusCode = result.statusCode;
-        res.send(result);
-    })
-})
-
-app.get('/ru/testResults',function(req,res){
-    var options = {
-        db: 'ru'
-    }
-
-    res.set('Content-Type','application/json')
-
-    mongo.getTestResults(options,function(result){
-        console.log('onResult: (' + result.statusCode + ')')
-        res.statusCode = result.statusCode;
-        res.send(JSON.stringify(result,null,4));
-    })
-
-    
-})
-
-app.get('/ru/errorReports',function(req,res){
-    var options = {
-        db: 'ru'
-    }
-
-    res.set('Content-Type','application/json')
-
-    mongo.getErrorReports(options,function(result){
-        console.log('onResult: (' + result.statusCode + ')')
-        res.statusCode = result.statusCode;
-        res.send(result);
-    })
-})
-
-app.post('/ru/errorReports',function(req,res){
-    var body = req.body
-    res.set('Content-Type','application/json')
-
-    console.log(req.body)
-
-    var options = {
-        body: body,
-        db: 'ru'
-    }
-
-    mongo.postErrorReports(options,function(result){
-        console.log('onResult: (' + result.statusCode + ')');
-        res.statusCode = result.statusCode;
-        res.send(result); //i'm not even sure what I should be sending back for POST requests
-    })
-})
-
-
-
-app.post('/ru/testResults',function(req,res){
-    var body = req.body
-    res.set('Content-Type','application/json')
-
-    console.log(req.body)
-
-    var options = {
-        body: body,
-        db: 'ru'
-    }
-
-    mongo.postTestResults(options,function(result){
-        console.log('onResult: (' + result.statusCode + ')');
-        res.statusCode = result.statusCode;
-        res.send(result);
-    })
-})
-
-
-
 app.listen(port,(err)=>{
     if(err){
         return console.log('something bad happened',err)
@@ -215,3 +67,5 @@ app.listen(port,(err)=>{
 
     console.log('server is listening on 8080, howdy')
 })
+
+module.exports = app;

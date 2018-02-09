@@ -36,10 +36,13 @@
     "google-translate": "^2.0.5",
     "google-translate-api": "^2.3.0",
     "mongodb": "^3.0.1",
+    "mongoose": "^5.0.4",
     "morgan": "^1.9.0",
     "node": "^9.3.0",
     "nodemon": "^1.14.12",
     "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.5.0",
     "path": "^0.12.7"
   },
   "devDependencies": {
