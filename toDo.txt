@@ -1,7 +1,16 @@
 Decliner:
     Backlog in order: 
 
+    Consider making home and profile same view
+    
+    add editing functionality to the cards
+
     Turn results of this testing into set of assertions for Jasmine framework testing
+
+    Testing:
+        For each factory, come up with some specific test cases and assertions as time goes on
+
+        figure out how to test non-factory components like filters and controllers
 
     EXCEPTIONS
         some weird adjs don't work, like numerals
@@ -38,8 +47,7 @@ Decliner:
         Card:
 
             Functionality
-                Reporting (something wrong with phrase)
-                Marking (as difficult?)            
+                Editing         
 
         Edge Cases:
             Flesh out what to do if oper indicated is 'else' (L)
@@ -132,11 +140,6 @@ Decliner:
 
             Exceptions :
             Consider generalizing a 'stem change' case, let's use remove like 10-15 rule groups, but adds more controller logic (might not be worth it)
-
-        Testing:
-            Run each rulegroup on its example for each case, manually verify
-
-            Right up list of component features and run systematic unit tests on them.
 
         Admin:
             Buy a domain, some online mongo allocation as well

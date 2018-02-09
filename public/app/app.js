@@ -30,7 +30,57 @@
 
         }
 
-        this.loggedIn = false
+        this.user = {
+            userName: 'Sean Olejar',
+            isAdmin: false
+        }
+
+        this.logout = function(user){
+            console.log('logging out user '+user.userName)
+
+            this.user = {}
+
+            this.currPage = 'login'
+        }
+
+        this.attemptLogin = function(loginInfo){
+            var loginFound = true;
+
+            if(loginFound){
+                this.user = loginInfo
+                this.user.isAdmin = false; //this won't be needed in real version
+
+                this.currPage = 'profile'
+            }else{
+                //display sorry message
+            }
+        }
+
+        this.register = function(loginInfo){
+            //something would probably happen here
+            var reqSuccessful = true;
+
+            loginInfo.isAdmin = false; //or maybe on server side
+
+            if(reqSuccessful){
+                this.user=loginInfo
+                this.currPage = 'profile'
+            }else{
+                //display some error
+            }
+        }
+
+        this.isAdmin = function(){
+            if(this.user){
+                if(this.user.isAdmin){
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }
 
         this.pages = ['declension','readings','about','home','study','login','profile'];
 
@@ -52,32 +102,6 @@
             {display: 'English', url: 'en'}
         ]
     });
-
-    //maybe move this to another file
-    app.filter('prepositionFilter',function(){
-        return function(phrase){
-
-            var phraseArr = phrase.split(' ')
-            var prep = phraseArr[0]
-            var successiveWord = phraseArr[1]!=""? phraseArr[1]: phraseArr[2] 
-            var let1 = successiveWord[0]
-            var let2 = successiveWord[1]
-            if(prep=='о'){
-                var vowels = ['э','а','у','э','о','и']
-                 
-                if(vowels.includes(let1)){
-                    prep+='б'
-                }
-            }else if(prep=='в'||prep=='к'){
-                var consonants = ['б','в','г','д','ж','з','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ']
-                if(consonants.includes(let1)&&consonants.includes(let2)){
-                    prep+='о'
-                }
-            }
-
-            phraseArr[0] = prep
-            return phraseArr.join(' ')
-        }
-    })
+    
 
 })();

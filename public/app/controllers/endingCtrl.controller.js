@@ -34,7 +34,8 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
             },
             expanded: false,
             stars: 0,
-            saved: false
+            saved: false,
+            marked: false
         }
 
         this.cards.push(initPhrase)
@@ -180,34 +181,29 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
         return !(a||b||c||d||e||f||g);
     }
 
-    this.user = 'Joe Schmo'
-
-    this.savePhrase  = function(phrase){
-        console.log(phrase.saved)
-        if(phrase.saved == true){
-            accountModifier.removeCard(phrase,this.user)
-            phrase.saved = false
+    this.saveCard = function(card,user){
+        console.log(card.saved)
+        if(card.saved == true){
+            card.saved = false
+            accountModifier.removeCard(card,user)
+            
         }else{
-            accountModifier.addCard(phrase,this.user)
-            phrase.saved = true;
+            card.saved = true;
+            accountModifier.editCard(card,user)
         }    
     }
 
-    //these are all good candidates for directives
-    this.markCard = function(phrase){
-
+    //until I understand directives, we'll just make these wrappers for factories
+    this.markCard = function(card,user){
+        accountModifier.markCard(card,user)
     }
-
-    this.reportCard = function(phrase){
-
-    }
-
-    //this is a good candidate for a directive
-    this.submitReport = function(reportType, card){
-        this.pageInitialized = true 
-
+    
+    //maybe we need to look at a generic card template before we can decide how to do this
+    this.reportCard = function(card, user){
         var data = {}
-        data['currPhraseValues'] = this.currPhrase
+        data['currPhrase'] = card.phrase
+        data['cardOptions'] = {stars: card.stars,expanded: card.expanded, saved: card.saved}
+        data['user'] = user
 
         var errorReportOptions = {
             url: '/ru/errorReports',
@@ -239,11 +235,12 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
             translator.translatePhrase(declinedPhrase).then(function(translation){
                 this.currPhrase.translation = translation
                 var card = {}
-                card.phrase = this.currPhrase
+                card.phrase = angular.copy(this.currPhrase)
                 card.expanded = false;
                 card.saved = false;
                 
                 this.cards.push(card)
+                console.log(this.cards)
 
             }.bind(this))
         }.bind(this))
@@ -306,7 +303,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
                 console.log(this.currPhrase.adjException)
                 
                 if(this.currPhrase.adjException.gender){
-                    var gender = this.currPhrsae.adjException.gender
+                    var gender = this.currPhrase.adjException.gender
                     this.currPhrase.gender = gender
                     this.adjGender = gender
                     return

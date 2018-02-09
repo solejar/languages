@@ -9,6 +9,7 @@ describe('this module modifies a users card collection',function(){
 
     it('should contain the following functions', function(){
         expect(accountModifier.removeCard).toBeDefined();
-        expect(accountModifier.addCard).toBeDefined();
+        expect(accountModifier.editCard).toBeDefined();
+        expect(accountModifier.markCard).toBeDefined();
     })
 })

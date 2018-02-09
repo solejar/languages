@@ -23,6 +23,7 @@ module.exports = function(config) {
         './app/app.js',
         './app/controllers/*.controller.js',
         './app/services/*.factory.js',
+        './app/filters/*.filter.js',
         './app/controllers/*.specs.js',
         './app/services/*.specs.js'
     ],
