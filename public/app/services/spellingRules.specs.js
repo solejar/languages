@@ -8,7 +8,7 @@ describe('spellingRules factory',function(){
     }));
 
 
-    it('should exist',function(){
+    it('should contain the following functions',function(){
         expect(spellingRules).toBeDefined();
         expect(spellingRules.check).toBeDefined();
         expect(spellingRules.getAdjType).toBeDefined();

@@ -1,37 +1,45 @@
 var app = angular.module('lang')
 
+//this module knows how to decline words and phrases
+//it possesses auxiliary functions to help itself do its job
 app.factory('decliner',function(spellingRules,sharedProps,$q){
+
     var fleetingCons =  ['б','в','г','д','ж','з','к','л','м','н','п','т','х','ц','ч','ш','щ'];
-
     var consonants = ['б','в','г','д','ж','з','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ'];
-
     var hushers = ['ж','ч','ш','щ'];
 
     var obj = {}
 
+    //function to decline an entire phrase with a preposition and noun/adj
     obj.declinePhrase = function(phrase){
         var deferred = $q.defer()
 
+        //manual locking mechanism, keeps result synchronized to each other
         var nounReady = false
         var adjReady = false;
 
+        //figure out if the noun is an exception
         obj.checkException(phrase.noun,'noun').then(function(res){
             phrase.nounException = res
+            //decline the word
             obj.declineWord(phrase,'noun').then(function(declinedNoun){
                 phrase.declinedNoun = declinedNoun
                 nounReady = true;
+                //if whole thing done, resolve it
                 if(adjReady){
                     deferred.resolve(phrase.prep.name+' '+ phrase.declinedAdj+' '+phrase.declinedNoun)
                 }
             })
         })
 
+        //figure out if adj is an exception
         obj.checkException(phrase.adj,'adj').then(function(res){
-
+            phrase.adjException = res
+            //decline the word
             obj.declineWord(phrase,'adj').then(function(declinedAdj){
                 phrase.declinedAdj = declinedAdj
                 adjReady = true;
-                if(nounReady){
+                if(nounReady){ //if both ready, resolve it
                     deferred.resolve(phrase.prep.name+' '+phrase.declinedAdj+' ' + phrase.declinedNoun)
                 }
             })
@@ -40,19 +48,21 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
         return deferred.promise
     }
 
+    //function to decline either a noun or adj
     obj.declineWord = function(phrase,PoS){
         var deferred = $q.defer()
 
+        //get the currWord and ruleSet, precon that they exist
         if(PoS=='noun'){
             var currWord=phrase.noun
             var ruleSet = phrase.nounRuleSet
 
         }else if(PoS=='adj'){
             var currWord = phrase.adj
-            var ruleSet = phrase.adjRuleSet
-            
+            var ruleSet = phrase.adjRuleSet       
         }
 
+        //if they exist, proceed
         if(currWord&&ruleSet){
 
             if(ruleSet){
@@ -66,25 +76,25 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
                 }else{
                     //console.log(padex)
                     var declensionObj = ruleSet[phrase.padex][phrase.plurality]
-
                 }
             }else{
                 deferred.resolve('')
                 //obj should never be reached i'm pretty sure
             }
 
+            //apply the ending that ws found
             obj.applyEnding(currWord,declensionObj).then(function(declinedWord){
                 deferred.resolve(declinedWord)
             })
 
         }else{
             deferred.resolve('')
-            
         }
 
         return deferred.promise
     }
 
+    //a helper function to figure out what ruleSet is needed
     obj.determineRuleSet = function(phrase,PoS){
         var ruleSetNumber = "0"
 
@@ -92,6 +102,8 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
         //console.log(word)
         //console.log(PoS)
         //console.log(obj.nounException)
+
+        //if it's an exception, then just use the provided ruleSet member
         if(phrase.adjException.word!='default' && PoS =='adj'){
             ruleSetNumber = phrase.adjException.ruleSet
 
@@ -193,6 +205,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
 
         }
 
+        //GET the rule group needed from the back
         //console.log('about to get rule groups for ' + word + ' with ruleSet number of ' + ruleSetNumber + ' and gender: ' + gender)
         var ruleSetOptions = {
             url: '/ru/ruleGroups/',
@@ -209,11 +222,11 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
             console.log(output)
             deferred.resolve(output)
         })
-        //console.log(ruleSetOptions)
 
         return deferred.promise;
     }
 
+    //this function takes the prescribed rules and makes the necessary changes
     obj.applyEnding = function(word,declension){
         var deferred = $q.defer()
 
@@ -221,6 +234,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
         if(oper=='none'){
 
             deferred.resolve(word);
+
         }else if(oper=='replace'){
 
             var howMany = declension.dropHowMany
@@ -228,7 +242,6 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
             var ending = declension.ending
             var ruleAdjustedEnding = spellingRules.check(stem,ending);
 
-            //return stem+ruleAdjustedEnding
             deferred.resolve(stem+ruleAdjustedEnding)
         }else if(oper=='drop'){
             var len = word.length
@@ -238,8 +251,6 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
             var word = temp_word.substring(0,len-2)
             var ruleAdjustedEnding = spellingRules.check(word,ending)
 
-            //return word.substring(0,word.length-1)
-            //return word+ruleAdjustedEnding;
             deferred.resolve(word+ruleAdjustedEnding)
         }else if(oper=='add'){
 
@@ -270,7 +281,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
                 phrase.noun = newStem
 
                 //console.log(declension)
-                //return newStem
+                
                 console.log('about to decline '+ newStem )
                 console.log(declension)
                 obj.checkException(phrase.noun,'noun').then(function(res){
@@ -279,15 +290,14 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
                         console.log(declinedWord)
                         deferred.resolve(declinedWord)
                     })
-                })
-                
-            }
-            
+                })       
+            }    
         }
         
         return deferred.promise
     }
 
+    //this is a helper function that determines if a given word is an exception or not
     obj.checkException = function(word,PoS){
         var deferred = $q.defer()
 
@@ -307,22 +317,14 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
         sharedProps.httpReq(exceptionOptions).then(function(res){
             console.log(res)
             if(PoS=='noun'){
-
-                //phrase.nounException = res.content
-
-                deferred.resolve(res.content)
-                
-            }else if (PoS=='adj'){
-                    
-                //phrase.adjException = res.content
-                
-                deferred.resolve(res.content)
-                
+                deferred.resolve(res.content)  
+            }else if (PoS=='adj'){     
+                deferred.resolve(res.content)                
             }
         })
 
         return deferred.promise
     }
-    
+
     return obj
 })

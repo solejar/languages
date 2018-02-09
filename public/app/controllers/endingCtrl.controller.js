@@ -1,6 +1,6 @@
 var app = angular.module('lang');
 
-app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, $q, $timeout, $window, accountModifier){
+app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, translator, $q, $timeout, $window, accountModifier){
 
     //list of prepositions and their associated case options
     this.prepositions = []
@@ -21,8 +21,6 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, $q, $
 
     this.init = function(){
 
-        //this.testGroups()
-
         var initPhrase = {
             phrase: {
                 adj: 'твоя',
@@ -34,7 +32,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, $q, $
                 gender: 'F',
                 padex: 'родительный'
             },
-            expanded: true,
+            expanded: false,
             stars: 0,
             saved: false
         }
@@ -238,7 +236,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, $q, $
     this.generateCard = function(){
         decliner.declinePhrase(this.currPhrase).then(function(declinedPhrase){
             this.currPhrase.declinedPhrase = declinedPhrase
-            this.translatePhrase(declinedPhrase).then(function(translation){
+            translator.translatePhrase(declinedPhrase).then(function(translation){
                 this.currPhrase.translation = translation
                 var card = {}
                 card.phrase = this.currPhrase
@@ -253,132 +251,6 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, $q, $
 
     this.openMenu = function($mdMenu,ev){
         $mdMenu.open(ev);
-    }
-
-    //this needs to get finished up
-    this.testGroups = function(){
-        var groupOptions = {
-            url : '/ru/ruleGroups',
-            params: {},
-            method: 'GET',
-            verbose: false
-        }
-
-        sharedProps.httpReq(groupOptions).then(function(res){
-            var ruleGroups = res.content
-            //console.log(ruleGroups)
-
-            var declinedWords = {}
-
-            var promiseArr = []
-
-            angular.forEach(ruleGroups,function(ruleSet,ruleSetNumber){
-                var word = ruleSet.example
-                declinedWords[ruleSetNumber] = {}
-                declinedWords[ruleSetNumber].word = word
-                //console.log(ruleSet)
-
-                angular.forEach(ruleSet,function(padexDict,padex){
-
-                    var promiseObj = {}
-
-                    if(padex!='example' && padex!='description'){
-                        declinedWords[ruleSetNumber][padex] = {}
-                        if(padex=='винительный'){
-                            declinedWords[ruleSetNumber][padex].animate = {}
-                            declinedWords[ruleSetNumber][padex].inanimate = {}
-
-                            var animSingleOper = padexDict.Animate.Single
-                            var animPluralOper = padexDict.Animate.Plural
-
-                            //animSingleObj.promise = this.applyEnding(word,animSingleOper)
-                            this.applyEnding(word,animSingleOper).then(function(declinedWord){
-                                declinedWords[ruleSetNumber][padex].animate.single = declinedWord
-                            })
-
-                            //var declinedWordAnimPlural = 
-                            //promiseObj.promise = this.applyEnding(word,animPluralOper)
-                            this.applyEnding(word,animPluralOper).then(function(declinedWord){
-                                console.log('about to print')
-                                declinedWords[ruleSetNumber][padex].animate.plural = declinedWord
-
-                            })
-
-                            var inanimSingleOper = padexDict.Inanimate.Single
-                            var inanimPluralOper = padexDict.Inanimate.Plural
-
-                            //var declinedWordInanimSingle = 
-                            this.applyEnding(word,inanimSingleOper).then(function(declinedWord){
-                                declinedWords[ruleSetNumber][padex].inanimate.single = declinedWord
-                            })
-                            //var declinedWordInanimPlural = 
-                            this.applyEnding(word,inanimPluralOper).then(function(declinedWord){
-                                declinedWords[ruleSetNumber][padex].inanimate.plural = declinedWord
-                            })
-                            
-
-                        }else{
-                            var singleOper = padexDict.Single
-                            //var declinedWordSingle = 
-                            this.applyEnding(word,singleOper).then(function(declinedWord){
-                                declinedWords[ruleSetNumber][padex].single = declinedWord
-                            })
-
-                            var pluralOper = padexDict.Plural
-                            //var declinedWordPlural = 
-                            this.applyEnding(word,pluralOper).then(function(declinedWord){
-                                declinedWords[ruleSetNumber][padex].plural = declinedWord
-                            })
-                        }
-                    }
-
-                }.bind(this))
-                
-            }.bind(this));
-            console.log('about to print declinedWords')
-            //console.log(declinedWords)
-
-            $timeout(function(){
-                var data = {}
-
-                data['testResults'] = declinedWords
-                var testingPostOptions = {
-                    url: '/ru/testResults',
-                    data: data,
-                    method: 'POST',
-                    verbose: false
-                }
-
-                sharedProps.httpReq(testingPostOptions).then(function(res){
-                    console.log('Testing results posted successfully!')
-                });
-            },10000); //just gonna stick this behind a timeout
-            
-
-        }.bind(this));
-        //console.log('finished declining the words')
-    }
-
-    //this can probably be moved to a service
-    this.translatePhrase = function(phrase){
-        var deferred = $q.defer()
-
-        var options = {
-            url: 'ru/translations',
-            params: {
-                phrase: phrase,
-                targetLang: this.targetLang
-            },
-            method: 'GET',
-            verbose: false
-        }
-
-        sharedProps.httpReq(options).then(function(res){
-            deferred.resolve(res.text)
-            console.log(res)
-        }.bind(this))
-
-        return deferred.promise
     }
 
     this.inputsFresh = true
@@ -483,12 +355,6 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, $q, $
             return false
         }
     }
-    
-    //used to determine if ending is a cons or vowel
-    this.consonants = ['б','в','г','д','ж','з','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ']
-
-    //it's a smaller subset of consonants which trigger the fleeting vowel exceptions
-    this.fleetingCons =  ['б','в','г','д','ж','з','к','л','м','н','п','т','х','ц','ч','ш','щ']
 
     this.validInputs = function(currPoS){
         if(this.currPhrase.padex){
@@ -501,9 +367,5 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, $q, $
             return false
         }
     }
-
-    this.hushers = ['ж','ч','ш','щ']
-    //list of consonants that affect spelling rules
-    this.softConsList = ['г','к','х','ж','ч','ш','щ','ц'];
 
 });

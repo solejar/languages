@@ -1,6 +1,7 @@
 var app = angular.module('lang');
 
-//this service verifies that declined words comply with Russian spelling rules, maybe there's another use for this
+//this service verifies that declined words comply with Russian spelling rules
+//also can determine gender of certain words
 app.factory('spellingRules',function(){
     var softConsList = ['г','к','х','ж','ч','ш','щ','ц'];
 
@@ -15,6 +16,7 @@ app.factory('spellingRules',function(){
     };
 
     return{
+        //this function checks the spellingRules
         check: function(origStem, origEnding){
         //console.log(origStem + ' ' + origEnding)
 
@@ -52,6 +54,7 @@ app.factory('spellingRules',function(){
         return newEnding+endingRemainder
         },
 
+        //this function gets the adj type
         getAdjType: function(adj){
             var length = adj.length;
             var ending = adj.substring(length-3,length);
@@ -63,6 +66,7 @@ app.factory('spellingRules',function(){
             }
         },
 
+        //this function determines the gender of generic adjectives
         genericAdjGender: function(word){
             var len = word.length;
             if(len>=2){

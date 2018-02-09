@@ -21,11 +21,10 @@ module.exports = function(config) {
         './node_modules/angular-material/angular-material.min.js',
         './node_modules/angular-mocks/angular-mocks.js',
         './app/app.js',
-        './app/services/sharedProps.factory.js',
-        './app/controllers/endingCtrl.js',
-        './app/services/spellingRules.factory.js',
-        //'./js/endingCtrl.specs.js',
-        './app/services/spellingRules.specs.js'
+        './app/controllers/*.controller.js',
+        './app/services/*.factory.js',
+        './app/controllers/*.specs.js',
+        './app/services/*.specs.js'
     ],
 
 

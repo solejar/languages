@@ -1,13 +1,6 @@
 Decliner:
     Backlog in order: 
 
-    Not worth worrying about card keys anymore, duplicates are okay
-    REFACTOR
-        Clean up ending controller
-            move things into factories as needed
-            see if there's a possibility to create multiple controllers
-            move to controllers folder
-
     Turn results of this testing into set of assertions for Jasmine framework testing
 
     EXCEPTIONS
@@ -20,10 +13,6 @@ Decliner:
 
     Errors:
     -о fix attempted, not tested, -x fix attempted, tested and working
-
-    Really need to change system so that objects are getting passed around, not global scope accessing, this is lazy
-
-    Move declension to a factory, also separate out this ending controller
 
     Use for each simply to push promise onto array, then use $q.all to wait for all the promises to resolve //for now solution not worth cost
 
@@ -42,9 +31,6 @@ Decliner:
             <div>Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
             <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
-
-        Need to change key to be more than just the declined phrase
-            as it needs to be completely unique.
 
         Perhaps give option to only see most common prepositions
         (In my mind this potentially means moving to an autocomplete model)
@@ -70,7 +56,7 @@ Decliner:
                 i'm thinking maybe
 
         Authentication:
-            Implement sign-in/log-in page
+
             implement warnings to trigger if users attempts to save data before logging in (act as prompt for login)
             E-mail notification list?
 
@@ -133,7 +119,6 @@ Decliner:
 
 
         Code improvement/refactoring:
-            Group inputs into a single object, then re-integrate this into rest of app.
             Improve REST endpoints, parse inputs/path urls on start, abstract such logic out of the Mongo
   
         Server-side:
