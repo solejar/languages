@@ -14,12 +14,17 @@ jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
 jwtOptions.secretOrKey = 'laser-cats';
 
 var strategy = new JwtStrategy(jwtOptions,function(jwt_payload,next){
+    //console.log('testing payload strategy');
     console.log('payload received', jwt_payload);
 
-    var options = 
-    mongo.findUser(options,function(result){
+    var options = {
+        _id: jwt_payload._id,
+        db: 'app'
+    }
+
+    login.findUserID(options,function(result){
         if(result.statusCode='200'){
-            next(null,result);
+            next(null,result.content);
         }else{
             next(null,false)
         }
@@ -32,7 +37,8 @@ var router = express.Router();
 var translate = require('google-translate-api')
 
 var rest = require('../getJSON.js') //this is a manual rest implementation because i am a sorry man who does not understand express
-var mongo = require('../mongo.js')
+var decliner = require('../mongo/decliner.js')
+var login = require('../mongo/login.js')
 
 router.get('/ru',function(req,res){
     res.render('index.html');
@@ -46,7 +52,7 @@ router.get('/ru/prepositions',function(req,res){
     var options = {
         db: 'ru'
     }
-    mongo.getPrepositions(options,function(result){
+    decliner.getPrepositions(options,function(result){
         console.log('onResult: (' + result.statusCode + ')');
         res.statusCode = result.statusCode;
         res.send(result);
@@ -59,7 +65,7 @@ router.get('/ru/labels',function(req,res){
         lang: 'ru',
         db: 'ru'
     }
-    mongo.getLabels(options,function(result){
+    decliner.getLabels(options,function(result){
         console.log('onResult: (' + result.statusCode + ')');
         res.statusCode = result.statusCode;
         res.send(result);
@@ -71,7 +77,7 @@ router.get('/en/labels',function(req,res){
         lang: 'en',
         db: 'ru'
     }
-    mongo.getLabels(options,function(result){
+    decliner.getLabels(options,function(result){
         console.log('onResult: (' + result.statusCode + ')');
         
         res.send(result);
@@ -94,7 +100,7 @@ router.get('/ru/ruleGroups',function(req,res){
     
 
     console.log(options)
-    mongo.getRuleGroups(options,function(result){
+    decliner.getRuleGroups(options,function(result){
         console.log('just finished getting the ruleGroup')
         console.log(result)
         console.log('onResult: (' + result.statusCode + ')');
@@ -125,7 +131,7 @@ router.get('/ru/exceptions',function(req,res){
         query: req.query
     }
 
-    mongo.getExceptions(options,function(result){
+    decliner.getExceptions(options,function(result){
         console.log('onResult: (' + result.statusCode + ')');
         res.statusCode = result.statusCode;
         res.send(result);
@@ -139,7 +145,7 @@ router.get('/ru/testResults',function(req,res){
 
     res.set('Content-Type','application/json')
 
-    mongo.getTestResults(options,function(result){
+    decliner.getTestResults(options,function(result){
         console.log('onResult: (' + result.statusCode + ')')
         res.statusCode = result.statusCode;
         res.send(JSON.stringify(result,null,4));
@@ -155,7 +161,7 @@ router.get('/ru/errorReports',function(req,res){
 
     res.set('Content-Type','application/json')
 
-    mongo.getErrorReports(options,function(result){
+    decliner.getErrorReports(options,function(result){
         console.log('onResult: (' + result.statusCode + ')')
         res.statusCode = result.statusCode;
         res.send(result);
@@ -173,7 +179,7 @@ router.post('/ru/errorReports',function(req,res){
         db: 'ru'
     }
 
-    mongo.postErrorReports(options,function(result){
+    decliner.postErrorReports(options,function(result){
         console.log('onResult: (' + result.statusCode + ')');
         res.statusCode = result.statusCode;
         res.send(result); //i'm not even sure what I should be sending back for POST requests
@@ -191,7 +197,7 @@ router.post('/ru/testResults',function(req,res){
         db: 'ru'
     }
 
-    mongo.postTestResults(options,function(result){
+    decliner.postTestResults(options,function(result){
         console.log('onResult: (' + result.statusCode + ')');
         res.statusCode = result.statusCode;
         res.send(result);
@@ -207,7 +213,7 @@ router.get('/user',function(req,res){
             }
         }
 
-        mongo.findUser(options,function(result){
+        login.findUser(options,function(result){
             if (result.statusCode =='200'){
                 res.statusCode = '200'
                 res.send(result)
@@ -235,7 +241,7 @@ router.post('/login',function(req,res){
             }
         }
 
-        mongo.findUser(options,function(result){
+        login.findUser(options,function(result){
             //console.log('onResult: (' + result.statusCode + ')');
             var response = {}
             if(result.statusCode=='400'){
@@ -244,9 +250,11 @@ router.post('/login',function(req,res){
                 response.statusCode = '400'
                 response.errMsg = 'no such user found'
             }else{
-                var user = result.content[name] //parse response
+                var user = result.content //parse response
+                console.log('found user', user)
+
                 if(user.password===req.body.password){
-                    var payload = {id: user.userName};
+                    var payload = {_id: user._id};
                     var token = jwt.sign(payload,jwtOptions.secretOrKey);
                     res.statusCode = '200'
                     response.statusCode ='200'
@@ -269,7 +277,6 @@ router.post('/login',function(req,res){
         res.send(result)
     }
 
-    
 })
 
 router.get('/secret',passport.authenticate('jwt',{session: false}),function(req,res){
@@ -281,10 +288,14 @@ router.get('/secret',passport.authenticate('jwt',{session: false}),function(req,
 });
 
 router.post('/signup',function(req,res){
+    //NEED A WAY TO GENERATE ID
     //Account.register(new Account({username: req.body}))
-    var account = req.body
+    var account = {}
+    account.userName = req.body.name
+    account.password = req.body.password
     account.isAdmin = false
     account.signupDate = 'today'
+    //account.id = 0
     //and whatever other relevant info
 
     var options = {
@@ -292,7 +303,7 @@ router.post('/signup',function(req,res){
         loginInfo: account
     }
 
-    mongo.signupUser(options,function(result){
+    login.insertUser(options,function(result){
         console.log('onResult: ('+ result.statusCode + ')');
         res.statusCode = result.statusCode;
 
