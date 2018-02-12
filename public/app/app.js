@@ -3,7 +3,7 @@
     //this basic file is eventually for dependency injection and page control only.
 
     //this controller is just for page switching on a larger scope.
-    app.controller('headerController',function($window){
+    app.controller('headerController',function($window, authenticator){
 
         this.initialLabels = {
             'en': {
@@ -44,30 +44,31 @@
         }
 
         this.attemptLogin = function(loginInfo){
-            var loginFound = true;
+            authenticator.attemptLogin(loginInfo).then(function(res){
+                if(res.statusCode=='200'){
+                    this.user = res.content
 
-            if(loginFound){
-                this.user = loginInfo
-                this.user.isAdmin = false; //this won't be needed in real version
-
-                this.currPage = 'profile'
-            }else{
-                //display sorry message
-            }
+                    this.currPage ='profile'
+                }else{
+                    //some sort of error
+                }
+            }.bind(this))
+            
         }
 
         this.register = function(loginInfo){
             //something would probably happen here
-            var reqSuccessful = true;
-
             loginInfo.isAdmin = false; //or maybe on server side
 
-            if(reqSuccessful){
-                this.user=loginInfo
-                this.currPage = 'profile'
-            }else{
-                //display some error
-            }
+            authenticator.register(loginInfo).then(function(res){
+                if(res.statusCode=='200'){
+                    this.user = res.content
+                    this.currPage = 'profile'
+                }else{
+                    //some error
+                }
+            }.bind(this))
+            
         }
 
         this.isAdmin = function(){

@@ -1,6 +1,33 @@
 var express = require('express');
+var bodyParser = require("body-parser")
+var jwt = require('jsonwebtoken');
+
 var passport = require('passport');
-var Account = require('../models/account');
+var passportJWT = require('passport-jwt');
+
+var ExtractJwt = passportJWT.ExtractJwt;
+var JwtStrategy = passportJWT.Strategy;
+
+var jwtOptions = {}
+
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
+jwtOptions.secretOrKey = 'laser-cats';
+
+var strategy = new JwtStrategy(jwtOptions,function(jwt_payload,next){
+    console.log('payload received', jwt_payload);
+
+    var options = 
+    mongo.findUser(options,function(result){
+        if(result.statusCode='200'){
+            next(null,result);
+        }else{
+            next(null,false)
+        }
+    })
+})
+
+passport.use(strategy);
+
 var router = express.Router();
 var translate = require('google-translate-api')
 
@@ -153,8 +180,6 @@ router.post('/ru/errorReports',function(req,res){
     })
 })
 
-
-
 router.post('/ru/testResults',function(req,res){
     var body = req.body
     res.set('Content-Type','application/json')
@@ -173,28 +198,104 @@ router.post('/ru/testResults',function(req,res){
     })
 })
 
-router.get('/login',function(req,res){
-    var options = {
-        db: 'users',
-        loginInfo: req.query
+router.get('/user',function(req,res){
+    if (req.query.userName){
+        var options = {
+            db: 'app',
+            userInfo: {
+                userName: req.query.userName
+            }
+        }
+
+        mongo.findUser(options,function(result){
+            if (result.statusCode =='200'){
+                res.statusCode = '200'
+                res.send(result)
+            }else{
+                res.statusCode = '400'
+                res.send(result)
+            }
+        })
+    }
+});
+
+router.post('/login',function(req,res){
+
+    res.set('Content-Type','application/json')
+
+    if(req.body.name && req.body.password){
+        var name = req.body.name;
+        var password = req.body.password
+
+        var options = {
+            db: 'app',
+            userInfo: {
+                userName: name,
+                password: password
+            }
+        }
+
+        mongo.findUser(options,function(result){
+            //console.log('onResult: (' + result.statusCode + ')');
+            var response = {}
+            if(result.statusCode=='400'){
+                console.log('user not found')
+                res.statusCode = '400'
+                response.statusCode = '400'
+                response.errMsg = 'no such user found'
+            }else{
+                var user = result.content[name] //parse response
+                if(user.password===req.body.password){
+                    var payload = {id: user.userName};
+                    var token = jwt.sign(payload,jwtOptions.secretOrKey);
+                    res.statusCode = '200'
+                    response.statusCode ='200'
+                    response.content = {}
+                    response.content.token = token;
+
+                }else{
+                    response.statusCode = '400'
+                    res.statusCode='400'
+                    response.errMsg = 'passwords did not match'
+                }
+            }
+            res.send(response);
+        })
+    }else{
+        console.log(req.body)
+        var result = {}
+        result.statusCode = '400'
+        result.errMsg = 'Need to supply name and password'
+        res.send(result)
     }
 
-    mongo.loginUser(options,function(result){
-        console.log('onResult: (' + result.statusCode + ')');
-        res.statusCode = result.statusCode;
-        res.send(result);
-    })
+    
 })
 
+router.get('/secret',passport.authenticate('jwt',{session: false}),function(req,res){
+    res.statusCode = '200'
+
+    console.log('successfully authenticated a request')
+
+    res.send({statusCode: '200',content : {message: 'you accessed a protected route!'}})
+});
+
 router.post('/signup',function(req,res){
+    //Account.register(new Account({username: req.body}))
+    var account = req.body
+    account.isAdmin = false
+    account.signupDate = 'today'
+    //and whatever other relevant info
+
     var options = {
-        db: 'users',
-        loginInfo: req.query
+        db: 'app',
+        loginInfo: account
     }
 
-    mongo.signinUser(options,function(result){
+    mongo.signupUser(options,function(result){
         console.log('onResult: ('+ result.statusCode + ')');
         res.statusCode = result.statusCode;
+
         res.send(result);
     })
 })

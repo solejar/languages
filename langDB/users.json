@@ -1,0 +1,17 @@
+{
+    "users": {
+        "Sean Olejar": {
+            "userName": "Sean Olejar",
+            "password": "1234",
+            "isAdmin": true,
+            "id": "131"
+
+        },
+        "Sarah Salter": {
+            "userName": "Sarah Salter",
+            "password": "1234",
+            "isAdmin": false,
+            "id": "909"
+        }
+    }
+}
