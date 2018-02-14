@@ -87,7 +87,7 @@ exports.insertUser = function(options,onResult){
             
             var response = {
                 'statusCode': '200',
-                'content': {'nInserted': 1}
+                'content': {"nInserted": "1"}
             }
 
             onResult(response)

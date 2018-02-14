@@ -38,7 +38,7 @@
         <div id= "nav-bar"   style="background-color: #FAFAFA" ng-init="header.setLabels()"> 
                 
             <md-nav-bar  
-            md-selected-nav-item="header.currPage"
+            md-selected-nav-item="header.getCurrPage()"
             nav-bar-aria-label="navigation links">
 
                 <md-nav-item md-nav-click="header.changePage('home')"  name="home" aria-label="home-nav">
@@ -67,12 +67,12 @@
         </div>
 
         <md-content layout="column" style="background-color: #ccffff" flex="90" layout-align="start">
-            <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 50px" ng-if="!header.user">    
+            <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 50px" ng-if="!header.getUser()">    
             
-                <md-button ng-hide="header.currPage=='login'" ng-click="header.changePage('login')">
+                <md-button ng-hide="header.getCurrPage()=='login'" ng-click="header.changePage('login')">
                     Sign up
                 </md-button>
-                <md-button ng-hide="header.currPage=='login'" ng-click="header.changePage('login')">
+                <md-button ng-hide="header.getCurrPage()=='login'" ng-click="header.changePage('login')">
                     Log in
                 </md-button>  
                     
@@ -87,10 +87,10 @@
             <div layout="row">
                 <div flex-gt-md="25" flex-md="15" flex-sm="5" hide-xs style="width: 550px" >
                 </div>
-                <div flex flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.currPage=='home'">
+                <div flex flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='home'">
                 Home Page
                 </div>
-                <div flex flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.currPage=='about'" >
+                <div flex flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='about'" >
                     Доброе пожаловать на моем приложение!
 
                     <br><br>
@@ -100,7 +100,7 @@
                     Feel free to fork on https://github.com/solejar/languages.git
 
                 </div>
-                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.currPage=='login'" layout-margin ng-controller="loginCtrl as login" layout="column" >
+                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='login'" layout-margin ng-controller="loginCtrl as login" layout="column" >
                     <div layout="row">
                         <div id="sign-up" layout="column">
                         Sign Up
@@ -129,7 +129,7 @@
                                     </label>
                                     <input ng-model="login.signupInfo.email" type="email">
                                 </md-input-container>
-                                <md-button ng-click="header.register(login.signupInfo)" ng-disabled="signupForm.$invalid">
+                                <md-button ng-click="login.register(login.signupInfo)" ng-disabled="signupForm.$invalid">
                                 Sign up
                                 </md-button>
                             </form>
@@ -153,7 +153,7 @@
                                     <input type="password" ng-model="login.signin.password" required>
 
                                 </md-input-container>
-                                <md-button ng-click="header.attemptLogin(login.signin)" ng-disabled="loginForm.$invalid">
+                                <md-button ng-click="login.attemptLogin(login.signin)" ng-disabled="loginForm.$invalid">
                                     Log in
                                 </md-button>
                             </form> 
@@ -161,7 +161,7 @@
                        </div> 
                     </div>
                 </div>
-                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.currPage=='admin'" layout-margin   layout="column" ng-controller="adminCtrl as admin">
+                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='admin'" layout-margin   layout="column" ng-controller="adminCtrl as admin">
                     Admin page
                     <div>
                         {{'Welcome back, Grand Angular Master ' + header.user.userName}}
@@ -179,15 +179,15 @@
                         </md-button>
                     </div>
                 </div>
-                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.currPage=='profile'" layout-margin   layout="column" ng-controller="profileCtrl as profile">
-                    Profile page
+                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='profile'" layout-margin   layout="column" ng-controller="profileCtrl as profile">
+                    {{'Profile page for: ' + profile.getUser().userName}}
                     <div>
-                        <md-button ng-click="header.logout(header.user)">
+                        <md-button ng-click="profile.logout()">
                             {{'Logout'}}
                         </md-button>
                     </div>
                 </div>
-                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.currPage=='declension'" layout-margin ng-init="ending.init()" ng-controller="endingCtrl as ending" layout="column" >
+                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='declension'" layout-margin ng-init="ending.init()" ng-controller="endingCtrl as ending" layout="column" >
                     <md-whiteframe  style="background-color: #FAFAFA; overflow: auto"class="md-whiteframe-12dp" layout="column">
                         <div layout="column" flex="noshrink">
                             <md-toolbar>
@@ -507,10 +507,10 @@
                         </md-whiteframe> 
                     </div>
                 </div>
-                <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.currPage=='readings'" >
+                <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.getCurrPage()=='readings'" >
                     You are on the Readings page! This page is still under development. Come back later for more :3
                 </div>  
-                <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.currPage=='study'" >
+                <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.getCurrPage()=='study'" >
                     You are on the Study page! This page is still under development. Come back later for more :3
                 </div>  
                 <div flex-gt-md="25" flex-md="15" flex-sm="5" hide-xs style="width: 550px">

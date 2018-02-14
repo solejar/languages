@@ -3,6 +3,8 @@ var app = angular.module('lang');
 app.factory('sharedProps',function($http, $location){
     var props = {};
 
+    $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+
     var path = $location.path();
     return{
         //simple getter
@@ -14,6 +16,7 @@ app.factory('sharedProps',function($http, $location){
             props[whichProperty] = whichVal;
         },
         httpReq: function(options){
+            console.log(options)
             return $http({
                 method: options.method,
                 url: path+options.url,
@@ -21,7 +24,7 @@ app.factory('sharedProps',function($http, $location){
                 data: options.data
             }).then(function mySuccess(response){
                 if(options.verbose){
-                    console.log('the request of' + path+options.url + ' with params: ' + options.params.q + 'went well!');
+                    console.log('the request of' + path+options.url + ' with params: ' + options.params + 'went well!');
                     console.log(response.data)
                 }
                 return response.data;

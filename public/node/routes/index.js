@@ -227,10 +227,19 @@ router.get('/user',function(req,res){
 
 router.post('/login',function(req,res){
 
-    res.set('Content-Type','application/json')
+    //res.set('Content-Type','application/json')
 
-    if(req.body.name && req.body.password){
-        var name = req.body.name;
+    var userName = req.body.userName||req.params.userName;
+    var password = req.body.password||req.params.password;
+
+    //console.log(userName)
+    //console.log(password)
+    console.log(req.data)
+    console.log(req.params)
+    console.log(req.body)
+    
+    if(req.body.userName && req.body.password){
+        var name = req.body.userName;
         var password = req.body.password
 
         var options = {
@@ -259,6 +268,7 @@ router.post('/login',function(req,res){
                     res.statusCode = '200'
                     response.statusCode ='200'
                     response.content = {}
+                    response.content.user = user;
                     response.content.token = token;
 
                 }else{
@@ -291,7 +301,7 @@ router.post('/signup',function(req,res){
     //NEED A WAY TO GENERATE ID
     //Account.register(new Account({username: req.body}))
     var account = {}
-    account.userName = req.body.name
+    account.userName = req.body.userName
     account.password = req.body.password
     account.isAdmin = false
     account.signupDate = 'today'
@@ -306,7 +316,19 @@ router.post('/signup',function(req,res){
     login.insertUser(options,function(result){
         console.log('onResult: ('+ result.statusCode + ')');
         res.statusCode = result.statusCode;
+        if(res.statusCode =='200'){
+            login.findUser(options,function(user){
 
+                var payload = {_id: user.content._id};
+                var token = jwt.sign(payload,jwtOptions.secretOrKey);
+                res.statusCode = '200'
+                response.statusCode ='200'
+                response.content = {}
+                response.content.user = user.content
+                response.content.token = token;
+            })
+            
+        }
         res.send(result);
     })
 })

@@ -1,6 +1,10 @@
 Decliner:
     Backlog in order: 
 
+    figure out why post data needs to be in as url string
+
+    Switch loginCtrl to profileCtrl
+
     Consider making home and profile same view
     
     add editing functionality to the cards
