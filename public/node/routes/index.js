@@ -35,10 +35,9 @@ passport.use(strategy);
 
 var router = express.Router();
 var translate = require('google-translate-api')
-
-var rest = require('../getJSON.js') //this is a manual rest implementation because i am a sorry man who does not understand express
 var decliner = require('../mongo/decliner.js')
 var login = require('../mongo/login.js')
+var account = require('../mongo/account.js')
 
 router.get('/ru',function(req,res){
     res.render('index.html');
@@ -79,7 +78,7 @@ router.get('/en/labels',function(req,res){
     }
     decliner.getLabels(options,function(result){
         console.log('onResult: (' + result.statusCode + ')');
-        
+
         res.send(result);
     });
 });
@@ -97,7 +96,7 @@ router.get('/ru/ruleGroups',function(req,res){
             q: 'all'
         }
     }
-    
+
 
     console.log(options)
     decliner.getRuleGroups(options,function(result){
@@ -151,7 +150,7 @@ router.get('/ru/testResults',function(req,res){
         res.send(JSON.stringify(result,null,4));
     })
 
-    
+
 })
 
 router.get('/ru/errorReports',function(req,res){
@@ -204,7 +203,50 @@ router.post('/ru/testResults',function(req,res){
     })
 })
 
-router.get('/user',function(req,res){
+
+
+
+
+router.get('/secret',passport.authenticate('jwt',{session: false}),function(req,res){
+    res.statusCode = '200'
+
+    console.log(req.query)
+    console.log('successfully authenticated a request')
+
+    res.send({statusCode: '200',content : {message: 'you accessed a protected route!'}})
+});
+
+router.get('/users/cards',passport.authenticate('jwt',{session: false}),function(req,res){
+    var options = {
+        db: 'app',
+        userID: req.query.user._id
+    }
+
+    account.getCards(options,function(result){
+        res.statusCode = result.statusCode
+        if(result.statusCode=='200'){
+            console.log('found some cards')
+        }
+
+        res.send(result)
+    })
+})
+
+router.post('/users/cards',passport.authenticate('jwt',{session:false}),function(req,res){
+    var options = {
+        db: 'app',
+        card: req.body.card
+    }
+
+    account.createCard(options,function(result){
+      res.statusCode = result.statusCode
+      if(result.statusCode=='200'){
+          console.log('added a card')
+      }
+    })
+})
+
+router.get('/users',function(req,res){
     if (req.query.userName){
         var options = {
             db: 'app',
@@ -225,19 +267,14 @@ router.get('/user',function(req,res){
     }
 });
 
-router.post('/login',function(req,res){
-
-    //res.set('Content-Type','application/json')
-
-    var userName = req.body.userName||req.params.userName;
-    var password = req.body.password||req.params.password;
+router.post('/users/login',function(req,res){
 
     //console.log(userName)
     //console.log(password)
     console.log(req.data)
     console.log(req.params)
     console.log(req.body)
-    
+
     if(req.body.userName && req.body.password){
         var name = req.body.userName;
         var password = req.body.password
@@ -289,15 +326,15 @@ router.post('/login',function(req,res){
 
 })
 
-router.get('/secret',passport.authenticate('jwt',{session: false}),function(req,res){
-    res.statusCode = '200'
+router.delete('/users',function(req,res){
+    //mongo delete
+})
 
-    console.log('successfully authenticated a request')
+router.put('/users',function(req,res){
+    //mongo edit
+})
 
-    res.send({statusCode: '200',content : {message: 'you accessed a protected route!'}})
-});
-
-router.post('/signup',function(req,res){
+router.post('/users/add',function(req,res){
     //NEED A WAY TO GENERATE ID
     //Account.register(new Account({username: req.body}))
     var account = {}
@@ -327,7 +364,7 @@ router.post('/signup',function(req,res){
                 response.content.user = user.content
                 response.content.token = token;
             })
-            
+
         }
         res.send(result);
     })

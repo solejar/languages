@@ -25,17 +25,17 @@
             var pathSplit = urlPath.split('/')
             //console.log(pathSplit[3])
             var lang = pathSplit[3]
-            
+
             this.labels = this.initialLabels[lang];
 
         }
 
         this.getUser = function(){
             var user = auth.getUser()
-            console.log('user',user)
+            //console.log('user',user)
             return user
         }
-        
+
         this.isAdmin = function(){
             var user = auth.getUser()
             if(user){
@@ -75,6 +75,6 @@
             {display: 'English', url: 'en'}
         ]
     });
-    
+
 
 })();

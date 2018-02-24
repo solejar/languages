@@ -23,21 +23,21 @@
     <script tpye="text/javascript" src="./app/controllers/adminCtrl.controller.js"></script>
     <script type="text/javascript" src="./app/controllers/profileCtrl.controller.js"></script>
     <script type="text/javascript" src="./app/services/spellingRules.factory.js"></script>
-    <script type="text/javascript" src="./app/services/accountModifier.factory.js"></script>
+    <script type="text/javascript" src="./app/services/account.factory.js"></script>
     <script type="text/javascript" src="./app/services/decliner.factory.js"></script>
     <script type="text/javascript" src="./app/services/translator.factory.js"></script>
     <script type="text/javascript" src="./app/services/tester.factory.js"></script>
     <script type="text/javascript" src="./app/filters/prepositions.filter.js">
     </script>
-    <script type="text/javascript" src="./app/services/authenticator.factory.js"></script>
+    <script type="text/javascript" src="./app/services/auth.factory.js"></script>
 
 </head>
 
-<body ng-controller="headerController as header" >     
+<body ng-controller="headerController as header" >
     <md-content  layout="column" style="background-color: #ccffff; height: 100%; %" layout-align="start" >
-        <div id= "nav-bar"   style="background-color: #FAFAFA" ng-init="header.setLabels()"> 
-                
-            <md-nav-bar  
+        <div id= "nav-bar"   style="background-color: #FAFAFA" ng-init="header.setLabels()">
+
+            <md-nav-bar
             md-selected-nav-item="header.getCurrPage()"
             nav-bar-aria-label="navigation links">
 
@@ -62,27 +62,27 @@
                 </md-nav-item>
                 <md-nav-item md-nav-click="header.changePage('admin')" name="admin" ng-show="header.isAdmin()">
                     {{'Admin'}}
-                </md-nav-item>                
+                </md-nav-item>
             </md-nav-bar>
         </div>
 
         <md-content layout="column" style="background-color: #ccffff" flex="90" layout-align="start">
-            <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 50px" ng-if="!header.getUser()">    
-            
+            <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 50px" ng-if="!header.getUser()">
+
                 <md-button ng-hide="header.getCurrPage()=='login'" ng-click="header.changePage('login')">
                     Sign up
                 </md-button>
                 <md-button ng-hide="header.getCurrPage()=='login'" ng-click="header.changePage('login')">
                     Log in
-                </md-button>  
-                    
+                </md-button>
+
             </div>
-            <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 50px" ng-if="header.user" >    
-            
+            <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 50px" ng-if="header.user" >
+
                 <md-button  ng-click="header.changePage('profile')">
                     {{'Hi, '+header.user.userName}}
-                </md-button>  
-                    
+                </md-button>
+
             </div>
             <div layout="row">
                 <div flex-gt-md="25" flex-md="15" flex-sm="5" hide-xs style="width: 550px" >
@@ -145,7 +145,7 @@
                                     </label>
                                     <input ng-model="login.signin.userName" required>
                                 </md-input-container>
-                                
+
                                 <md-input-container>
                                     <label>
                                         Password
@@ -156,9 +156,9 @@
                                 <md-button ng-click="login.attemptLogin(login.signin)" ng-disabled="loginForm.$invalid">
                                     Log in
                                 </md-button>
-                            </form> 
+                            </form>
 
-                       </div> 
+                       </div>
                     </div>
                 </div>
                 <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='admin'" layout-margin   layout="column" ng-controller="adminCtrl as admin">
@@ -180,7 +180,7 @@
                     </div>
                 </div>
                 <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='profile'" layout-margin   layout="column" ng-controller="profileCtrl as profile">
-                    {{'Profile page for: ' + profile.getUser().userName}}
+                    {{'Profile page for: ' + profile.user.userName}}
                     <div>
                         <md-button ng-click="profile.logout()">
                             {{'Logout'}}
@@ -196,15 +196,15 @@
                                 </div>
                             </md-toolbar>
                             <br>
-                             
+
                             <div layout="row" flex="noshrink" style="height: 10px" layout-align="end center">
                                 <md-button class="md-accent" ng-click="ending.clearToInitial()" ng-hide="ending.disableClear()">Clear
                                 </md-button>
-                            </div>       
+                            </div>
                             <div layout="row" ng-if="ending.pageInitialized" id="phrase-input" layout-align="center" layout-wrap>
 
                                 <md-input-container flex-gt-md="20" flex-md="15" flex-sm="20" flex-xs="20" layout-align="end">
-                                    
+
                                     <label>
                                     {{ending.labels.prepSelect.display}}
                                     </label>
@@ -213,7 +213,7 @@
                                         {{prep.name}}
                                         </md-option>
                                     </md-select>
-                                </md-input-container>          
+                                </md-input-container>
                                 <md-input-container flex-gt-md="25" flex-md="20"flex-sm="40" flex-xs="40" >
                                     <label>
                                     {{ending.labels.adjSelect.display}}
@@ -228,7 +228,7 @@
                                 </md-input-container>
                             </div>
                             <div layout="row" layout-align="center" ng-if="ending.pageInitialized" layout-wrap id="quality-select">
-                                
+
                                 <md-input-container flex-gt-sm="20" flex-sm="25" >
                                     <md-tooltip ng-show="ending.onlyOneCase" md-delay="230">{{ending.labels.caseForcedTooltip.display}}
                                     </md-tooltip>
@@ -270,11 +270,11 @@
                             </div>
 
                             <div id="interact-bar" layout="row" layout-align="start center">
-                                
+
                                 <md-button class="md-primary md-raised" ng-click="ending.generateCard()" ng-disabled="ending.disableDecline()">
 
                                 Decline Phrase
-                                </md-button>        
+                                </md-button>
 
                             </div>
                             <br>
@@ -299,15 +299,15 @@
                                                 <md-icon ng-if="!card.saved" md-svg-icon="./images/plus_k.svg">
                                                 </md-icon>
                                                 <md-icon ng-if="card.saved" md-svg-icon="./images/satisfaction_k.svg">
-                                                
+
                                             </md-button>
                                             <md-button ng-click="ending.removeCard(card)" class="md-raised md-warn" >
                                                 <md-icon md-svg-icon="./images/garbage_k.svg">
                                                 </md-icon>
-                                                
+
                                             </md-button>
                                         </div>
-                                        
+
                                     </div>
                                     <div layout="row" id="expanded-phrase" ng-if="card.expanded">
                                         <div flex="90" layout="column" >
@@ -322,9 +322,9 @@
                                                             <div flex>
                                                             {{' Translation:  '}}
                                                             </div>
-                                                        </div> 
+                                                        </div>
                                                         <div flex="20">
-                                                        </div> 
+                                                        </div>
                                                     </div>
                                                     <div flex style="background-color: white;" layout="row" layout-align="center">
                                                         <div flex="15">
@@ -346,9 +346,9 @@
                                                             <div flex>
                                                             {{'Adj:  '}}
                                                             </div>
-                                                        </div> 
+                                                        </div>
                                                         <div flex="20">
-                                                        </div> 
+                                                        </div>
                                                     </div>
                                                     <div flex style="background-color: white;" layout="row" layout-align="center">
                                                         <div flex="15">
@@ -370,9 +370,9 @@
                                                             <div flex>
                                                             {{'Noun:  '}}
                                                             </div>
-                                                        </div> 
+                                                        </div>
                                                         <div flex="20">
-                                                        </div> 
+                                                        </div>
                                                     </div>
                                                     <div flex style="background-color: white;" layout="row" layout-align="center">
                                                         <div flex="15">
@@ -394,9 +394,9 @@
                                                             <div flex>
                                                             {{'Case:  '}}
                                                             </div>
-                                                        </div> 
+                                                        </div>
                                                         <div flex="20">
-                                                        </div> 
+                                                        </div>
                                                     </div>
                                                     <div flex style="background-color: white;" layout="row" layout-align="center">
                                                         <div flex="15">
@@ -418,9 +418,9 @@
                                                             <div flex>
                                                             {{'Animateness:  '}}
                                                             </div>
-                                                        </div> 
+                                                        </div>
                                                         <div flex="20">
-                                                        </div> 
+                                                        </div>
                                                     </div>
                                                     <div flex style="background-color: white;" layout="row" layout-align="center">
                                                         <div flex="15">
@@ -442,9 +442,9 @@
                                                             <div flex>
                                                             {{'Gender:  '}}
                                                             </div>
-                                                        </div> 
+                                                        </div>
                                                         <div flex="20">
-                                                        </div> 
+                                                        </div>
                                                     </div>
                                                     <div flex style="background-color: white;" layout="row" layout-align="center">
                                                         <div flex="15">
@@ -466,9 +466,9 @@
                                                             <div flex>
                                                             {{'Plurality:  '}}
                                                             </div>
-                                                        </div> 
+                                                        </div>
                                                         <div flex="20">
-                                                        </div> 
+                                                        </div>
                                                     </div>
                                                     <div flex style="background-color: white;" layout="row" layout-align="center">
                                                         <div flex="15">
@@ -479,7 +479,7 @@
                                                         <div flex="15">
                                                         </div>
                                                     </div>
-                                                </div>   
+                                                </div>
                                             </div>
                                         </div>
                                         <div flex layout="column" layout-align="start end">
@@ -503,23 +503,23 @@
                                         </div>
                                     </div>
                                 </md-white-frame>
-                            </div>         
-                        </md-whiteframe> 
+                            </div>
+                        </md-whiteframe>
                     </div>
                 </div>
                 <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.getCurrPage()=='readings'" >
                     You are on the Readings page! This page is still under development. Come back later for more :3
-                </div>  
+                </div>
                 <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.getCurrPage()=='study'" >
                     You are on the Study page! This page is still under development. Come back later for more :3
-                </div>  
+                </div>
                 <div flex-gt-md="25" flex-md="15" flex-sm="5" hide-xs style="width: 550px">
                 </div>
             </div>
         </md-content>
 
         <!--<div flex="noshrink"  id="lower-boundary" style=" height: 30px">
-            
+
         </div>-->
 
         <div layout="row" id="footer" flex="none" ng-controller="footerController as footer" style="background-color: #3F51B5; height: 80px; font-size: 10pt; color:white" layout-align="space-around center" >
@@ -531,7 +531,7 @@
                     <div ng-repeat="lang in footer.langs" >
                         <md-button  style="font-size: 10pt"   ng-href="http://localhost:8080/{{lang.url}}">
                             {{lang.display}}
-                        </md-button>   
+                        </md-button>
                     </div>
 
 
@@ -540,8 +540,8 @@
             <div flex>
                 Copyright 2018, Sean Olejar, unless otherwise noted.
             </div>
-            
+
         </div>
-    </md-content>      
+    </md-content>
 </body>
 </html>

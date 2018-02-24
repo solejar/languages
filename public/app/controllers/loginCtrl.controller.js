@@ -6,15 +6,15 @@ app.controller('loginCtrl',function(sharedProps,auth){3
         console.log('attempting login')
         auth.attemptLogin(loginInfo).then(function(res){
             //console.log(res)
+            console.log(res.statusCode)
             if(res.statusCode=='200'){
-                //this.user = res.content
-                //auth.setUser(res.content)
+                console.log('about to change page to profile')
                 sharedProps.setProperty('currPage','profile')
             }else{
-                //some sort of error
+                console.log('login error',res)
             }
         }.bind(this))
-        
+
     }
 
     this.register = function(loginInfo){
@@ -23,12 +23,12 @@ app.controller('loginCtrl',function(sharedProps,auth){3
 
         auth.register(loginInfo).then(function(res){
             if(res.statusCode=='200'){
-                //auth.setUser(res.content)
+
                 sharedProps.setProperty('currPage','profile')
             }else{
-                //some error
+                console.log('login error',res)
             }
         }.bind(this))
-        
+
     }
 });

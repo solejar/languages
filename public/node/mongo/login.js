@@ -33,7 +33,7 @@ exports.findUser = function(options,onResult){
                     errMsg: 'No such user found'
                 }
             }
-            
+
             onResult(response)
             database.close();
         })
@@ -67,7 +67,7 @@ exports.findUserID = function(options,onResult){
                     errMsg: 'No such user found'
                 }
             }
-            
+
             onResult(response)
             database.close();
         })
@@ -84,7 +84,7 @@ exports.insertUser = function(options,onResult){
         collection.insertOne(options.loginInfo,function(err,res){
             if(err){onResult({'statusCode': '400','errMsg': err})}
             console.log("1 document inserted")
-            
+
             var response = {
                 'statusCode': '200',
                 'content': {"nInserted": "1"}
@@ -104,6 +104,8 @@ exports.editUser = function(options,onResult){
         }
         var db = database.db(options.db);
         var collection = db.collection('users');
+
+        //do some query
 
     })
 }

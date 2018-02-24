@@ -1,6 +1,6 @@
 var app = angular.module('lang');
 
-app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, translator, $q, $timeout, $window, accountModifier){
+app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, translator, $q, $timeout, $window, account){
 
     //list of prepositions and their associated case options
     this.prepositions = []
@@ -185,17 +185,17 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
         console.log(card.saved)
         if(card.saved == true){
             card.saved = false
-            accountModifier.removeCard(card,user)
+            account.removeCard(card,user)
             
         }else{
             card.saved = true;
-            accountModifier.editCard(card,user)
+            account.editCard(card,user)
         }    
     }
 
     //until I understand directives, we'll just make these wrappers for factories
     this.markCard = function(card,user){
-        accountModifier.markCard(card,user)
+        account.markCard(card,user)
     }
     
     //maybe we need to look at a generic card template before we can decide how to do this

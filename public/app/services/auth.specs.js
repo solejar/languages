@@ -8,10 +8,11 @@ describe('this factory allows controllers to login or signup',function(){
     }));
 
     it('should contain the following the functions',function(){
+        expect(auth).toBeDefined()
         expect(auth.attemptLogin).toBeDefined();
         expect(auth.register).toBeDefined();
-        //expect(auth).toBeDefined()
+
     })
 
-    
+
 })
