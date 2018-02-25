@@ -1,56 +1,148 @@
 #Software Structure
 
-##langDB - *contains all files related to the DB (source jsons etc)*
 
-​	-exceptionsRU.json
 
-​	-prepositionsRU.json
+##public
 
-​	-ruleGroupsRU.json
+###app 
 
-​	-labelsRU.json
+*contains AngularJS files*
 
-​	-russianCollection.json - *collation of all data in previous 4 jsons*
+#### 	config
 
-​	-users.json
+​	*contains all config files (currently unutilized)*
 
-​	-testingResults.json - *results from testing all of the rule groupings*
+#### 	controllers
 
-**public** - *contains all files related to front/back-end development*
+​	*contains all controllers and their tests*
 
-​	**app** - *contains AngularJS files*
+		##### 		adminCtrl.controller.js
 
-​		**config** - *contains all config files (currently unutilized)*
+​		*handles the admin page*
 
-​		**controllers** - *contains all controllers and their tests*
+##### 		adminCtrl.specs.js
 
-​		**directives** - *contains all directives*
+##### 		endingCtrl.controller.js
 
-​		**filters** - *contains all filters*
+​		*handles declension*
 
-​		**services** - *contains all services/factories*
+##### 		endingCtrl.specs.js
 
-​		app.js - *registers the Angular app, also handles global structure of the SPA (what page)*
+#####		loginCtrl.controller.js
 
-​	**css** - *contains all custom CSS (pre-defined Angular CSS in node_modules)*
+​		*handles login*
 
-​	**images** - *contains all static images such as favicon.ico*
+##### 		loginCtrl.specs.js
 
-​	**node** - *contains back-end files, except for server*
+##### 		profileCtrl.controller.js
 
-​		**models** - *will contain schemas when we add Mongoose*
+​		*handles profile page*
 
-​		**mongo** - *contains all Mongo querying code*
+##### 		profileCtrl.specs.js
 
-​		**routes** - *contains all HTTP request routes*	
 
-​	**node_modules** - *contains all npm packages*	
 
-​	**views** - *contains all front-end views, but since SPA, likely that this will just be index.*
+#### 	directives
 
-​	-karma.conf.js
+​	*contains all directives*
 
-​	-package-lock.json
+#### 	filters
+
+​	*contains all filters*
+
+	##### 		prepositions.filter.js
+
+​	
+
+#### 	services
+
+​	*contains all services/factories*
+
+##### 		account.factory.js
+
+##### 		account.specs.js
+
+##### 		auth.factory.js
+
+##### 		auth.specs.js
+
+##### 		decliner.factory.js
+
+##### 		sharedProps.factory.js
+
+#####		spellingRules.factory.js
+
+##### 		spellingRules.specs.js
+
+##### 		tester.factory.js
+
+##### 		tester.specs.js
+
+##### 		translator.factory.js
+
+#####		translator.specs.js
+
+	##### 	app.js
+
+​	*registers the Angular app, also handles global structure of the SPA (what page)*
+
+
+
+###css
+
+*contains all custom CSS (pre-defined Angular CSS in `./public/node_modules`)*
+
+
+
+### images
+
+*contains all static images such as `favicon.ico`, which might not require listing*
+
+
+
+### node
+
+*contains back-end files, except for `server.js`, which is located in  `./public`*
+
+ #### 	models
+
+​	*will contain schemas when we add Mongoose*
+
+		#### 	mongo
+
+​	*contains all Mongo querying code*
+
+		#### 	routes
+
+​	*contains all HTTP request routes*	
+
+		##### 		index.js
+
+
+
+### node_modules
+
+*contains all npm packages, which I will not begin listing until absolutely necessary*
+
+
+
+### views
+
+*contains all front-end views, but since SPA, likely that this will just be`index.html`*
+
+	##### 	index.html
+
+
+
+##### karma.conf.js
+
+*config file for karma testing framework*
+
+##### package-lock.json
+
+##### package.json
+
+##### server.js
 
 
 
