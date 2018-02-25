@@ -1,22 +1,33 @@
 var app = angular.module('lang')
 
 //this factory is responsible for modifying a user's card collection
-app.factory('account',function(auth,sharedProps){
+app.factory('account',function(auth,sharedProps,$httpParamSerializer){
     //var session = {}
 
     var obj = {}
 
     obj.removeCard= function(card){
+
+        var deferred = $q.defer()
         var user = auth.getUser();
         var token = auth.getToken();
 
-        var options = {}
+        var qs = $httpParamSerializer(signupInfo)
+        var options = {
+          url: '/users/cards',
+          method: 'DELETE',
+          verbose: true,
+          data: qs
+        }
+
         sharedProps.httpReq(options).then(function(result){
             if(result.statusCode=='200'){
                 console.log('successfully removed the card from the user!')
+                deferred.resolve(result)
             }else{
-                console.log('not succesffully in removing the card from the user')
+                console.log('not successful in removing the card from the user') //technically something should resolve here i'm just doing this for testing
             }
+
         })
     }
 
@@ -24,7 +35,14 @@ app.factory('account',function(auth,sharedProps){
         var user = auth.getUser();
         var token = auth.getToken();
 
-        var options =
+        var qs = $httpParamSerializer(signupInfo)
+        var options = {
+          url: '/users/cards/',
+          method: 'POST',
+          data: qs,
+          verbose: true
+        }
+
         sharedProps.httpReq(options).then(function(result){
             if(result.statusCode=='200'){
                 console.log('successfully removed the card from the user!')

@@ -4,10 +4,10 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
 
     //list of prepositions and their associated case options
     this.prepositions = []
-    
+
     this.currPhrase = {}
 
-    this.currPhrase.adjException = {}//if word is exception, use rules from exception dict 
+    this.currPhrase.adjException = {}//if word is exception, use rules from exception dict
     this.currPhrase.nounException = {}
     this.endings = {} //if not, just use general rules
 
@@ -49,8 +49,8 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
 
         this.initializeValues(options).then(function(statusCode){
             this.pageInitialized = true
-        }.bind(this)) //pull data from Mongo   
-        //console.log(this.labels) 
+        }.bind(this)) //pull data from Mongo
+        //console.log(this.labels)
 
         this.clearToInitial()   //initialize select vals
 
@@ -66,8 +66,8 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
                     console.log(ruleSet)
                     this.currPhrase.adjRuleSet = ruleSet
                 }.bind(this))
-           }.bind(this)) 
-           
+           }.bind(this))
+
         }else if(PoS=='noun'){
             decliner.checkException(word,PoS).then(function(res){
                 this.currPhrase.nounException = res
@@ -77,16 +77,11 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
                     console.log(ruleSet)
                     this.currPhrase.nounRuleSet = ruleSet
                 }.bind(this))
-           }.bind(this))             
+           }.bind(this))
         }
     }
 
-    this.removeCard = function(card){
-        
-        var index = this.cards.indexOf(card);
-        this.cards.splice(index,1);
-        
-    }
+
 
     //GET requests made on page init, gives the page everything it needs to run
     this.initializeValues = function(options){
@@ -107,21 +102,21 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
             method: 'GET',
             verbose: false
         }
-        
+
         var promises = [];
         console.log('about to fetch exceptions, endings, preps, and labels!');
 
         //push promises onto promise arr
-        
+
         promises.push(sharedProps.httpReq(labelOptions))
-        promises.push(sharedProps.httpReq(prepositionOptions))        
+        promises.push(sharedProps.httpReq(prepositionOptions))
 
         //async timeout until all promise completion
         $q.all(promises).then(function(res){
             //set data structs equal to responses
             this.labels = res[0].content
-            this.prepositions = res[1].content 
-             
+            this.prepositions = res[1].content
+
             deferred.resolve('200')
 
         }.bind(this));
@@ -130,7 +125,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
     }
     //clear out select vals
     this.clearToInitial = function(){
-         
+
         //this.adjException = {exists: false}
         //this.nounException = {exists: false}
         this.currPhrase = {}
@@ -185,19 +180,27 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
         console.log(card.saved)
         if(card.saved == true){
             card.saved = false
-            account.removeCard(card,user)
-            
+            account.removeCard(card)
+
         }else{
             card.saved = true;
-            account.editCard(card,user)
-        }    
+            account.addCard(card)
+        }
+    }
+
+    //need to consolidate screen removal with account removal
+    this.removeCard = function(card){
+
+        var index = this.cards.indexOf(card);
+        this.cards.splice(index,1);
+
     }
 
     //until I understand directives, we'll just make these wrappers for factories
     this.markCard = function(card,user){
         account.markCard(card,user)
     }
-    
+
     //maybe we need to look at a generic card template before we can decide how to do this
     this.reportCard = function(card, user){
         var data = {}
@@ -226,7 +229,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
             this.currPhrase.padex = caseArr[0];
         }else{
             this.onlyOneCase = false;
-        }        
+        }
     }
 
     this.generateCard = function(){
@@ -238,9 +241,13 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
                 card.phrase = angular.copy(this.currPhrase)
                 card.expanded = false;
                 card.saved = false;
-                
-                this.cards.push(card)
-                console.log(this.cards)
+
+
+                this.addCard(card).then(function(res){
+                  this.cards.push(card)
+                  console.log(this.cards)
+                }.bind(this))
+
 
             }.bind(this))
         }.bind(this))
@@ -290,35 +297,35 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
                     console.log('no gender found')
                     var gender = ''
                 }
-               
+
             }else{
                 console.log('no nounexception yet')
                 var gender = ''
             }
 
             this.nounGender = gender
-            
+
         }else if(PoS=='adj'){
             if(!(this.currPhrase.adjException.word=='default')){
                 console.log(this.currPhrase.adjException)
-                
+
                 if(this.currPhrase.adjException.gender){
                     var gender = this.currPhrase.adjException.gender
                     this.currPhrase.gender = gender
                     this.adjGender = gender
                     return
                 }
-                
+
             }
 
             console.log('no adj exception yet')
             var gender = spellingRules.genericAdjGender(word)
-            
+
             if(gender){
                 this.currPhrase.gender = gender
             }
-                
-            this.adjGender = gender          
+
+            this.adjGender = gender
         }
     }
 

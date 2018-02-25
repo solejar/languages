@@ -7,7 +7,30 @@ exports.editCard = function(options,onResult){
 }
 
 exports.removeCard = function(options,onResult){
+  MongoClient.connect(url,function(err,database){
+    if(err){
+      onResult({'statusCode': '400','errMsg': err})
+    }
 
+    var db = database.db(options.db);
+    var collection = db.collection('cards');
+
+    var cardID = new mongodb.ObjectID(options.cardID)；
+
+    collection.deleteOne({_id: cardID},function(err,results){
+      if(err){
+        throw err;
+      }else{
+        console.log("successfully deleted a card")
+      }
+      var response = {
+        statusCode: '200',
+        content = results
+      }
+      onResult(response)
+    });
+
+  })
 }
 
 exports.insertCard = function(options,onResult){
