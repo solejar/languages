@@ -1,10 +1,10 @@
-# Software Structure
+#Software Structure
 
 
 
-## public
+##public
 
-### app 
+###app 
 
 *contains AngularJS files*
 
@@ -12,11 +12,13 @@
 
 ​	*contains all config files (currently unutilized)*
 
+#### 	
+
 #### 	controllers
 
 ​	*contains all controllers and their tests*
 
-##### 		adminCtrl.controller.js
+		##### 		adminCtrl.controller.js
 
 ​		*handles the admin page*
 
@@ -46,11 +48,13 @@
 
 ​	*contains all directives*
 
+
+
 #### 	filters
 
 ​	*contains all filters*
 
-##### 		prepositions.filter.js
+	##### 		prepositions.filter.js
 
 ​	
 
@@ -82,13 +86,15 @@
 
 #####		translator.specs.js
 
-##### 	app.js
+	##### 	
+
+	##### 	app.js
 
 ​	*registers the Angular app, also handles global structure of the SPA (what page)*
 
 
 
-### css
+###css
 
 *contains all custom CSS (pre-defined Angular CSS in `./public/node_modules`)*
 
@@ -104,19 +110,29 @@
 
 *contains back-end files, except for `server.js`, which is located in  `./public`*
 
-#### 	models
+ #### 	models
 
 ​	*will contain schemas when we add Mongoose*
 
-#### 	mongo
+		#### 	
+
+		#### 	mongo
 
 ​	*contains all Mongo querying code*
 
-#### 	routes
+##### 		account.js
+
+##### 		decliner.js
+
+##### 		login.js
+
+
+
+		#### 	routes
 
 ​	*contains all HTTP request routes*	
 
-##### 		index.js
+		##### 		index.js
 
 
 
@@ -130,7 +146,7 @@
 
 *contains all front-end views, but since SPA, likely that this will just be`index.html`*
 
-##### 	index.html
+	##### 	index.html
 
 
 

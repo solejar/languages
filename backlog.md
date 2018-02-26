@@ -1,6 +1,6 @@
 # Backlog
 
-## Decliner
+##Decliner
 
 **Functional**
 
@@ -16,8 +16,7 @@
 - how should components reorder here to effectively use space real estate? 
 - (try to) remove borders around whiteframe for only mobile view (`flex-xs`).    
 
-
-## Login
+##Login
 
 **Functional**
 
@@ -33,11 +32,13 @@
 - check out `flex` for different device sizes
 
 
+
 ## Card
 
 **Functional**
 
 **Nonfunctional**
+
 
 
 ## Readings
@@ -89,7 +90,7 @@
 
 
 
-## Testing
+##Testing
 
 * for each factory, come up with some specific test cases and assertions as time goes on
 
@@ -97,7 +98,7 @@
 
 * Decliner, use testResults.json to figure out if declension is working
 
-  
+  ​
 
 ## Refactoring
 
@@ -114,7 +115,7 @@
 
   ​
 
-## Home
+##Home
 
 **Functional**
 
@@ -125,7 +126,7 @@
 
 
 
-## Misc.
+##Misc.
 
 **Nonfunctional**
 
@@ -133,10 +134,11 @@
 
 
 
-## Admin
+##Admin
 
 * Buy a domain, some online mongo allocation as well
 * Design Docs/How-to
+  * [JSDoc](http://usejsdoc.org/)
 * Credit the [artists](www.flaticon.com)  
 
 
@@ -152,7 +154,7 @@
 
 
 
-## Out of Scope
+##Out of Scope
 
 * words with multiple forms of plurals
 * non-declinable, non-russian names.
