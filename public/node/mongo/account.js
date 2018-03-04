@@ -6,28 +6,28 @@ exports.editCard = function(options,onResult){
 
 }
 
-exports.removeCard = function(options,onResult){
+exports.deleteCard = function(options,onResult){
   MongoClient.connect(url,function(err,database){
     if(err){
       onResult({'statusCode': '400','errMsg': err})
     }
 
     var db = database.db(options.db);
-    var collection = db.collection('cards');
+    var collection = db.collection(options.collection);
 
-    var cardID = new mongodb.ObjectID(options.cardID)；
+    var cardID = new mongo.ObjectID(options.cardID)
 
     collection.deleteOne({_id: cardID},function(err,results){
-      if(err){
-        throw err;
-      }else{
-        console.log("successfully deleted a card")
-      }
-      var response = {
-        statusCode: '200',
-        content = results
-      }
-      onResult(response)
+        if(err){
+            throw err;
+        }else{
+            console.log("successfully deleted a card")
+        }
+        var response = {
+            statusCode: '200',
+            content: results
+        }
+        onResult(response)
     });
 
   })
@@ -35,26 +35,26 @@ exports.removeCard = function(options,onResult){
 
 exports.insertCard = function(options,onResult){
     MongoClient.connect(url,function(err,database){
-      if(err){
-        onResult({'statusCode': '400','errMsg': err})
-      }
-
-      var db = database.db(options.db);
-      var collection = db.collection('cards');
-
-      collection.insertOne(options.card,function(err,res){
-        if(err){onResult({'statusCode': '400','errMsg': err})}
-        console.log("1 card inserted into db")
-
-        var response = {
-            'statusCode': '200',
-            'content': {"nInserted": "1"}
+        if(err){
+            onResult({'statusCode': '400','errMsg': err})
         }
 
-        onResult(response)
+        var db = database.db(options.db);
+        var collection = db.collection(options.collection);
 
-        database.close();
-      })
+        collection.insertOne(options.card,function(err,res){
+            if(err){onResult({'statusCode': '400','errMsg': err})}
+            console.log("1 card inserted into db")
+
+            var response = {
+                'statusCode': '200',
+                'content': {"nInserted": "1"}
+            }
+
+            onResult(response)
+
+            database.close();
+        })
     })
 }
 
@@ -64,19 +64,22 @@ exports.getCards = function(options,onResult){
             onResult({'statusCode': '400','errMsg': err})
         }
         var db = database.db(options.db);
-        var collection = db.collection('cards');
+        var collection = db.collection(options.collection);
 
-        collection.find({userID: options.userID}).project().toArray(function(err,items){
+        var u_id = new mongo.ObjectID(options.userID)
 
-            var statusCode = '200'
+        collection.find({userID: u_id}).project().toArray(function(err,items){
+
             console.log(items)
-            var content = items
+            //var content = items
 
-            if(content){
+            if(items){
+                console.log('found some cards for current user')
                 var response = {
-                    statusCode: statusCode,
-                    content: content
+                    statusCode: '200',
+                    content: items
                 }
+
             }else{
                 console.log('no card found')
                 var response = {

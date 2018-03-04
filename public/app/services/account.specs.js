@@ -11,6 +11,15 @@ describe('this module modifies a users card collection',function(){
         expect(account.removeCard).toBeDefined();
         expect(account.editCard).toBeDefined();
         expect(account.markCard).toBeDefined();
-        
+        expect(account.logout).toBeDefined();
+        expect(account.removeUser).toBeDefined();
+        expect(account.attemptLogin).toBeDefined();
+        expect(account.setToken).toBeDefined();
+        expect(account.getUser).toBeDefined();
+        expect(account.setUser).toBeDefined();
+        expect(account.editUser).toBeDefined();
+        expect(account.register).toBeDefined();
+        expect(account.getCards).toBeDefined();
+
     })
 })

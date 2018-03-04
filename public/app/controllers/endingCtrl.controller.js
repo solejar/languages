@@ -21,30 +21,29 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
 
     this.init = function(){
 
-        var initPhrase = {
-            phrase: {
-                adj: 'твоя',
-                noun: 'помощь',
-                preposition: 'без',
-                translation: 'without your help',
-                declinedPhrase: 'без твоей помощи',
-                plurality: 'Single',
-                gender: 'F',
-                padex: 'родительный'
-            },
-            expanded: false,
-            stars: 0,
-            saved: false,
-            marked: false
-        }
+        account.loadCards() //this shouldn't be necessary!!!!
 
-        this.cards.push(initPhrase)
+        let cards = account.getCards();
+        console.log(cards);
+        if(cards){
+            this.cards = cards.map(function(card){
+                let cardContainer = {
+                    _id: card._id,
+                    content: card.content,
+                    meta: card.meta,
+                    markup: {}
+                };
+
+                return cardContainer;
+            });
+        }
 
         var urlPath = $window.location.href;
         var pathSplit = urlPath.split('/')
         console.log(pathSplit[3])
         var options = {
-            lang: pathSplit[3]
+            //lang: pathSplit[3]
+            lang: 'en' //not necessarily sure how tenable a multi language view is at this stage of dev, so just spoof 'en'
         }
 
         this.initializeValues(options).then(function(statusCode){
@@ -81,8 +80,6 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
         }
     }
 
-
-
     //GET requests made on page init, gives the page everything it needs to run
     this.initializeValues = function(options){
 
@@ -110,14 +107,15 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
 
         promises.push(sharedProps.httpReq(labelOptions))
         promises.push(sharedProps.httpReq(prepositionOptions))
+        //promises.push(account.loadCards())
 
         //async timeout until all promise completion
         $q.all(promises).then(function(res){
             //set data structs equal to responses
-            this.labels = res[0].content
-            this.prepositions = res[1].content
+            this.labels = res[0].content;
+            this.prepositions = res[1].content;
 
-            deferred.resolve('200')
+            deferred.resolve('200');
 
         }.bind(this));
 
@@ -126,8 +124,6 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
     //clear out select vals
     this.clearToInitial = function(){
 
-        //this.adjException = {exists: false}
-        //this.nounException = {exists: false}
         this.currPhrase = {}
         this.currPhrase.adjException = {}
         this.currPhrase.nounException = {}
@@ -176,7 +172,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
         return !(a||b||c||d||e||f||g);
     }
 
-    this.saveCard = function(card,user){
+    /*this.saveCard = function(card,user){
         console.log(card.saved)
         if(card.saved == true){
             card.saved = false
@@ -186,27 +182,38 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
             card.saved = true;
             account.addCard(card)
         }
-    }
+    }*/
 
     //need to consolidate screen removal with account removal
     this.removeCard = function(card){
 
-        var index = this.cards.indexOf(card);
-        this.cards.splice(index,1);
+        account.removeCard(card).then(function(res){
+            account.getCards().then(function(cards){
+                this.cards = cards.map(function(card){
+                    let cardContainer = {
+                        _id: card._id,
+                        content: card.content,
+                        meta: card.meta,
+                        markup: {}
+                    };
+
+                    return cardContainer;
+                })
+            }.bind(this))
+        }.bind(this))
 
     }
 
-    //until I understand directives, we'll just make these wrappers for factories
-    this.markCard = function(card,user){
-        account.markCard(card,user)
+    this.markCard = function(card){
+        account.markCard(card)
     }
 
+    //WIP
     //maybe we need to look at a generic card template before we can decide how to do this
-    this.reportCard = function(card, user){
+    this.reportCard = function(card){
         var data = {}
         data['currPhrase'] = card.phrase
         data['cardOptions'] = {stars: card.stars,expanded: card.expanded, saved: card.saved}
-        data['user'] = user
 
         var errorReportOptions = {
             url: '/ru/errorReports',
@@ -233,21 +240,31 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
     }
 
     this.generateCard = function(){
+        //console.log('generating a card');
         decliner.declinePhrase(this.currPhrase).then(function(declinedPhrase){
+            //console.log('just declined it');
             this.currPhrase.declinedPhrase = declinedPhrase
             translator.translatePhrase(declinedPhrase).then(function(translation){
+                //console.log('just translated it')
                 this.currPhrase.translation = translation
                 var card = {}
-                card.phrase = angular.copy(this.currPhrase)
-                card.expanded = false;
-                card.saved = false;
+                card.content = this.currPhrase;
+                card.meta = {}
 
+                account.addCard(card).then(function(res){
+                    //console.log('just added that card to db')
+                    if(res.statusCode=='200'){
+                        card.markup = {
+                            expanded: false
+                        };
 
-                this.addCard(card).then(function(res){
-                  this.cards.push(card)
-                  console.log(this.cards)
+                        this.cards.push(card);
+                        //console.log(this.cards);
+                    }else{
+                        console.log('uh oh, apparent malfunction in adding card!');
+                    }
+
                 }.bind(this))
-
 
             }.bind(this))
         }.bind(this))

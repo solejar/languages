@@ -1,37 +1,29 @@
 const express = require('express')
-const bodyParser = require('body-parser')
-const path = require('path')
+const bodyParser = require('body-parser');
 
 const passport = require('passport');
 const session = require('express-session');
 
-const app = express()
-
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+const app = express();
 
 const routes = require('./node/routes/index');
 //const users = require('./node/routes/users');
 
+app.use(bodyParser.json());
 
 const port = 8080
 
 app.set('port', (process.env.PORT || 5000)); //set port to what is set or 5000 as default
 app.use(express.static(__dirname + '/')) //this line let's me include files as if my index html was at the /public/ level
 
-
-
 app.use('/',routes)
-
-app.use(bodyParser.json());
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req,res,next){
     res.setHeader('Access-Control-Allow-Oirigin','*');
-    res.setHeader('Access-Control-Allow-Methods','GET, POST');
+    res.setHeader('Access-Control-Allow-Methods','GET, POST,PUT,DELETE');
     res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type, Authorization');
     next();
 })

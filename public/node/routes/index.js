@@ -1,14 +1,18 @@
-var express = require('express');
-var bodyParser = require("body-parser")
-var jwt = require('jsonwebtoken');
+const express = require('express');
+const bodyParser = require("body-parser")
+const jwt = require('jsonwebtoken');
 
-var passport = require('passport');
-var passportJWT = require('passport-jwt');
+//const app = express();
 
-var ExtractJwt = passportJWT.ExtractJwt;
-var JwtStrategy = passportJWT.Strategy;
+const passport = require('passport');
+const passportJWT = require('passport-jwt');
+
+const ExtractJwt = passportJWT.ExtractJwt;
+const JwtStrategy = passportJWT.Strategy;
 
 var jwtOptions = {}
+
+//app.use(bodyParser.json());
 
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
 jwtOptions.secretOrKey = 'laser-cats';
@@ -203,10 +207,6 @@ router.post('/ru/testResults',function(req,res){
     })
 })
 
-
-
-
-
 router.get('/secret',passport.authenticate('jwt',{session: false}),function(req,res){
     res.statusCode = '200'
 
@@ -219,6 +219,7 @@ router.get('/secret',passport.authenticate('jwt',{session: false}),function(req,
 router.get('/users/cards',passport.authenticate('jwt',{session: false}),function(req,res){
     var options = {
         db: 'app',
+        collection: 'cards',
         userID: req.query.user._id
     }
 
@@ -235,14 +236,31 @@ router.get('/users/cards',passport.authenticate('jwt',{session: false}),function
 router.post('/users/cards',passport.authenticate('jwt',{session:false}),function(req,res){
     var options = {
         db: 'app',
-        card: req.body.card
+        collection: 'cards',
+        card: req.body
     }
 
-    account.createCard(options,function(result){
-      res.statusCode = result.statusCode
-      if(result.statusCode=='200'){
-          console.log('added a card')
-      }
+    account.insertCard(options,function(result){
+        res.statusCode = result.statusCode
+        if(result.statusCode=='200'){
+            console.log('added a card')
+        }
+        res.send(result)
+    })
+})
+
+router.delete('/users/cards',passport.authenticate('jwt',{session: false}),function(req,res){
+    var options = {
+        db: 'app',
+        collection: 'cards',
+        _id: req.body._id
+    }
+
+    account.deleteCard(options,function(result){
+        res.statusCode = result.statusCode
+        if(result.statusCode=='200'){
+            console.log('deleted a card!')
+        }
     })
 })
 

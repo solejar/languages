@@ -3,7 +3,7 @@
     //this basic file is eventually for dependency injection and page control only.
 
     //this controller is just for page switching on a larger scope.
-    app.controller('headerController',function($window, auth,sharedProps){
+    app.controller('headerController',function($window, account,sharedProps){
 
         this.initialLabels = {
             'en': {
@@ -31,13 +31,13 @@
         }
 
         this.getUser = function(){
-            var user = auth.getUser()
+            var user = account.getUser();
             //console.log('user',user)
-            return user
+            return user;
         }
 
         this.isAdmin = function(){
-            var user = auth.getUser()
+            var user = account.getUser()
             if(user){
                 if(user.isAdmin){
                     return true;

@@ -29,7 +29,6 @@
     <script type="text/javascript" src="./app/services/tester.factory.js"></script>
     <script type="text/javascript" src="./app/filters/prepositions.filter.js">
     </script>
-    <script type="text/javascript" src="./app/services/auth.factory.js"></script>
 
 </head>
 
@@ -67,21 +66,19 @@
         </div>
 
         <md-content layout="column" style="background-color: #ccffff" flex="90" layout-align="start">
-            <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 50px" ng-if="!header.getUser()">
+            <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 50px" >
 
-                <md-button ng-hide="header.getCurrPage()=='login'" ng-click="header.changePage('login')">
-                    Sign up
+                <md-button ng-show="header.getUser()" ng-click="header.changePage('profile')">
+                    {{'Hi, '+header.getUser().userName}}
                 </md-button>
-                <md-button ng-hide="header.getCurrPage()=='login'" ng-click="header.changePage('login')">
-                    Log in
-                </md-button>
-
-            </div>
-            <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 50px" ng-if="header.user" >
-
-                <md-button  ng-click="header.changePage('profile')">
-                    {{'Hi, '+header.user.userName}}
-                </md-button>
+                <div ng-hide="header.getUser()||header.getCurrPage()=='login'">
+                    <md-button  ng-click="header.changePage('login')">
+                        Sign up
+                    </md-button>
+                    <md-button ng-click="header.changePage('login')">
+                        Log in
+                    </md-button>
+                </div>
 
             </div>
             <div layout="row">
@@ -180,7 +177,7 @@
                     </div>
                 </div>
                 <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='profile'" layout-margin   layout="column" ng-controller="profileCtrl as profile">
-                    {{'Profile page for: ' + profile.user.userName}}
+                    {{'Profile page for: ' + profile.getUser().userName}}
                     <div>
                         <md-button ng-click="profile.logout()">
                             {{'Logout'}}
@@ -284,23 +281,23 @@
                             <div ng-repeat="card in ending.cards">
                                 <md-white-frame  class="md-whiteframe-12dp" style="background-color: #ffffb3" layout="column">
                                     <div id="main-phrase" layout="row" layout-align = "left center"  layout-margin>
-                                        <md-button ng-click="card.expanded=!(card.expanded)">
-                                            <md-icon ng-if="!card.expanded" md-svg-icon="./images/right-arrow_k.svg">
+                                        <md-button ng-click="card.markup.expanded=!(card.markup.expanded)">
+                                            <md-icon ng-if="!card.markup.expanded" md-svg-icon="./images/right-arrow_k.svg">
                                             </md-icon>
-                                            <md-icon ng-if="card.expanded" md-svg-icon="./images/down-arrow_k.svg">
+                                            <md-icon ng-if="card.markup.expanded" md-svg-icon="./images/down-arrow_k.svg">
                                             </md-icon>
                                             {{''}}
                                         </md-button>
-                                        <h3 flex="70" ng-click="card.expanded=!card.expanded">{{card.phrase.declinedPhrase| prepositionFilter}}
+                                        <h3 flex="70" ng-click="card.markup.expanded=!card.markup.expanded">{{card.phrase.declinedPhrase| prepositionFilter}}
                                         </h3>
                                         <div flex layout="row" layout-align="end">
 
-                                            <md-button class="md-raised" ng-click="ending.saveCard(card,header.user)" aria-label="save-button" >
+                                            <!--<md-button class="md-raised" ng-click="ending.saveCard(card,header.user)" aria-label="save-button" >
                                                 <md-icon ng-if="!card.saved" md-svg-icon="./images/plus_k.svg">
                                                 </md-icon>
                                                 <md-icon ng-if="card.saved" md-svg-icon="./images/satisfaction_k.svg">
 
-                                            </md-button>
+                                            </md-button>-->
                                             <md-button ng-click="ending.removeCard(card)" class="md-raised md-warn" >
                                                 <md-icon md-svg-icon="./images/garbage_k.svg">
                                                 </md-icon>
@@ -309,11 +306,11 @@
                                         </div>
 
                                     </div>
-                                    <div layout="row" id="expanded-phrase" ng-if="card.expanded">
+                                    <div layout="row" id="expanded-phrase" ng-if="card.markup.expanded">
                                         <div flex="90" layout="column" >
                                             <div flex="100" layout="row" layout-margin layout-wrap>
                                                 <div flex="30"  layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;"" class="md-primary" layout-align="center" layout="column" >
+                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
                                                         <div flex="25">
                                                         </div>
                                                         <div layout="row" flex>
@@ -330,14 +327,14 @@
                                                         <div flex="15">
                                                         </div>
                                                         <div flex="70"  style="font-weight: bold;">
-                                                        {{card.phrase.translation}}
+                                                        {{card.content.phrase.translation}}
                                                         </div>
                                                         <div flex="15">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div flex="30" layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;"" class="md-primary" layout-align="center" layout="column" >
+                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
                                                         <div flex="25">
                                                         </div>
                                                         <div layout="row" flex>
@@ -354,14 +351,14 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{card.phrase.adj}}
+                                                        {{card.content.phrase.adj}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div flex="30"  layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;"" class="md-primary" layout-align="center" layout="column" >
+                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
                                                         <div flex="25">
                                                         </div>
                                                         <div layout="row" flex>
@@ -378,14 +375,14 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{card.phrase.noun}}
+                                                        {{card.content.phrase.noun}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div flex="30"  layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;"" class="md-primary" layout-align="center" layout="column" >
+                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
                                                         <div flex="25">
                                                         </div>
                                                         <div layout="row" flex>
@@ -402,14 +399,14 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{card.phrase.padex}}
+                                                        {{card.content.phrase.padex}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div flex="30" ng-if="card.phrase.animate"  layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;"" class="md-primary" layout-align="center" layout="column" >
+                                                <div flex="30" ng-if="card.content.phrase.animate"  layout="column">
+                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
                                                         <div flex="25">
                                                         </div>
                                                         <div layout="row" flex>
@@ -426,14 +423,14 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{card.phrase.animate}}
+                                                        {{card.content.phrase.animate}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div flex="30" style="background-color: blue;" layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;"" class="md-primary" layout-align="center" layout="column" >
+                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
                                                         <div flex="25">
                                                         </div>
                                                         <div layout="row" flex>
@@ -450,14 +447,14 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{card.phrase.gender}}
+                                                        {{card.content.phrase.gender}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div flex="30" style="background-color: blue;" layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;"" class="md-primary" layout-align="center" layout="column" >
+                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
                                                         <div flex="25">
                                                         </div>
                                                         <div layout="row" flex>
@@ -474,7 +471,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{card.phrase.plurality}}
+                                                        {{card.content.phrase.plurality}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>

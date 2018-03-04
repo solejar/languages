@@ -3,7 +3,7 @@ var app = angular.module('lang');
 app.factory('sharedProps',function($http, $location){
     var props = {};
 
-    $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+    $http.defaults.headers.post["Content-Type"] = "application/JSON";
 
     var path = $location.path();
     return{

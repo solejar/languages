@@ -10,5 +10,6 @@ describe('this factory handles general props, and http requests',function(){
         expect(sharedProps).toBeDefined();
         expect(sharedProps.getProperty).toBeDefined();
         expect(sharedProps.setProperty).toBeDefined();
+        expect(sharedProps.httpReq).toBeDefined();
     })
 })

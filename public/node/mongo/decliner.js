@@ -11,7 +11,7 @@ exports.postErrorReports = function(options,onResult){
         collection.insertOne(reportObj,function(err,res){
             if(err){onResult({'statusCode': '400','errMsg': err})}
             console.log("1 document inserted")
-            
+
             var response = {
                 'statusCode': '200',
                 'content': {'nInserted': 1}
@@ -37,15 +37,15 @@ exports.getErrorReports = function(options,onResult){
                     {'statusCode': '400','errMsg': err }
                 )
             }
-            
+
             var content = items //return that one element
             var response = {
                 'statusCode': '200',
                 'content': content
             }
-            console.log(content)
+            //console.log(content)
             onResult(response)
-            database.close();    
+            database.close();
         });
     })
 }
@@ -86,15 +86,15 @@ exports.getTestResults = function(options,onResult){
                     {'statusCode': '400','errMsg': err }
                 )
             }
-            
+
             var content = items //return that one element
             var response = {
                 'statusCode': '200',
                 'content': content
             }
-            console.log(content)
+            //console.log(content)
             onResult(response)
-            database.close();    
+            database.close();
         });
     })
 }
@@ -112,8 +112,8 @@ exports.getExceptions = function(options,onResult){
                 )
             }
 
-            
-            
+
+
             if(typeof options.query.q !=='undefined' && options.query.q){
 
                 var exceptionsDict = items[0].exceptions
@@ -134,7 +134,7 @@ exports.getExceptions = function(options,onResult){
                 'content': content
             }
 
-            console.log(content)
+            //console.log(content)
 
             onResult(response)
             database.close()
@@ -166,7 +166,7 @@ exports.getRuleGroups = function(options,onResult){
 
                 onResult(response)
                 database.close()
-                
+
             })
         }else{
             var projection = "ruleGroups." + options.q
@@ -185,16 +185,16 @@ exports.getRuleGroups = function(options,onResult){
                     'statusCode': '200',
                     'content': content
                 }
-                
+
                 //console.log(content)
 
                 onResult(response)
                 database.close()
-                
+
             })
         }
 
-        
+
 
     })
 }
@@ -215,15 +215,15 @@ exports.getPrepositions = function(options,onResult){
                     {'statusCode': '400','errMsg': err }
                 )
             }
-            
+
             var content = items[0].prepositions //return that one element
             var response = {
                 'statusCode': '200',
                 'content': content
             }
-            console.log(content)
+            //console.log(content)
             onResult(response)
-            database.close();    
+            database.close();
         });
     });
 }
@@ -252,7 +252,7 @@ exports.getLabels = function(options,onResult){
                 var content = items[0].labels['ru'] //this is default
             }
             console.log(content);
-            
+
             var response = {
                 'statusCode': '200',
                 'content': content
@@ -262,4 +262,3 @@ exports.getLabels = function(options,onResult){
         });
     });
 }
-

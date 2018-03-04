@@ -52,8 +52,8 @@
 - provide tool to look up word/phrase
 - See translation/ example sentences/card info (where relevant)
 
-**Nonfunctional**	
 
+**Nonfunctional**	
 
 
 ## Study
@@ -87,6 +87,8 @@
 
 - pipe output to a file or db (figure out what level of logging info to track)
 - improve `REST` endpoints, parse inputs/path urls on start, abstract such logic out of the Mongo
+- Make API input size agnostic (one or many)
+- Store JWT in cookie [somehow](https://stackoverflow.com/questions/27067251/where-to-store-jwt-in-browser-how-to-protect-against-csrf) , try to take advantage of express/passport sessions
 
 
 
@@ -107,7 +109,6 @@
 - consolidate components
 
   - `loginCtrl + profileCtrl` -> `profileCtrl`
-  - `auth + account` -> `account`
 
 - unuppercase Single/Plural, Animate/Inanimate, percolate changes throughout app
 

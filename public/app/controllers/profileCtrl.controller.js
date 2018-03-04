@@ -1,27 +1,29 @@
 var app = angular.module('lang');
 
-app.controller('profileCtrl',function(auth,sharedProps){
+app.controller('profileCtrl',function(account,sharedProps){
     this.logout = function(){
-        auth.logout()
+        account.logout()
         sharedProps.setProperty('currPage','login')
     }
 
     this.editUser = function(newInfo){
         console.log('editing user')
 
-        auth.editUser(newInfo).then(function(newUser){
-            auth.attemptLogin(newInfo);
+        account.editUser(newInfo).then(function(newUser){
+            account.attemptLogin(newInfo);
         })
 
 
     }
 
     this.removeUser = function(){
-        var user = auth.getUser();
+        var user = account.getUser();
 
-        auth.removeUser(user)
-        this.logout()
+        account.removeUser(user)
+        this.logout();
     }
 
-    this.user = auth.getUser(); //initialize the user
+    this.getUser = function(){
+        return account.getUser();
+    }
 })
