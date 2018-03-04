@@ -21,7 +21,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
 
     this.init = function(){
 
-        account.loadCards() //this shouldn't be necessary!!!!
+        //account.loadCards() //this shouldn't be necessary!!!!
 
         let cards = account.getCards();
         console.log(cards);
@@ -172,18 +172,6 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
         return !(a||b||c||d||e||f||g);
     }
 
-    /*this.saveCard = function(card,user){
-        console.log(card.saved)
-        if(card.saved == true){
-            card.saved = false
-            account.removeCard(card)
-
-        }else{
-            card.saved = true;
-            account.addCard(card)
-        }
-    }*/
-
     //need to consolidate screen removal with account removal
     this.removeCard = function(card){
 
@@ -280,22 +268,12 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
         var a = this.inputsFresh
         var b = this.validInputs('adj')||this.validInputs('noun')
 
-        if(a&&b){
-            var key = this.currPhrase.prep.name + ' ' + this.currPhrase.adj + ' ' + this.currPhrase.noun
-
-            if(this.cards.hasOwnProperty(key)){
-                var obj = this.cards[key]
-                if ((this.currPhrase.padex==obj.padex)&&(this.currPhrase.plurality==obj.plurality)&&(this.currPhrase.gender==obj.gender)){
-                    return true
-                }else{
-                    return false
-                }
-            }else{
-                return false
-            }
-        }else{
+        if(!(a&&b)){
             return true
+        }else{
+            return false
         }
+
     }
 
     //function to determine expected gender,

@@ -220,9 +220,11 @@ router.get('/users/cards',passport.authenticate('jwt',{session: false}),function
     var options = {
         db: 'app',
         collection: 'cards',
-        userID: req.query.user._id
+        user_id: req.query.user_id
     }
 
+    //console.log(req.query)
+    console.log(options)
     account.getCards(options,function(result){
         res.statusCode = result.statusCode
         if(result.statusCode=='200'){
@@ -240,6 +242,7 @@ router.post('/users/cards',passport.authenticate('jwt',{session:false}),function
         card: req.body
     }
 
+    console.log(options)
     account.insertCard(options,function(result){
         res.statusCode = result.statusCode
         if(result.statusCode=='200'){

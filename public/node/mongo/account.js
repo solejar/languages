@@ -34,6 +34,9 @@ exports.deleteCard = function(options,onResult){
 }
 
 exports.insertCard = function(options,onResult){
+    let user_id = mongo.ObjectID(options.card.user_id)
+    options.card.user_id = user_id;
+
     MongoClient.connect(url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err})
@@ -66,14 +69,15 @@ exports.getCards = function(options,onResult){
         var db = database.db(options.db);
         var collection = db.collection(options.collection);
 
-        var u_id = new mongo.ObjectID(options.userID)
+        var u_id = mongo.ObjectID(options.user_id)
 
-        collection.find({userID: u_id}).project().toArray(function(err,items){
+        console.log('looking for cards with id: ',u_id);
+        collection.find({user_id: u_id}).project().toArray(function(err,items){
 
             console.log(items)
             //var content = items
 
-            if(items){
+            if(items){ //this lets zero results be sent back without worry fo throwing errors, potentially revisit this
                 console.log('found some cards for current user')
                 var response = {
                     statusCode: '200',

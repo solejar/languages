@@ -288,7 +288,7 @@
                                             </md-icon>
                                             {{''}}
                                         </md-button>
-                                        <h3 flex="70" ng-click="card.markup.expanded=!card.markup.expanded">{{card.phrase.declinedPhrase| prepositionFilter}}
+                                        <h3 flex="70" ng-click="card.markup.expanded=!card.markup.expanded">{{card.content.declinedPhrase| prepositionFilter}}
                                         </h3>
                                         <div flex layout="row" layout-align="end">
 
@@ -327,7 +327,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <div flex="70"  style="font-weight: bold;">
-                                                        {{card.content.phrase.translation}}
+                                                        {{card.content.translation}}
                                                         </div>
                                                         <div flex="15">
                                                         </div>
@@ -351,7 +351,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{card.content.phrase.adj}}
+                                                        {{card.content.adj}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
@@ -375,7 +375,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{card.content.phrase.noun}}
+                                                        {{card.content.noun}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
@@ -399,13 +399,13 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{card.content.phrase.padex}}
+                                                        {{card.content.padex}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div flex="30" ng-if="card.content.phrase.animate"  layout="column">
+                                                <div flex="30" ng-if="card.content.animate"  layout="column">
                                                     <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
                                                         <div flex="25">
                                                         </div>
@@ -423,7 +423,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{card.content.phrase.animate}}
+                                                        {{card.content.animate}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
@@ -447,7 +447,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{card.content.phrase.gender}}
+                                                        {{card.content.gender}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>
@@ -471,7 +471,7 @@
                                                         <div flex="15">
                                                         </div>
                                                         <p flex="70" style="font-weight: bold">
-                                                        {{card.content.phrase.plurality}}
+                                                        {{card.content.plurality}}
                                                         </p>
                                                         <div flex="15">
                                                         </div>

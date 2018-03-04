@@ -136,14 +136,14 @@ app.factory('account',function(sharedProps,$q,$http){
 
         console.log('getting cards');
         if(user){
-            console.log('theres a user logged in');
+            console.log('theres a user logged in: ',user);
 
             var cardOptions = {
                 url: '/users/cards/',
                 method: 'GET',
                 verbose: true,
                 params: {
-                  user: user
+                  user_id: user._id
                 }
             }
 
@@ -151,6 +151,7 @@ app.factory('account',function(sharedProps,$q,$http){
                 if(res.statusCode=='200'){
                     session.cards = res.content;
 
+                    //console.log(res)
                     console.log(session.cards)
                 }else{
                     console.log('something went horribly wrong with fetching the cards!');
@@ -201,7 +202,7 @@ app.factory('account',function(sharedProps,$q,$http){
         var user = obj.getUser();
 
         let data = {
-            userid: user._id,
+            user_id: user._id,
             content: card.content,
             meta: card.meta
         }
