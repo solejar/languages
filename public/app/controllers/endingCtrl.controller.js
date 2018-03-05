@@ -173,22 +173,20 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
     }
 
     //need to consolidate screen removal with account removal
-    this.removeCard = function(card){
-
-        account.removeCard(card).then(function(res){
-            account.getCards().then(function(cards){
-                this.cards = cards.map(function(card){
-                    let cardContainer = {
-                        _id: card._id,
-                        content: card.content,
-                        meta: card.meta,
-                        markup: {}
-                    };
-
-                    return cardContainer;
-                })
+    this.removeCard = function(array,index){
+        
+        if(account.getUser()){
+            let card = array[index]
+            account.removeCard(card).then(function(res){
+                if(res.statusCode=='200'){
+                    array.splice(index,1)
+                    //just splice it out of the array, don't really feel like reuploading the list redundantly
+                }
             }.bind(this))
-        }.bind(this))
+        }else{
+            array.splice(index,1)
+        }
+
 
     }
 
@@ -239,20 +237,28 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
                 card.content = this.currPhrase;
                 card.meta = {}
 
-                account.addCard(card).then(function(res){
-                    //console.log('just added that card to db')
-                    if(res.statusCode=='200'){
-                        card.markup = {
-                            expanded: false
-                        };
+                if(account.getUser()){
+                    account.addCard(card).then(function(res){
+                        //console.log('just added that card to db')
+                        if(res.statusCode=='200'){
+                            card.markup = {
+                                expanded: false
+                            };
 
-                        this.cards.push(card);
-                        //console.log(this.cards);
-                    }else{
-                        console.log('uh oh, apparent malfunction in adding card!');
+                            this.cards.push(card);
+                            //console.log(this.cards);
+                        }else{
+                            console.log('uh oh, apparent malfunction in adding card!');
+                        }
+
+                    }.bind(this))
+                }else{
+                    card.markup={
+                        expanded: false
                     }
+                    this.cards.push(card);
+                }
 
-                }.bind(this))
 
             }.bind(this))
         }.bind(this))

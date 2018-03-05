@@ -15,9 +15,9 @@ exports.deleteCard = function(options,onResult){
     var db = database.db(options.db);
     var collection = db.collection(options.collection);
 
-    var cardID = new mongo.ObjectID(options.cardID)
+    var card_id = mongo.ObjectID(options._id)
 
-    collection.deleteOne({_id: cardID},function(err,results){
+    collection.deleteOne({_id: card_id},function(err,results){
         if(err){
             throw err;
         }else{

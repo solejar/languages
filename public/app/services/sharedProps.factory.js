@@ -4,6 +4,7 @@ app.factory('sharedProps',function($http, $location){
     var props = {};
 
     $http.defaults.headers.post["Content-Type"] = "application/JSON";
+    $http.defaults.headers.delete = {"Content-Type": "application/JSON"};
 
     var path = $location.path();
     return{

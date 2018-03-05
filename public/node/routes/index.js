@@ -259,11 +259,13 @@ router.delete('/users/cards',passport.authenticate('jwt',{session: false}),funct
         _id: req.body._id
     }
 
+    console.log('deleting card with id ',req.body)
     account.deleteCard(options,function(result){
-        res.statusCode = result.statusCode
+        res.statusCode = result.statusCode;
         if(result.statusCode=='200'){
             console.log('deleted a card!')
         }
+        res.send(result);
     })
 })
 

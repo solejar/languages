@@ -13,7 +13,6 @@ app.controller('profileCtrl',function(account,sharedProps){
             account.attemptLogin(newInfo);
         })
 
-
     }
 
     this.removeUser = function(){

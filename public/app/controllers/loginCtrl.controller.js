@@ -2,6 +2,8 @@ var app = angular.module('lang')
 
 app.controller('loginCtrl',function(sharedProps,account){
 
+    this.signupInfo = {}
+
     this.attemptLogin = function(loginInfo){
         console.log('attempting login')
         account.attemptLogin(loginInfo).then(function(res){
@@ -17,6 +19,21 @@ app.controller('loginCtrl',function(sharedProps,account){
 
     }
 
+    this.disableRegister = function(formValid, signupInfo){
+        let pwd = signupInfo.password;
+        let pwdConf = signupInfo.passwordConfirmation;
+
+        if(formValid){
+            if(pwd===pwdConf){
+                return false;
+            }else{
+                return true; //disable if passwords aren't equal
+            }
+        }else{
+            return true; //disable if form invalid
+        }
+    }
+
     this.register = function(loginInfo){
         //something would probably happen here
         loginInfo.isAdmin = false; //or maybe on server side
@@ -30,5 +47,16 @@ app.controller('loginCtrl',function(sharedProps,account){
             }
         }.bind(this))
 
+    }
+
+    //figure out how to connect this to a directive, still working on this
+    this.checkAccountAvailability = function(entityName,type){
+        account.checkAccountAvailability(entityName,type).then(function(userAvailable){
+            if(userAvailable){
+                //do something
+            }else{
+                //do something
+            }
+        })
     }
 });

@@ -15,6 +15,7 @@
     <script type="text/javascript" src="./node_modules/angular-aria/angular-aria.min.js"></script>
     <script type="text/javascript" src="./node_modules/angular-animate/angular-animate.min.js"></script>
     <script type="text/javascript" src="./node_modules/angular-material/angular-material.min.js"></script>
+    <script type="text/javascript" src="./node_modules/angular-messages/angular-messages.min.js"></script>
 
     <script type="text/javascript" src="./app/app.js"></script>
     <script type="text/javascript" src="./app/services/sharedProps.factory.js"></script>
@@ -124,11 +125,17 @@
                                     <label>
                                         E-mail Address
                                     </label>
-                                    <input ng-model="login.signupInfo.email" type="email">
+                                    <input name="emailAddr" ng-model="login.signupInfo.email" required type="email" />
+                                    <div ng-messages="signupForm.emailAddr.$error">
+                                        <div ng-message="required">
+                                            You need to enter a valid e-mail address.
+                                        </div>
+                                    </div>
                                 </md-input-container>
-                                <md-button ng-click="login.register(login.signupInfo)" ng-disabled="signupForm.$invalid">
+                                <md-button ng-click="login.register(login.signupInfo)" ng-disabled="login.disableRegister(signupForm.$valid, login.signupInfo)">
                                 Sign up
                                 </md-button>
+
                             </form>
                         </div>
                         <md-divider class="md-primary">
@@ -181,6 +188,9 @@
                     <div>
                         <md-button ng-click="profile.logout()">
                             {{'Logout'}}
+                        </md-button>
+                        <md-button ng-click="profile.userDummyPrint()">
+                            Test service scope
                         </md-button>
                     </div>
                 </div>
@@ -298,7 +308,7 @@
                                                 <md-icon ng-if="card.saved" md-svg-icon="./images/satisfaction_k.svg">
 
                                             </md-button>-->
-                                            <md-button ng-click="ending.removeCard(card)" class="md-raised md-warn" >
+                                            <md-button ng-click="ending.removeCard(ending.cards, $index)" class="md-raised md-warn" >
                                                 <md-icon md-svg-icon="./images/garbage_k.svg">
                                                 </md-icon>
 

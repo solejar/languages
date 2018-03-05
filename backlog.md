@@ -7,29 +7,40 @@
 - some weird adjectives don't work, like numerals
 - учитель Not the same as as писатель 
 - double-check the `ng-blur()` is working as expected with `currGender`
-- if decliner uses default ruleGroup, something is up. Let's indicate it.
-- add auto-complete for prepositions input
+- **if decliner uses default ruleGroup, something is up. Let's indicate it.**
+- **add auto-complete for prepositions input**
 - Consider generalizing a 'stem change' case, let's use remove like 10-15 rule groups, but adds more controller logic (might not be worth it)
+- Should generating a card clear inputs? Decide yes or no.
+- Should a warning be generate before removing a card ( in general and also for this)
 
 **Non-functional**	
 
 - how should components reorder here to effectively use space real estate? 
-- (try to) remove borders around whiteframe for only mobile view (`flex-xs`).    
+
+- **Make it look good for flex-xs**
+
+  - (try to) remove borders around whiteframe for only mobile view (`flex-xs`).    
+
+    ​
 
 ##Login
 
 **Functional**
 
-- make sure it requires that password and password confirmation be equal.
-- increase verbosity of validity messages.
-- add widget for sign-in
-- level of language
-- show some example words, see if they know them.
+- **make sure it requires that password and password confirmation be equal.**
+  - This requires learning directives :^)
+- increase verbosity of validity messages. (This is good but not immediately necessary)
+- add widget for sign-in (not priority)
+- level of language (not sure how to implement, add later)
+- show some example words, see if they know them. (after we set up reading section)
+- Allow signin with email or username if applicable
+- Check for existing account with such a name before making it valid
+- Resetting password by sending e-mail on account
 
 **Non-functional**
 
-- improve spacing
-- check out `flex` for different device sizes
+- **improve spacing**
+- **check out `flex` for different device sizes**
 
 
 
@@ -37,7 +48,20 @@
 
 **Functional**
 
+* Generate some sort of HTML template for this
+* Add edit functionality (?)
+  * Editing assumes end-user responsibility for card content
+  * If this is the case, there won't be reporting
+* Add mark functionality
+  * Mark as difficult? Important? Should this be a one-time thing or no?
+  * To answer this question, need to think of review algorithm more
+* Add report functionality
+  * Reporting assumes immutable, site-generated cards that might be wrong
+  * Not sure what makes more sense
+
 **Nonfunctional**
+
+* Need to think of some general schema for this sort of thing, so that it works for different inputs. This is a big looming question.
 
 
 
@@ -103,12 +127,6 @@
   ​
 
 ## Refactoring
-
-- figure out why `POST` data needs to be in a uri string
-
-- consolidate components
-
-  - `loginCtrl + profileCtrl` -> `profileCtrl`
 
 - unuppercase Single/Plural, Animate/Inanimate, percolate changes throughout app
 

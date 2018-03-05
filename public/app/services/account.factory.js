@@ -82,6 +82,38 @@ app.factory('account',function(sharedProps,$q,$http){
         session.user = newUser;
     }
 
+    obj.checkAccountAvailability = function(entityName,type){
+        let deferred = $q.defer();
+
+        let params = {};
+        params[type] = entityName;
+
+        let options = {
+            url : '/users',
+            params: params,
+            method: 'GET',
+            verbose: true,
+        }
+
+        sharedProps.httpReq(options).then(function(res){
+            let userAvailable;
+            if(res.statusCode=='200'){//search worked
+                if(res.content.user){//user exists
+                    console.log('account already exists');
+                    userAvailable = false;
+                }else{//account available
+                    console.log('account is available');
+                    userAvailable = true;
+                }
+            }else{ //some error
+                userAvailable = false; //if some error happens, don't assume name available
+                console.log('some error happened when checking for account availability');
+            }
+            deferred.resolve(userAvailable);
+        })
+
+        return deferred.promise();
+    }
     //WIP
     //need to pass in user ID as query param, need to add auto-incrementing ID before this works
     obj.editUser = function(userInfo){
@@ -170,8 +202,10 @@ app.factory('account',function(sharedProps,$q,$http){
 
     }
 
-    //WIP
     obj.removeCard= function(card){
+        let deferred = $q.defer();
+
+        console.log(card);
 
         let data = {
             _id: card._id
@@ -184,15 +218,20 @@ app.factory('account',function(sharedProps,$q,$http){
           data: data
         }
 
+        console.log(options.data)
+
         sharedProps.httpReq(options).then(function(result){
             if(result.statusCode=='200'){
-                console.log('successfully removed the card from the user!')
-                deferred.resolve(result)
+                console.log('successfully removed the card from the user!');
             }else{
                 console.log('not successful in removing the card from the user') //technically something should resolve here i'm just doing this for testing
             }
 
+            deferred.resolve(result)
+
         })
+
+        return deferred.promise;
     }
 
     //WIP

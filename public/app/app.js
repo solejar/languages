@@ -1,5 +1,5 @@
 (function(){
-    var app = angular.module('lang',['ngMaterial']);
+    var app = angular.module('lang',['ngMaterial','ngMessages']);
     //this basic file is eventually for dependency injection and page control only.
 
     //this controller is just for page switching on a larger scope.

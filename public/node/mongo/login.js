@@ -48,7 +48,7 @@ exports.findUserID = function(options,onResult){
         var db = database.db(options.db);
         var collection = db.collection('users');
 
-        var o_id = new mongo.ObjectID(options._id);
+        var o_id = mongo.ObjectID(options._id);
 
         collection.find({_id: o_id}).project().toArray(function(err,items){
 
