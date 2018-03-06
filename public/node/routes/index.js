@@ -12,8 +12,6 @@ const JwtStrategy = passportJWT.Strategy;
 
 var jwtOptions = {}
 
-//app.use(bodyParser.json());
-
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
 jwtOptions.secretOrKey = 'laser-cats';
 
@@ -80,27 +78,25 @@ router.get('/en/labels',function(req,res){
         lang: 'en',
         db: 'ru'
     }
+
     decliner.getLabels(options,function(result){
         console.log('onResult: (' + result.statusCode + ')');
-
         res.send(result);
     });
 });
 
 
 router.get('/ru/ruleGroups',function(req,res){
-    if (typeof req.query.q !== 'undefined' && req.query.q){
-        var options = {
-            db: 'ru',
-            q: req.query.q
-        }
-    }else{
-        var options = {
-            db: 'ru',
-            q: 'all'
-        }
+    let options = {
+        db: 'ru',
+        collection: 'ruleGroups',
     }
 
+    if (typeof req.query.q !== 'undefined' && req.query.q){
+        options.q = req.query.q;
+    }else{
+        options.q = 'all';
+    }
 
     console.log(options)
     decliner.getRuleGroups(options,function(result){
@@ -207,15 +203,6 @@ router.post('/ru/testResults',function(req,res){
     })
 })
 
-router.get('/secret',passport.authenticate('jwt',{session: false}),function(req,res){
-    res.statusCode = '200'
-
-    console.log(req.query)
-    console.log('successfully authenticated a request')
-
-    res.send({statusCode: '200',content : {message: 'you accessed a protected route!'}})
-});
-
 router.get('/users/cards',passport.authenticate('jwt',{session: false}),function(req,res){
     var options = {
         db: 'app',
@@ -270,24 +257,25 @@ router.delete('/users/cards',passport.authenticate('jwt',{session: false}),funct
 })
 
 router.get('/users',function(req,res){
-    if (req.query.userName){
-        var options = {
-            db: 'app',
-            userInfo: {
-                userName: req.query.userName
-            }
-        }
-
-        login.findUser(options,function(result){
-            if (result.statusCode =='200'){
-                res.statusCode = '200'
-                res.send(result)
-            }else{
-                res.statusCode = '400'
-                res.send(result)
-            }
-        })
+    let options = {
+        db: 'app',
+        collection: 'users',
+        userInfo: {}
     }
+
+    //this is how you make a generic mongo query, seems legit
+    if (req.query.userName){
+        options.userInfo.userName= req.query.userName;
+    }else if(req.query.email){
+        options.userInfo.email = req.query.email;
+    }
+
+    console.log('getting these users,',options.userInfo)
+    login.findUser(options,function(result){
+        res.statusCode = result.statusCode;
+        res.send(result);
+    })
+
 });
 
 router.post('/users/login',function(req,res){
@@ -357,7 +345,7 @@ router.put('/users',function(req,res){
     //mongo edit
 })
 
-router.post('/users/add',function(req,res){
+router.post('/users',function(req,res){
     //NEED A WAY TO GENERATE ID
     //Account.register(new Account({username: req.body}))
     var account = {}
@@ -370,26 +358,52 @@ router.post('/users/add',function(req,res){
 
     var options = {
         db: 'app',
-        loginInfo: account
+        collection: 'users',
+        loginInfo: account,
+    }
+
+    let q = {};
+    if(options.loginInfo.email){
+        q['email'] = options.loginInfo.email;
+    }else if (options.loginInfo.userName){
+        q['userName'] = options.loginInfo.userName;
+    }
+
+    q_options = {
+        db: options.db,
+        collection: options.collection,
+        userInfo: q,
     }
 
     login.insertUser(options,function(result){
         console.log('onResult: ('+ result.statusCode + ')');
         res.statusCode = result.statusCode;
+        let response = {};
         if(res.statusCode =='200'){
-            login.findUser(options,function(user){
+            console.log('looking for user with params,',q_options);
+            login.findUser(q_options,function(user){
+                console.log('user found',user)
+                if (user.content.length==1){
+                    console.log()
+                    var payload = {_id: user.content[0]._id};
+                    var token = jwt.sign(payload,jwtOptions.secretOrKey);
+                    res.statusCode = '200'
 
-                var payload = {_id: user.content._id};
-                var token = jwt.sign(payload,jwtOptions.secretOrKey);
-                res.statusCode = '200'
-                response.statusCode ='200'
-                response.content = {}
-                response.content.user = user.content
-                response.content.token = token;
+                    response.statusCode ='200'
+                    response.content = {}
+                    response.content.user = user.content[0]
+                    response.content.token = token;
+
+                    console.log('response of',response);
+                    res.send(response);
+                }else{
+                    console.log('too many users')
+                }
+
             })
 
         }
-        res.send(result);
+
     })
 })
 

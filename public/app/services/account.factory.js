@@ -8,6 +8,7 @@ app.factory('account',function(sharedProps,$q,$http){
 
     obj.logout = function(){
         session = {}
+        $http.defaults.headers.common['Authorization'] = '';
     }
 
     //WIP
@@ -29,6 +30,7 @@ app.factory('account',function(sharedProps,$q,$http){
         sharedProps.httpReq(options).then(function(result){
             if(result.statusCode =='200'){
                 console.log('you successfully removed a user!')
+
             }else{
                 console.log('user removal failed')
             }
@@ -98,7 +100,7 @@ app.factory('account',function(sharedProps,$q,$http){
         sharedProps.httpReq(options).then(function(res){
             let userAvailable;
             if(res.statusCode=='200'){//search worked
-                if(res.content.user){//user exists
+                if(res.content[0]){//user exists
                     console.log('account already exists');
                     userAvailable = false;
                 }else{//account available
@@ -112,7 +114,7 @@ app.factory('account',function(sharedProps,$q,$http){
             deferred.resolve(userAvailable);
         })
 
-        return deferred.promise();
+        return deferred.promise;
     }
     //WIP
     //need to pass in user ID as query param, need to add auto-incrementing ID before this works
@@ -134,12 +136,13 @@ app.factory('account',function(sharedProps,$q,$http){
         let deferred = $q.defer();
 
         var registerOptions = {
-            url: '/users/',
+            url: '/users',
             data: signupInfo,
             method: 'POST'
         }
 
         sharedProps.httpReq(registerOptions).then(function(res){
+            console.log(res)
             if(res.statusCode=='200'){
                 obj.setUser(res.content.user);
                 obj.setToken(res.content.token);

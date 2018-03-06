@@ -52,7 +52,7 @@
         this.pages = ['declension','readings','about','home','study','login','profile'];
 
         //this.currPage = 'declension'
-        sharedProps.setProperty('currPage','declension')
+        sharedProps.setProperty('currPage','login')
 
         this.getCurrPage = function(){
             return sharedProps.getProperty('currPage');

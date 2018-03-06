@@ -8,29 +8,22 @@ exports.findUser = function(options,onResult){
             onResult({'statusCode': '400','errMsg': err})
         }
         var db = database.db(options.db);
-        var collection = db.collection('users');
+        var collection = db.collection(options.collection);
 
-        /*var projection = "users." + options.userInfo.userName
-        console.log(projection)
-        var params = {}
-        params[projection] = 1*/
+        collection.find(options.userInfo).project().toArray(function(err,items){
 
-        collection.find({userName: options.userInfo.userName}).project().toArray(function(err,items){
-
-            var statusCode = '200'
             console.log(items)
-            var content = items[0]
 
-            if(content){
+            if(items){
                 var response = {
-                    statusCode: statusCode,
-                    content: content
+                    statusCode: '200',
+                    content: items
                 }
             }else{
-                console.log('no user found')
+                console.log('some error')
                 var response = {
                     statusCode: '400',
-                    errMsg: 'No such user found'
+                    errMsg: 'Some error happened'
                 }
             }
 

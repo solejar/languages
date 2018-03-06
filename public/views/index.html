@@ -107,7 +107,7 @@
                                     <label>
                                         User Name
                                     </label>
-                                    <input ng-model="login.signupInfo.userName" required>
+                                    <input ng-model="login.signupInfo.userName" ng-blur="login.checkAccountAvailability(login.signupInfo.userName,'userName')" required>
                                 </md-input-container>
                                 <md-input-container>
                                     <label>
@@ -125,7 +125,7 @@
                                     <label>
                                         E-mail Address
                                     </label>
-                                    <input name="emailAddr" ng-model="login.signupInfo.email" required type="email" />
+                                    <input name="emailAddr" ng-blur="login.checkAccountAvailability(login.signupInfo.email,'email')" ng-model="login.signupInfo.email" required type="email" />
                                     <div ng-messages="signupForm.emailAddr.$error">
                                         <div ng-message="required">
                                             You need to enter a valid e-mail address.
@@ -188,9 +188,6 @@
                     <div>
                         <md-button ng-click="profile.logout()">
                             {{'Logout'}}
-                        </md-button>
-                        <md-button ng-click="profile.userDummyPrint()">
-                            Test service scope
                         </md-button>
                     </div>
                 </div>
