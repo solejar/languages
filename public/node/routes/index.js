@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require("body-parser")
 const jwt = require('jsonwebtoken');
+const config = require('../config.js')
 
 //const app = express();
 
@@ -40,6 +41,16 @@ var translate = require('google-translate-api')
 var decliner = require('../mongo/decliner.js')
 var login = require('../mongo/login.js')
 var account = require('../mongo/account.js')
+const nodemailer = require('nodemailer');
+
+
+const transporter = nodemailer.createTransport({
+    service: config.email.service,
+    auth: {
+        user: config.email.account,
+        pass: config.email.password
+    }
+});
 
 router.get('/ru',function(req,res){
     res.render('index.html');
@@ -47,6 +58,23 @@ router.get('/ru',function(req,res){
 
 router.get('/en',function(req,res){
     res.render('index.html');
+})
+
+router.post('/emails/passwords',function(req,res){
+    let mailOptions = {
+        to: req.body.to,
+        subject: 'Resetting password over email',
+        text: 'Still not sure how to reset your password. My bad!'
+    };
+
+    transporter.sendMail(mailOptions,function(err,info){
+        if(err){
+            console.log(err);
+        }else{
+            console.log('Email sent: '+ info.response);
+        }
+    });
+
 })
 
 router.get('/ru/prepositions',function(req,res){

@@ -161,6 +161,23 @@
                                     Log in
                                 </md-button>
                             </form>
+                            <form name="passwordResetForm">
+                                <md-input-container >
+                                    <label>
+                                        Email
+                                    </label>
+                                    <input name="emailAddr" ng-model="login.signin.email" required >
+                                    <div ng-messages="passwordResetForm.emailAddr.$error">
+                                        <div ng-message="required">
+                                            You have to enter your email, so we know whose password to reset :)
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                                <md-button ng-click="login.resetPassword(login.signin.email)" ng-disabled="passwordResetForm.$invalid">
+                                    Reset Password
+                                </md-button>
+                            </form>
+
 
                        </div>
                     </div>

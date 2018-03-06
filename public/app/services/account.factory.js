@@ -66,6 +66,26 @@ app.factory('account',function(sharedProps,$q,$http){
         return deferred.promise
     }
 
+    obj.resetPassword = function(email){
+        let deferred = $q.defer();
+
+        let options = {
+            url : '/emails/passwords',
+            method : 'POST',
+            data: {
+                to: email
+            },
+            verbose: true
+        }
+
+        sharedProps.httpReq(options).then(function(res){
+            console.log(res)
+            deferred.resolve(res)
+        })
+
+        return deferred.promise;
+    }
+
     obj.setToken = function(newToken){
         //console.log('setting new token',newToken)
         if(newToken){

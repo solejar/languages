@@ -112,7 +112,9 @@
 - pipe output to a file or db (figure out what level of logging info to track)
 - improve `REST` endpoints, parse inputs/path urls on start, abstract such logic out of the Mongo
 - Make API input size agnostic (one or many)
-- Store JWT in cookie [somehow](https://stackoverflow.com/questions/27067251/where-to-store-jwt-in-browser-how-to-protect-against-csrf) , try to take advantage of express/passport sessions
+- Store config stuff as [config.js](https://stackoverflow.com/questions/5869216/how-to-store-node-js-deployment-settings-configuration-files) 
+- Store `JWT` in cookie [somehow](https://stackoverflow.com/questions/27067251/where-to-store-jwt-in-browser-how-to-protect-against-csrf) , try to take advantage of express/passport sessions
+- If I am always sending `JWT` in `Header: Authorization`, and this has `$user._id` stored in it, isn't it the case that none of the endpoints actually need to send `userInfo`? Or maybe we want to leave it that way so that you can use it on a user other than yourself, if `isAdmin: true` perhaps. Actually, I agree with that. 
 
 
 

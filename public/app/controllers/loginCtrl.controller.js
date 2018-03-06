@@ -19,6 +19,14 @@ app.controller('loginCtrl',function(sharedProps,account){
 
     }
 
+    this.resetPassword = function(email){
+        account.resetPassword(email).then(function(res){
+            if(res.statusCode=='200'){ //email sending went well
+                //do some sort of screen updating here.
+            }
+        })
+    }
+
     this.disableRegister = function(formValid, signupInfo){
         let pwd = signupInfo.password;
         let pwdConf = signupInfo.passwordConfirmation;
