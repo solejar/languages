@@ -3,8 +3,6 @@ const bodyParser = require("body-parser")
 const jwt = require('jsonwebtoken');
 const config = require('../config.js')
 
-//const app = express();
-
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
 
@@ -73,6 +71,9 @@ router.post('/emails/passwords',function(req,res){
         }else{
             console.log('Email sent: '+ info.response);
         }
+
+        res.statusCode='200';
+        res.send('Email sent: '+info.response);
     });
 
 })

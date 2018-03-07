@@ -49,7 +49,15 @@
             }
         }
 
-        this.pages = ['declension','readings','about','home','study','login','profile'];
+        this.pages = [
+            'declension',
+            'readings',
+            'about',
+            'home',
+            'study',
+            'login',
+            'profile'
+        ];
 
         //this.currPage = 'declension'
         sharedProps.setProperty('currPage','login')

@@ -1,6 +1,16 @@
 var app = angular.module('lang');
 
-app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, translator, $q, $timeout, $window, account){
+app.controller('endingCtrl',function(
+    sharedProps,
+    spellingRules,
+    decliner,
+    translator,
+    $q,
+    $timeout,
+    $window,
+    account,
+    $timeout)
+{
 
     //list of prepositions and their associated case options
     this.prepositions = []
@@ -124,6 +134,9 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
     //clear out select vals
     this.clearToInitial = function(){
 
+        this.prepSearchText = '';
+        this.selectedPrep = '';
+
         this.currPhrase = {}
         this.currPhrase.adjException = {}
         this.currPhrase.nounException = {}
@@ -159,12 +172,28 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
         this.onlyOneCase = false //this is a disable that may need to be cleared
     }
 
+    this.changePrep = function(newPrep){
+        let prep;
+        if(!newPrep){
+            prep = {
+                name: '',
+                cases: ['винительный','творительный','именительный','родительный','предложный','дательный']
+            }
+            this.currPhrase.padex = '';
+        }else{
+            prep = newPrep;
+        }
+        this.currPhrase.prep = prep;
+        this.checkCaseCount(prep.cases);
+
+    }
+
     //can only clear when something is there!
     this.disableClear = function(){
         var a = this.currPhrase.adj
         var b = this.currPhrase.noun
         var c = this.currPhrase.gender
-        var d = this.currPhrase.prep.name
+        var d = this.currPhrase.prep
         var e = this.currPhrase.padex
         var f = this.currPhrase.plurality
         var g = this.currPhrase.animate
@@ -174,7 +203,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
 
     //need to consolidate screen removal with account removal
     this.removeCard = function(array,index){
-        
+
         if(account.getUser()){
             let card = array[index]
             account.removeCard(card).then(function(res){
@@ -225,10 +254,37 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
         }
     }
 
+    this.querySearch = function(query){
+
+        let results = query ? this.prepositions.filter(this.createFilterFor(query)): this.prepositions;
+        return results;
+    }
+
+    this.createFilterFor = function(query){
+        let lowercaseQuery = angular.lowercase(query);
+
+        return function filterFn(prep){
+            return (prep.name.toLowerCase().indexOf(lowercaseQuery)===0);
+        }
+    }
+
+    this.searchTextChange = function(newSearchText){
+        //this logic lets user get away with just typing and not actually selecting an item
+        let results = this.querySearch(newSearchText);
+        if(results.length==1){
+            //this.currPhrase.prep = results[0];
+            this.changePrep(results[0]);
+        }
+    }
+
+    
+
     this.generateCard = function(){
         //console.log('generating a card');
+        this.showWaitSpin = true;
         decliner.declinePhrase(this.currPhrase).then(function(declinedPhrase){
             //console.log('just declined it');
+            this.showWaitSpin = false;
             this.currPhrase.declinedPhrase = declinedPhrase
             translator.translatePhrase(declinedPhrase).then(function(translation){
                 //console.log('just translated it')
@@ -241,11 +297,17 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
                     account.addCard(card).then(function(res){
                         //console.log('just added that card to db')
                         if(res.statusCode=='200'){
+                            //this.showWaitSpin = false;
+
                             card.markup = {
                                 expanded: false
                             };
 
+                            /*$timeout(function(){
+                                this.cards.push(card);
+                            }.bind(this))*/
                             this.cards.push(card);
+
                             //console.log(this.cards);
                         }else{
                             console.log('uh oh, apparent malfunction in adding card!');
@@ -253,10 +315,17 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
 
                     }.bind(this))
                 }else{
+                    //this.showWaitSpin = false;
+
                     card.markup={
                         expanded: false
                     }
+
+                    /*$timeout(function(){
+                        this.cards.push(card);
+                    }.bind(this));*/
                     this.cards.push(card);
+
                 }
 
 
@@ -268,6 +337,7 @@ app.controller('endingCtrl',function(sharedProps, spellingRules, decliner, trans
         $mdMenu.open(ev);
     }
 
+    this.showWaitSpin = false;
     this.inputsFresh = true
 
     this.disableDecline= function(){

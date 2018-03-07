@@ -1,6 +1,6 @@
 var app = angular.module('lang')
 
-app.controller('loginCtrl',function(sharedProps,account){
+app.controller('loginCtrl',function(sharedProps,account, $mdDialog){
 
     this.signupInfo = {}
 
@@ -17,14 +17,6 @@ app.controller('loginCtrl',function(sharedProps,account){
             }
         }.bind(this))
 
-    }
-
-    this.resetPassword = function(email){
-        account.resetPassword(email).then(function(res){
-            if(res.statusCode=='200'){ //email sending went well
-                //do some sort of screen updating here.
-            }
-        })
     }
 
     this.disableRegister = function(formValid, signupInfo){
@@ -57,6 +49,7 @@ app.controller('loginCtrl',function(sharedProps,account){
 
     }
 
+
     //figure out how to connect this to a directive, still working on this
     this.checkAccountAvailability = function(entityName,type){
         account.checkAccountAvailability(entityName,type).then(function(userAvailable){
@@ -64,6 +57,32 @@ app.controller('loginCtrl',function(sharedProps,account){
                 //do something
             }else{
                 //do something
+            }
+        })
+    }
+
+    this.showPasswordPrompt = function(ev){
+        var confirm = $mdDialog.prompt()
+        .title('Enter your e-mail')
+        .placeholder('E-mail address')
+        .ariaLabel('E-mail address')
+        .targetEvent(ev)
+        .required(true)
+        .ok('OK')
+        .cancel('Cancel');
+
+        $mdDialog.show(confirm).then(function(result){
+            console.log('resetting password of email: ',result);
+            this.resetPassword(result);
+        }.bind(this),function(){
+            console.log('password reset was cancelled');
+        })
+    }
+
+    this.resetPassword = function(email){
+        account.resetPassword(email).then(function(res){
+            if(res.statusCode=='200'){ //email sending went well
+                //do some sort of screen updating here.
             }
         })
     }
