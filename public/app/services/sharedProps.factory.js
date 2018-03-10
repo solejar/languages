@@ -1,3 +1,4 @@
+//var app = angular.module('lang',['ngMaterial','ngMessages']);
 var app = angular.module('lang');
 
 app.factory('sharedProps',function($http, $location){

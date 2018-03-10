@@ -1,4 +1,5 @@
-var app = angular.module('lang')
+//var app = angular.module('lang',['ngMaterial','ngMessages']);
+var app = angular.module('lang');
 
 app.factory('translator',function(sharedProps,$q){
     var obj = {}
@@ -23,6 +24,6 @@ app.factory('translator',function(sharedProps,$q){
 
         return deferred.promise
     }
-    
+
     return obj
 })

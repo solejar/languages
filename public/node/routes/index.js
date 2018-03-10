@@ -59,10 +59,12 @@ router.get('/en',function(req,res){
 })
 
 router.post('/emails/passwords',function(req,res){
+    let body = 'Hi, '+req.body.userName+'}\n\nYour account\'s password has been temporarily reset to:\n\n'+ req.body.pwd;
+
     let mailOptions = {
         to: req.body.to,
         subject: 'Resetting password over email',
-        text: 'Still not sure how to reset your password. My bad!'
+        text: body
     };
 
     transporter.sendMail(mailOptions,function(err,info){

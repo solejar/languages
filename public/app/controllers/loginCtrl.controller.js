@@ -1,4 +1,5 @@
-var app = angular.module('lang')
+//var app = angular.module('lang',['ngMaterial','ngMessages']);
+var app = angular.module('lang');
 
 app.controller('loginCtrl',function(sharedProps,account, $mdDialog){
 
@@ -52,8 +53,8 @@ app.controller('loginCtrl',function(sharedProps,account, $mdDialog){
 
     //figure out how to connect this to a directive, still working on this
     this.checkAccountAvailability = function(entityName,type){
-        account.checkAccountAvailability(entityName,type).then(function(userAvailable){
-            if(userAvailable){
+        account.getAccount({type: entityName}).then(function(user){
+            if(user){
                 //do something
             }else{
                 //do something

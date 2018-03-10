@@ -1,3 +1,4 @@
+//var app = angular.module('lang',['ngMaterial','ngMessages']);
 var app = angular.module('lang');
 
 //this service verifies that declined words comply with Russian spelling rules
@@ -47,9 +48,9 @@ app.factory('spellingRules',function(){
                 }else{
                     newEnding = 'е'
                 }
-            }   
+            }
         }
-        
+
         //дорог,ых -> их
         return newEnding+endingRemainder
         },

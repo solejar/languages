@@ -1,4 +1,5 @@
-var app = angular.module('lang')
+//var app = angular.module('lang',['ngMaterial','ngMessages']);
+var app = angular.module('lang');
 
 app.factory('tester',function(sharedProps,$q,decliner){
     var obj = {}
@@ -50,25 +51,25 @@ app.factory('tester',function(sharedProps,$q,decliner){
 
                             var inanimSingleOper = padexDict.Inanimate.Single
                             var inanimPluralOper = padexDict.Inanimate.Plural
- 
+
                             decliner.applyEnding(word,inanimSingleOper).then(function(declinedWord){
                                 declinedWords[ruleSetNumber][padex].inanimate.single = declinedWord
                             })
-                    
+
                             decliner.applyEnding(word,inanimPluralOper).then(function(declinedWord){
                                 declinedWords[ruleSetNumber][padex].inanimate.plural = declinedWord
                             })
-                            
+
 
                         }else{
                             var singleOper = padexDict.Single
-                    
+
                             decliner.applyEnding(word,singleOper).then(function(declinedWord){
                                 declinedWords[ruleSetNumber][padex].single = declinedWord
                             })
 
                             var pluralOper = padexDict.Plural
-                
+
                             decliner.applyEnding(word,pluralOper).then(function(declinedWord){
                                 declinedWords[ruleSetNumber][padex].plural = declinedWord
                             })
@@ -76,7 +77,7 @@ app.factory('tester',function(sharedProps,$q,decliner){
                     }
 
                 })
-                
+
             });
 
             if(compare){
@@ -112,8 +113,8 @@ app.factory('tester',function(sharedProps,$q,decliner){
                     }
                 })
             }
-            
-            
+
+
         });
         //console.log('finished declining the words')
 

@@ -1,4 +1,5 @@
-var app = angular.module('lang')
+//var app = angular.module('lang',['ngMaterial','ngMessages']);
+var app = angular.module('lang');
 
 //this factory is responsible for modifying a user's card collection
 app.factory('account',function(sharedProps,$q,$http){
@@ -69,18 +70,37 @@ app.factory('account',function(sharedProps,$q,$http){
     obj.resetPassword = function(email){
         let deferred = $q.defer();
 
-        let options = {
-            url : '/emails/passwords',
-            method : 'POST',
-            data: {
-                to: email
-            },
-            verbose: true
+        let params = {
+            email: email
         }
+        obj.getAccount(params).then(function(user){
 
-        sharedProps.httpReq(options).then(function(res){
-            console.log(res)
-            deferred.resolve(res)
+            if(user){
+                let pwd = '1234'; //make this randomly generate somehow
+
+                user.password = pwd;
+
+                obj.editUser(user);
+
+                let options = {
+                    url : '/emails/passwords',
+                    method : 'POST',
+                    data: {
+                        to: user.email,
+                        pwd: pwd,
+                        userName: user.userName
+                    },
+                    verbose: true
+                }
+
+                sharedProps.httpReq(options).then(function(res){
+                    console.log(res)
+                    deferred.resolve(res)
+                })
+            }else{
+                console.log('no user with that e-mail found, how to show them?');
+            }
+
         })
 
         return deferred.promise;
@@ -104,34 +124,38 @@ app.factory('account',function(sharedProps,$q,$http){
         session.user = newUser;
     }
 
-    obj.checkAccountAvailability = function(entityName,type){
+    obj.getAccount = function(q){
+    //obj.checkAccountAvailability = function(entityName,type){
         let deferred = $q.defer();
 
-        let params = {};
-        params[type] = entityName;
+        //let params = {};
+        //params[type] = entityName;
 
         let options = {
             url : '/users',
-            params: params,
+            params: q,
             method: 'GET',
             verbose: true,
         }
 
         sharedProps.httpReq(options).then(function(res){
-            let userAvailable;
+            let user;
             if(res.statusCode=='200'){//search worked
                 if(res.content[0]){//user exists
                     console.log('account already exists');
-                    userAvailable = false;
+                    //userAvailable = false;
+                    user = res.content[0]
                 }else{//account available
                     console.log('account is available');
-                    userAvailable = true;
+                    //userAvailable = true;
+                    user = {}
                 }
             }else{ //some error
-                userAvailable = false; //if some error happens, don't assume name available
+                //userAvailable = false; //if some error happens, don't assume name available
+                user = {}
                 console.log('some error happened when checking for account availability');
             }
-            deferred.resolve(userAvailable);
+            deferred.resolve(user);
         })
 
         return deferred.promise;
@@ -154,6 +178,8 @@ app.factory('account',function(sharedProps,$q,$http){
 
     obj.register = function(signupInfo){
         let deferred = $q.defer();
+
+        console.log(signupInfo);
 
         var registerOptions = {
             url: '/users',

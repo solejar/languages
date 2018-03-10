@@ -1,8 +1,8 @@
 # Backlog
 
-##Decliner
+## Decliner
 
-**Functional**
+### Functional
 
 - some weird adjectives don't work, like numerals
 - учитель Not the same as as писатель 
@@ -13,29 +13,26 @@
 - Should generating a card clear inputs? Decide yes or no.
 - Should a warning be generate before removing a card ( in general and also for this)
 
-**Non-functional**	
+### Non-functional
 
 - how should components reorder here to effectively use space real estate? 
 
 - **Make it look good for flex-xs**
 
-  - (try to) remove borders around whiteframe for only mobile view (`flex-xs`).    
+- (try to) remove borders around whiteframe for only mobile view (`flex-xs`).    
 
-    ​
 
-##Login
+## Login
 
-**Functional**
+### Functional
 
-- **make sure it requires that password and password confirmation be equal.**
-  - This requires learning directives :^)
-- increase verbosity of validity messages. (This is good but not immediately necessary)
 - add widget for sign-in (not priority)
 - level of language (not sure how to implement, add later)
 - show some example words, see if they know them. (after we set up reading section)
-- Allow signin with email or username if applicable
-- Check for existing account with such a name before making it valid
+- Allow signin with email or username if applicable ( Not a priority)
+- **Check for existing account with such a name before making it valid**
 - Resetting password by sending e-mail on account
+  - Just need to get the edit users endpoint up
 
 **Non-functional**
 
@@ -112,8 +109,6 @@
 - pipe output to a file or db (figure out what level of logging info to track)
 - improve `REST` endpoints, parse inputs/path urls on start, abstract such logic out of the Mongo
 - Make API input size agnostic (one or many)
-- Store config stuff as [config.js](https://stackoverflow.com/questions/5869216/how-to-store-node-js-deployment-settings-configuration-files) 
-- Store `JWT` in cookie [somehow](https://stackoverflow.com/questions/27067251/where-to-store-jwt-in-browser-how-to-protect-against-csrf) , try to take advantage of express/passport sessions
 - If I am always sending `JWT` in `Header: Authorization`, and this has `$user._id` stored in it, isn't it the case that none of the endpoints actually need to send `userInfo`? Or maybe we want to leave it that way so that you can use it on a user other than yourself, if `isAdmin: true` perhaps. Actually, I agree with that. 
 
 

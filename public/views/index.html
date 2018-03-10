@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html ng-app="lang">
+<html ng-app="lang" >
 <head>
     <title>
         Sean's Spiffy Language Learner
@@ -19,12 +19,14 @@
     <script type="text/javascript" src="./node_modules/angular-messages/angular-messages.min.js"></script>
 
     <script type="text/javascript" src="./app/app.js"></script>
-    <script type="text/javascript" src="./app/services/sharedProps.factory.js"></script>
+
+    <script type="text/javascript" src="./app/controllers/headerCtrl.controller.js"></script>
+    <script type="text/javascript" src="./app/controllers/footerCtrl.controller.js"></script>
     <script type="text/javascript" src="./app/controllers/endingCtrl.controller.js"></script>
     <script type="text/javascript" src="./app/controllers/loginCtrl.controller.js"></script>
     <script tpye="text/javascript" src="./app/controllers/adminCtrl.controller.js"></script>
     <script type="text/javascript" src="./app/controllers/profileCtrl.controller.js"></script>
-    <script type="text/javascript" src="./app/controllers/resetPasswordCtrl.controller.js"></script>
+    <script type="text/javascript" src="./app/services/sharedProps.factory.js"></script>
     <script type="text/javascript" src="./app/services/spellingRules.factory.js"></script>
     <script type="text/javascript" src="./app/services/account.factory.js"></script>
     <script type="text/javascript" src="./app/services/decliner.factory.js"></script>
@@ -32,10 +34,11 @@
     <script type="text/javascript" src="./app/services/tester.factory.js"></script>
     <script type="text/javascript" src="./app/filters/prepositions.filter.js">
     </script>
+    <script type="text/javascript" src="./app/directives/pwCheck.directive.js"></script>
 
 </head>
 
-<body ng-controller="headerController as header" >
+<body ng-controller="headerCtrl as header" >
     <md-content  layout="column" style="background-color: #ccffff; height: 100%; %" layout-align="start" >
         <div id= "nav-bar"   style="background-color: #FAFAFA" ng-init="header.setLabels()">
 
@@ -113,7 +116,7 @@
                             <form flex="100" name="signupForm" style="background-color: #FAFAFA;"layout="row" layout-align="center">
 
 
-                                <div layout="column" flex="80">
+                                <div layout="column" flex="80" layout-align="space-around">
                                     <div flex="15" layout="row" >
                                         <md-input-container>
                                             <label>
@@ -127,7 +130,7 @@
                                             <label>
                                                 Password
                                             </label>
-                                            <input type="password" ng-model="login.signupInfo.password" required>
+                                            <input type="password" ng-model="login.signupInfo.password" ng-change="signupForm.passwordConf.$validate()" name="password" required>
                                         </md-input-container>
                                     </div>
                                     <div flex="15" layout="row">
@@ -135,7 +138,14 @@
                                             <label>
                                                 Confirm Password
                                             </label>
-                                            <input type="password" ng-model="login.signupInfo.passwordConfirmation" required>
+                                            <input type="password" name="passwordConf" ng-model="login.signupInfo.passwordConfirmation" required pw-check="{{login.signupInfo.password}}">
+
+                                            <div ng-messages="signupForm.passwordConf.$error" ng-show="signupForm.passwordConf.$touched">
+                                                <div ng-message="pwCheck">
+                                                    Your password doesn't match
+                                                </div>
+
+                                            </div>
                                         </md-input-container>
                                     </div>
                                     <div flex="15" layout="row" >
@@ -145,8 +155,8 @@
                                                 E-mail Address
                                             </label>
                                             <input name="emailAddr" ng-blur="login.checkAccountAvailability(login.signupInfo.email,'email')" ng-model="login.signupInfo.email" required type="email" />
-                                            <div ng-messages="signupForm.emailAddr.$error">
-                                                <div ng-message="required">
+                                            <div ng-messages="signupForm.emailAddr.$error" ng-show="signupForm.emailAddr.$touched">
+                                                <div ng-message="required" >
                                                     You need to enter a valid e-mail address.
                                                 </div>
                                             </div>
@@ -557,13 +567,26 @@
                 </div>
                 <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.getCurrPage()=='study'" >
                     You are on the Study page! This page is still under development. Come back later for more :3
+                    <label for="password">Password</label>
+                       <input type="password" id="password" name="password" ng-model="formData.password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required  />
+                   <span ng-show="myForm.password.$error.required && myForm.password.$dirty">required</span>
+                   <span ng-show="!myForm.password.$error.required && (myForm.password.$error.minlength || myForm.password.$error.maxlength) && myForm.password.$dirty">Passwords must be between 8 and 20 characters.</span>
+                   <span ng-show="!myForm.password.$error.required && !myForm.password.$error.minlength && !myForm.password.$error.maxlength && myForm.password.$error.pattern && myForm.password.$dirty">Must contain one lower &amp; uppercase letter, and one non-alpha character (a number or a symbol.)</span>
+                       <br />
+
+
+                       <label for="password_c">Confirm Password</label>
+                       <input type="password" id="password_c" name="password_c" ng-model="formData.password_c" valid-password-c required  />
+                   <span ng-show="myForm.password_c.$error.required && myForm.password_c.$dirty">Please confirm your password.</span>
+                   <span ng-show="!myForm.password_c.$error.required && myForm.password_c.$error.noMatch && myForm.password.$dirty">Passwords do not match.</span>
+                       <br />
                 </div>
                 <div flex-gt-md="25" flex-md="15" flex-sm="5" hide-xs style="width: 550px">
                 </div>
             </div>
         </md-content>
 
-        <div layout="row" id="footer" flex="none" ng-controller="footerController as footer" style="background-color: #3F51B5; height: 80px; font-size: 10pt; color:white" layout-align="space-around center" >
+        <div layout="row" id="footer" flex="none" ng-controller="footerCtrl as footer" style="background-color: #3F51B5; height: 80px; font-size: 10pt; color:white" layout-align="space-around center" >
             <div flex class="md-primary" layout="column" layout-align="center"  flex  >
                 <br>
                 <div flex style="text-align: center">Display Language:

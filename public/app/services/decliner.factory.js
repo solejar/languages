@@ -1,4 +1,5 @@
-var app = angular.module('lang')
+//var app = angular.module('lang',['ngMaterial','ngMessages']);
+var app = angular.module('lang');
 
 //this module knows how to decline words and phrases
 //it possesses auxiliary functions to help itself do its job
@@ -59,7 +60,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
 
         }else if(PoS=='adj'){
             var currWord = phrase.adj
-            var ruleSet = phrase.adjRuleSet       
+            var ruleSet = phrase.adjRuleSet
         }
 
         //if they exist, proceed
@@ -110,7 +111,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
         }else if(phrase.nounException.word!='default' && PoS =='noun'){
             console.log(phrase.noun + ' was found to be an exception')
             ruleSetNumber = phrase.nounException.ruleSet
-            
+
         }else{ //we're gonna have to use general rules
             console.log('using general rules')
             var gen = phrase.gender
@@ -153,7 +154,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
                         ruleSetNumber = "11"
                     }else if(consonants.includes(lastChar)){
                         if(isFleeting){
-                            ruleSetNumber = "16" 
+                            ruleSetNumber = "16"
                         }
                         if(hushers.includes(lastChar)){
                             ruleSetNumber = "14"
@@ -178,7 +179,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
                             ruleSetNumber = "6"
                         }else if(isFleeting){
                             ruleSetNumber = "7"
-                        }else{ 
+                        }else{
                             ruleSetNumber = "0" //don't think obj case exists
                         }
                     }else{
@@ -264,7 +265,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
             //need to figure out what the fuck to do here
             var fleetingType = declension.fleetingType
             if(fleetingType=='inject'){
-                
+
                 var left = word.substring(0,len-2)
                 var right = word.substring(len-2,len-1)
 
@@ -273,7 +274,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
                 //console.log(declension)
                 console.log(left+newEnding)
                 deferred.resolve(left+newEnding)
-                
+
             }else if(fleetingType=='remove'){
                 var left = word.substring(0,len-2)
                 var last = word[len-1]
@@ -281,7 +282,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
                 phrase.noun = newStem
 
                 //console.log(declension)
-                
+
                 console.log('about to decline '+ newStem )
                 console.log(declension)
                 obj.checkException(phrase.noun,'noun').then(function(res){
@@ -290,10 +291,10 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
                         console.log(declinedWord)
                         deferred.resolve(declinedWord)
                     })
-                })       
-            }    
+                })
+            }
         }
-        
+
         return deferred.promise
     }
 
@@ -304,7 +305,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
         console.log('getting an exception')
         console.log(word)
         console.log(PoS)
-        
+
         var exceptionOptions = {
             url: '/ru/exceptions',
             params: {
@@ -317,9 +318,9 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
         sharedProps.httpReq(exceptionOptions).then(function(res){
             console.log(res)
             if(PoS=='noun'){
-                deferred.resolve(res.content)  
-            }else if (PoS=='adj'){     
-                deferred.resolve(res.content)                
+                deferred.resolve(res.content)
+            }else if (PoS=='adj'){
+                deferred.resolve(res.content)
             }
         })
 

@@ -1,3 +1,4 @@
+//var app = angular.module('lang',['ngMaterial','ngMessages']);
 var app = angular.module('lang');
 
 app.controller('endingCtrl',function(
@@ -277,7 +278,7 @@ app.controller('endingCtrl',function(
         }
     }
 
-    
+
 
     this.generateCard = function(){
         //console.log('generating a card');
