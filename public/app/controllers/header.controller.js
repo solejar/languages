@@ -19,6 +19,8 @@ app.controller('headerCtrl',function($window, account,sharedProps){
         }
     }
 
+    //this function sets the labels on the upper nav bar
+    //Russian display isn't fleshed out for whole app however.
     this.setLabels = function(){
         var urlPath = $window.location.href;
         var pathSplit = urlPath.split('/')
@@ -30,8 +32,7 @@ app.controller('headerCtrl',function($window, account,sharedProps){
     }
 
     this.getUser = function(){
-        var user = account.getUser();
-        //console.log('user',user)
+        let user = account.getUser();
         return user;
     }
 

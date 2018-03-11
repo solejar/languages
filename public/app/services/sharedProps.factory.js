@@ -1,4 +1,3 @@
-//var app = angular.module('lang',['ngMaterial','ngMessages']);
 var app = angular.module('lang');
 
 app.factory('sharedProps',function($http, $location){
@@ -33,6 +32,7 @@ app.factory('sharedProps',function($http, $location){
             },function myError(response){
                 console.log('the function failed horribly');
                 console.log(response.statusText);
+                return response.data;
             })
         }
     }

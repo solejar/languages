@@ -20,12 +20,12 @@
 
     <script type="text/javascript" src="./app/app.js"></script>
 
-    <script type="text/javascript" src="./app/controllers/headerCtrl.controller.js"></script>
-    <script type="text/javascript" src="./app/controllers/footerCtrl.controller.js"></script>
-    <script type="text/javascript" src="./app/controllers/endingCtrl.controller.js"></script>
-    <script type="text/javascript" src="./app/controllers/loginCtrl.controller.js"></script>
-    <script tpye="text/javascript" src="./app/controllers/adminCtrl.controller.js"></script>
-    <script type="text/javascript" src="./app/controllers/profileCtrl.controller.js"></script>
+    <script type="text/javascript" src="./app/controllers/header.controller.js"></script>
+    <script type="text/javascript" src="./app/controllers/footer.controller.js"></script>
+    <script type="text/javascript" src="./app/controllers/ending.controller.js"></script>
+    <script type="text/javascript" src="./app/controllers/login.controller.js"></script>
+    <script tpye="text/javascript" src="./app/controllers/admin.controller.js"></script>
+    <script type="text/javascript" src="./app/controllers/profile.controller.js"></script>
     <script type="text/javascript" src="./app/services/sharedProps.factory.js"></script>
     <script type="text/javascript" src="./app/services/spellingRules.factory.js"></script>
     <script type="text/javascript" src="./app/services/account.factory.js"></script>
@@ -95,7 +95,7 @@
                 Home Page
                 </div>
                 <div flex flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='about'" >
-                    Доброе пожаловать на моем приложение!
+                    Добро пожаловать на мое приложение!
 
                     <br><br>
                     The goal of this language application is to incrementally add features which I find useful in language learning, which I hope will provide some use to other people down the road.
@@ -114,9 +114,9 @@
                                 </div>
                             </md-toolbar>
 
-                            <form flex="100" name="signupForm" style="background-color: #FAFAFA;"layout="row" layout-align="center">
-                                <div layout="column" flex="80" layout-align="space-around">
-                                    <div flex="15" layout="row" >
+                            <div flex="100" style="background-color: #FAFAFA;"layout="column" layout-align="start center">
+                                <form layout="column" flex="90" name="signupForm" layout-align="space-around">
+                                    <div flex="25" layout="row" id="signupUserName" >
                                         <md-input-container>
                                             <label>
                                                 User Name
@@ -127,15 +127,19 @@
                                                 ng-model="login.signupInfo.userName"
                                                 ng-change="login.checkAccountAvailability('userName',login.signupInfo.userName)"
                                                 account-available="login.available.userName"
-                                                required>
+                                                required
+                                                ng-pattern="/^[a-zA-Z0-9]*$/">
                                             <div ng-messages="signupForm.userName.$error" >
                                                 <div ng-message="accountAvailable">
-                                                    Sorry, an account with this user name already exists
+                                                    An account with this user name already exists
+                                                </div>
+                                                <div ng-message="pattern">
+                                                    Only alphanumerics are allowed
                                                 </div>
                                             </div>
                                         </md-input-container>
                                     </div>
-                                    <div flex="15" layout="row" >
+                                    <div flex="25" layout="row" id="signupEmailAddr" >
 
                                         <md-input-container>
                                             <label>
@@ -149,17 +153,17 @@
                                                 required
                                                 account-available="login.available.email"
                                                 type="email" >
-                                            <div ng-messages="signupForm.emailAddr.$error" ng-show="signupForm.emailAddr.$touched">
+                                            <div ng-messages="signupForm.emailAddr.$error">
                                                 <div ng-message="required" >
                                                     You need to enter a valid e-mail address.
                                                 </div>
                                                 <div ng-message="accountAvailable">
-                                                    Sorry, an account with this e-mail address already exists.
+                                                    An account with this e-mail address already exists.
                                                 </div>
                                             </div>
                                         </md-input-container>
                                     </div>
-                                    <div flex="15" layout="row" >
+                                    <div flex="25" layout="row" id="signupPassword" >
                                         <md-input-container>
                                             <label>
                                                 Password
@@ -168,11 +172,18 @@
                                                 type="password"
                                                 ng-model="login.signupInfo.password"
                                                 ng-model-options="{updateOn: 'blur'}"
-
-                                                name="password" required>
+                                                name="password"
+                                                ng-pattern="/^[a-zA-Z0-9]*$/"
+                                                required>
+                                            <div ng-messages="signupForm.password.$error">
+                                                <div ng-message="pattern">
+                                                    Only alphanumerics are allowed
+                                                </div>
+                                            </div>
                                         </md-input-container>
+
                                     </div>
-                                    <div flex="15" layout="row">
+                                    <div flex="25" layout="row">
                                         <md-input-container>
                                             <label>
                                                 Confirm Password
@@ -199,13 +210,13 @@
 
                                     <br>
                                     <div flex="15" layout="row" layout-align="center">
-                                        <md-button class="md-raised md-primary" ng-click="login.register(login.signupInfo)" ng-disabled="login.disableRegister(signupForm.$valid, login.signupInfo)">
+                                        <md-button class="md-raised md-primary" ng-click="login.register(login.signupInfo)" ng-disabled="signupForm.$invalid">
                                             Sign up
                                         </md-button>
                                     </div>
 
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </md-whiteframe>
                         <div flex="10" style="background-color: #ccffff" layout="row" layout-align="center">
                             <md-divider class="md-primary">
@@ -217,9 +228,9 @@
                                     {{'Login'}}
                                 </div>
                             </md-toolbar>
-                            <div flex layout="column" style="background-color: #FAFAFA;">
-                                <form name="loginForm" layout="column">
-                                    <div layout="row" layout-align="center">
+                            <div flex="100" layout="column" layout-align="start center" style="background-color: #FAFAFA;">
+                                <form name="loginForm" flex="60" layout="column" layout-align="space-around">
+                                    <div flex="20" layout="row">
                                         <md-input-container flex="80">
                                             <label>
                                                 User Name
@@ -227,8 +238,7 @@
                                             <input ng-model="login.signin.userName" required>
                                         </md-input-container>
                                     </div>
-
-                                    <div layout="row" layout-align="center">
+                                    <div flex="20" layout="row">
                                         <md-input-container flex="80">
                                             <label>
                                                 Password
@@ -237,13 +247,16 @@
 
                                         </md-input-container>
                                     </div>
-                                    <div layout-align="center" layout="row">
+                                    <div flex="20" layout="row" ng-show="login.loginFailed">
+                                        Sorry, but you have entered an invalid username/password.
+                                    </div>
+                                    <div flex="20" layout="row" layout-align="center">
                                         <md-button class="md-primary md-raised" ng-click="login.attemptLogin(login.signin)" ng-disabled="loginForm.$invalid">
                                             Log in
                                         </md-button>
                                     </div>
                                 </form>
-                                <md-button ng-click="login.showPasswordPrompt($event)" style="text-transform: none;">
+                                <md-button flex="15" ng-click="login.showPasswordPrompt($event)" style="text-transform: none;">
                                     Forgot Password?
                                 </md-button>
                             </div>

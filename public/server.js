@@ -6,19 +6,20 @@ const session = require('express-session');
 
 const app = express();
 
-const routes = require('./node/routes/index');
-//const users = require('./node/routes/users');
+const declension = require('./node/routes/declension');
+const users = require('./node/routes/users');
+const general = require('./node/routes/general');
 
 app.use(bodyParser.json());
-
 app.use(bodyParser.urlencoded({extended: true}));
 
 const port = 8080
-
 app.set('port', (process.env.PORT || 5000)); //set port to what is set or 5000 as default
 app.use(express.static(__dirname + '/')) //this line let's me include files as if my index html was at the /public/ level
 
-app.use('/',routes)
+app.use('/declension',declension);
+app.use('/users',users);
+app.use('/',general);
 
 app.use(passport.initialize());
 app.use(passport.session());

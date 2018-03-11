@@ -4,44 +4,40 @@ var app = angular.module('lang');
 //this factory is responsible for modifying a user's card collection
 app.factory('account',function(sharedProps,$q,$http){
 
+    //JSON which holds client data about the session, currently only user data
     var session = {}
     var obj = {}
 
+    //remove authorization header, clear out session object
     obj.logout = function(){
         session = {}
         $http.defaults.headers.common['Authorization'] = '';
     }
 
     //WIP
+    //function for a user to delete another user(s)
+    //only an admin can remove a user who is not themselves
     obj.removeUser = function(user){
         let deferred = $q.defer();
 
-        var params = {
-            userName: user.userName,
+        let data = {
             _id: user._id
         }
 
-        var options = {
+        let options = {
             url: '/users',
             method: 'DELETE',
             verbose: true,
-            params: params
+            data: data
         }
 
         sharedProps.httpReq(options).then(function(result){
-            if(result.statusCode =='200'){
-                console.log('you successfully removed a user!')
-
-            }else{
-                console.log('user removal failed')
-            }
-
-            deferred.resolve('finished either way')
+            deferred.resolve(result)
         })
         return deferred.promise
     }
 
-    obj.attemptLogin = function(loginInfo){
+    obj.login = function(loginInfo){
         let deferred = $q.defer();
 
         var loginOptions = {
@@ -52,6 +48,7 @@ app.factory('account',function(sharedProps,$q,$http){
         }
 
         sharedProps.httpReq(loginOptions).then(function(res){
+
             if(res.statusCode=='200'){
                 //console.log('logged in fine')
                 obj.setUser(res.content.user);
@@ -67,6 +64,7 @@ app.factory('account',function(sharedProps,$q,$http){
         return deferred.promise
     }
 
+    //function to set the password of a user to a random string, then email them that password
     obj.resetPassword = function(email){
         let deferred = $q.defer();
 
@@ -77,7 +75,8 @@ app.factory('account',function(sharedProps,$q,$http){
         obj.getAccount(params).then(function(users){
             let user = users[0]
             if(user){
-                let pwd = 'abcd'; //make this randomly generate somehow
+                //random number in base36 -> to string
+                let pwd = (Math.random() + 1).toString(36).slice(2,10);
 
                 let newUserInfo = {
                     password: pwd
@@ -96,14 +95,12 @@ app.factory('account',function(sharedProps,$q,$http){
                         verbose: true
                     }
 
-                    console.log(options)
+                    //console.log(options)
                     sharedProps.httpReq(options).then(function(res){
-                        console.log(res)
+                        //console.log(res)
                         deferred.resolve(res)
                     })
                 });
-
-
 
             }else{
                 deferred.resolve('')
@@ -116,7 +113,6 @@ app.factory('account',function(sharedProps,$q,$http){
     }
 
     obj.setToken = function(newToken){
-        //console.log('setting new token',newToken)
         if(newToken){
             $http.defaults.headers.common['Authorization'] = 'JWT ' + newToken
         }
@@ -129,7 +125,6 @@ app.factory('account',function(sharedProps,$q,$http){
     }
 
     obj.setUser = function(newUser){
-        //console.log('setting new user',newUser)
         session.user = newUser;
     }
 
@@ -144,13 +139,10 @@ app.factory('account',function(sharedProps,$q,$http){
             verbose: true,
         }
 
-        //console.log(query)
-
         sharedProps.httpReq(options).then(function(res){
             let users;
             if(res.statusCode=='200'){//search worked
                 users = res.content;
-                //console.log('account search worked');
             }else{ //some error
                 users = {}
                 console.log('some error happened when checking for account availability');
@@ -160,10 +152,9 @@ app.factory('account',function(sharedProps,$q,$http){
 
         return deferred.promise;
     }
-    //WIP
-    //need to pass in user ID as query param, need to add auto-incrementing ID before this works
+
     obj.editUser = function(userID,newUserInfo){
-        //idk how to do this
+
         let deferred = $q.defer();
 
         var options = {
@@ -182,7 +173,7 @@ app.factory('account',function(sharedProps,$q,$http){
                 //something went wrong
                 console.log('something went wrong when editing the user');
             }
-            deferred.resolve(result);
+            deferred.resolve(result.content);
         })
         return deferred.promise;
     }
@@ -223,12 +214,10 @@ app.factory('account',function(sharedProps,$q,$http){
 
     obj.loadCards = function(){
         let deferred = $q.defer();
+        let user = obj.getUser();
 
-        var user = obj.getUser();
-
-        console.log('getting cards');
         if(user){
-            console.log('theres a user logged in: ',user);
+            //console.log('theres a user logged in: ',user);
 
             var cardOptions = {
                 url: '/users/cards/',
@@ -242,8 +231,6 @@ app.factory('account',function(sharedProps,$q,$http){
             sharedProps.httpReq(cardOptions).then(function(res){
                 if(res.statusCode=='200'){
                     session.cards = res.content;
-
-                    //console.log(res)
                     console.log(session.cards)
                 }else{
                     console.log('something went horribly wrong with fetching the cards!');
@@ -294,7 +281,6 @@ app.factory('account',function(sharedProps,$q,$http){
         return deferred.promise;
     }
 
-    //WIP
     obj.addCard = function(card){
         let deferred = $q.defer();
 
@@ -337,7 +323,7 @@ app.factory('account',function(sharedProps,$q,$http){
             if(result.statusCode=='200'){
                 console.log('successfully removed the card from the user!')
             }else{
-                console.log('not succesffully in removing the card from the user')
+                console.log('not succesful in removing the card from the user')
             }
         })
 
@@ -360,7 +346,7 @@ app.factory('account',function(sharedProps,$q,$http){
             if(result.statusCode=='200'){
                 console.log('successfully removed the card from the user!')
             }else{
-                console.log('not succesffully in removing the card from the user')
+                console.log('not successful in removing the card from the user')
             }
         })
 

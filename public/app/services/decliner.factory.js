@@ -209,7 +209,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
         //GET the rule group needed from the back
         //console.log('about to get rule groups for ' + word + ' with ruleSet number of ' + ruleSetNumber + ' and gender: ' + gender)
         var ruleSetOptions = {
-            url: '/ru/ruleGroups/',
+            url: '/declension/ruleGroups/',
             params: {q: ruleSetNumber},
             method: 'GET',
             verbose: false
@@ -307,7 +307,7 @@ app.factory('decliner',function(spellingRules,sharedProps,$q){
         console.log(PoS)
 
         var exceptionOptions = {
-            url: '/ru/exceptions',
+            url: '/declension/exceptions',
             params: {
                 q: word
             },

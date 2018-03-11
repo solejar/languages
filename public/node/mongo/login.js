@@ -3,6 +3,7 @@ var MongoClient = mongo.MongoClient;
 var url = "mongodb://localhost:27017/";
 
 exports.findUser = function(options,onResult){
+    console.log(options)
     MongoClient.connect(url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err})
@@ -24,41 +25,6 @@ exports.findUser = function(options,onResult){
                 var response = {
                     statusCode: '400',
                     errMsg: 'Some error happened'
-                }
-            }
-
-            onResult(response)
-            database.close();
-        })
-    })
-}
-
-exports.findUserID = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
-        if(err){
-            onResult({'statusCode': '400','errMsg': err})
-        }
-        var db = database.db(options.db);
-        var collection = db.collection('users');
-
-        var o_id = mongo.ObjectID(options._id);
-
-        collection.find({_id: o_id}).project().toArray(function(err,items){
-
-            var statusCode = '200'
-            console.log(items)
-            var content = items[0]
-
-            if(content){
-                var response = {
-                    statusCode: statusCode,
-                    content: content
-                }
-            }else{
-                console.log('no user found')
-                var response = {
-                    statusCode: '400',
-                    errMsg: 'No such user found'
                 }
             }
 
@@ -105,11 +71,11 @@ exports.editUser = function(options,onResult){
 
         var newValues = { $set: options.newUserInfo};
         //do some query
-        collection.updateOne(query,newValues,function(err,res){
+        collection.findOneAndUpdate(query,newValues,function(err,documents){
             if(err) throw err;
             console.log('1 document updated');
             database.close();
-            onResult({'statusCode': '200','nUpdated': '1'})
+            onResult({'statusCode': '200','content': documents[0]})
         })
 
     })

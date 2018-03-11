@@ -98,15 +98,17 @@ app.controller('endingCtrl',function(
         //create option dicts for HTTP reqs
         //technically want to send actual path lang, but in this case vals don't change so I won't bother
         var prepositionOptions = {
-            url: '/ru/prepositions',
+            url: '/declension/prepositions',
             params: {},
             method: 'GET',
             verbose: false
         }
 
         var labelOptions = {
-            url: '/'+options.lang+'/labels',
-            params: {},
+            url: '/declension/labels',
+            params: {
+                lang: options.lang
+            },
             method: 'GET',
             verbose: false
         }
@@ -115,10 +117,8 @@ app.controller('endingCtrl',function(
         console.log('about to fetch exceptions, endings, preps, and labels!');
 
         //push promises onto promise arr
-
         promises.push(sharedProps.httpReq(labelOptions))
         promises.push(sharedProps.httpReq(prepositionOptions))
-        //promises.push(account.loadCards())
 
         //async timeout until all promise completion
         $q.all(promises).then(function(res){
@@ -232,7 +232,7 @@ app.controller('endingCtrl',function(
         data['cardOptions'] = {stars: card.stars,expanded: card.expanded, saved: card.saved}
 
         var errorReportOptions = {
-            url: '/ru/errorReports',
+            url: '/declension/errorReports',
             data: data,
             method: 'POST',
             verbose: false

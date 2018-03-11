@@ -1,51 +1,41 @@
-//var app = angular.module('lang',['ngMaterial','ngMessages']);
 var app = angular.module('lang');
 
+//controller to handle the login page
 app.controller('loginCtrl',function(sharedProps,account, $mdDialog){
 
+    //model to hold registration form data
     this.signupInfo = {}
 
+    //model that gets updated on email/username blur
+    //used by directive to set validity, this might not be the best way to do it though
     this.available = {
         email: true,
         userName: true
     }
 
+    this.loginFiled = false;
+
+    //function to login, called by login button
     this.attemptLogin = function(loginInfo){
         console.log('attempting login')
-        account.attemptLogin(loginInfo).then(function(res){
-            //console.log(res)
-            console.log(res.statusCode)
-            if(res.statusCode=='200'){
+        account.login(loginInfo).then(function(res){
+            if(res.statusCode=='200'){//if login successful, redirect to profile page
+                this.loginFailed = false;
                 console.log('about to change page to profile')
                 sharedProps.setProperty('currPage','profile')
             }else{
                 console.log('login error',res)
+                this.loginFailed = true;
             }
         }.bind(this))
 
     }
 
-    this.disableRegister = function(formValid, signupInfo){
-        let pwd = signupInfo.password;
-        let pwdConf = signupInfo.passwordConfirmation;
-
-        if(formValid){
-            if(pwd===pwdConf){
-                return false;
-            }else{
-                return true; //disable if passwords aren't equal
-            }
-        }else{
-            return true; //disable if form invalid
-        }
-    }
-
+    //function to register, called by signup button
     this.register = function(loginInfo){
-        //something would probably happen here
-        loginInfo.isAdmin = false; //or maybe on server side
 
         account.register(loginInfo).then(function(res){
-            if(res.statusCode=='200'){
+            if(res.statusCode=='200'){//if registration successful, redirect to profile
 
                 sharedProps.setProperty('currPage','profile')
             }else{
@@ -55,9 +45,10 @@ app.controller('loginCtrl',function(sharedProps,account, $mdDialog){
 
     }
 
-    //figure out how to connect this to a directive, still working on this
+    //function to see if account is available, used to determine validity on registration
     this.checkAccountAvailability = function(type,entityName){
 
+        //can be used for 'email' or 'userName'
         if(entityName&&type){
             let query = {}
             query[type] = entityName
@@ -71,6 +62,7 @@ app.controller('loginCtrl',function(sharedProps,account, $mdDialog){
         }
     }
 
+    //a prompt window for when users select 'forgot pasword'
     this.showPasswordPrompt = function(ev){
         var confirm = $mdDialog.prompt()
         .title('Enter your e-mail')
@@ -89,6 +81,7 @@ app.controller('loginCtrl',function(sharedProps,account, $mdDialog){
         })
     }
 
+    //function that resets password of account at a certain email
     this.resetPassword = function(email){
         account.resetPassword(email).then(function(res){
             if(res.statusCode=='200'){ //email sending went well
