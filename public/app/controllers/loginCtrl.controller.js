@@ -5,6 +5,11 @@ app.controller('loginCtrl',function(sharedProps,account, $mdDialog){
 
     this.signupInfo = {}
 
+    this.available = {
+        email: true,
+        userName: true
+    }
+
     this.attemptLogin = function(loginInfo){
         console.log('attempting login')
         account.attemptLogin(loginInfo).then(function(res){
@@ -50,16 +55,20 @@ app.controller('loginCtrl',function(sharedProps,account, $mdDialog){
 
     }
 
-
     //figure out how to connect this to a directive, still working on this
-    this.checkAccountAvailability = function(entityName,type){
-        account.getAccount({type: entityName}).then(function(user){
-            if(user){
-                //do something
-            }else{
-                //do something
-            }
-        })
+    this.checkAccountAvailability = function(type,entityName){
+
+        if(entityName&&type){
+            let query = {}
+            query[type] = entityName
+
+            account.getAccount(query).then(function(res){
+
+                let user = res[0];
+                this.available[type] = !(user); //if the user exists, they aren't available and vice versa
+
+            }.bind(this))
+        }
     }
 
     this.showPasswordPrompt = function(ev){

@@ -124,38 +124,29 @@ app.factory('account',function(sharedProps,$q,$http){
         session.user = newUser;
     }
 
-    obj.getAccount = function(q){
-    //obj.checkAccountAvailability = function(entityName,type){
-        let deferred = $q.defer();
+    obj.getAccount = function(query){
 
-        //let params = {};
-        //params[type] = entityName;
+        let deferred = $q.defer();
 
         let options = {
             url : '/users',
-            params: q,
+            params: query,
             method: 'GET',
             verbose: true,
         }
 
+        console.log(query)
+
         sharedProps.httpReq(options).then(function(res){
-            let user;
+            let users;
             if(res.statusCode=='200'){//search worked
-                if(res.content[0]){//user exists
-                    console.log('account already exists');
-                    //userAvailable = false;
-                    user = res.content[0]
-                }else{//account available
-                    console.log('account is available');
-                    //userAvailable = true;
-                    user = {}
-                }
+                users = res.content;
+                //console.log('account search worked');
             }else{ //some error
-                //userAvailable = false; //if some error happens, don't assume name available
-                user = {}
+                users = {}
                 console.log('some error happened when checking for account availability');
             }
-            deferred.resolve(user);
+            deferred.resolve(users);
         })
 
         return deferred.promise;

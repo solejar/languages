@@ -35,6 +35,7 @@
     <script type="text/javascript" src="./app/filters/prepositions.filter.js">
     </script>
     <script type="text/javascript" src="./app/directives/pwCheck.directive.js"></script>
+    <script type="text/javascript" src="./app/directives/accountAvailable.directive.js"></script>
 
 </head>
 
@@ -114,37 +115,23 @@
                             </md-toolbar>
 
                             <form flex="100" name="signupForm" style="background-color: #FAFAFA;"layout="row" layout-align="center">
-
-
                                 <div layout="column" flex="80" layout-align="space-around">
                                     <div flex="15" layout="row" >
                                         <md-input-container>
                                             <label>
                                                 User Name
                                             </label>
-                                            <input ng-model="login.signupInfo.userName" ng-blur="login.checkAccountAvailability(login.signupInfo.userName,'userName')" required>
-                                        </md-input-container>
-                                    </div>
-                                    <div flex="15" layout="row" >
-                                        <md-input-container>
-                                            <label>
-                                                Password
-                                            </label>
-                                            <input type="password" ng-model="login.signupInfo.password" ng-change="signupForm.passwordConf.$validate()" name="password" required>
-                                        </md-input-container>
-                                    </div>
-                                    <div flex="15" layout="row">
-                                        <md-input-container>
-                                            <label>
-                                                Confirm Password
-                                            </label>
-                                            <input type="password" name="passwordConf" ng-model="login.signupInfo.passwordConfirmation" required pw-check="{{login.signupInfo.password}}">
-
-                                            <div ng-messages="signupForm.passwordConf.$error" ng-show="signupForm.passwordConf.$touched">
-                                                <div ng-message="pwCheck">
-                                                    Your password doesn't match
+                                            <input
+                                                name="userName"
+                                                ng-model-options="{updateOn: 'blur'}"
+                                                ng-model="login.signupInfo.userName"
+                                                ng-change="login.checkAccountAvailability('userName',login.signupInfo.userName)"
+                                                account-available="login.available.userName"
+                                                required>
+                                            <div ng-messages="signupForm.userName.$error" >
+                                                <div ng-message="accountAvailable">
+                                                    Sorry, an account with this user name already exists
                                                 </div>
-
                                             </div>
                                         </md-input-container>
                                     </div>
@@ -154,14 +141,62 @@
                                             <label>
                                                 E-mail Address
                                             </label>
-                                            <input name="emailAddr" ng-blur="login.checkAccountAvailability(login.signupInfo.email,'email')" ng-model="login.signupInfo.email" required type="email" />
+                                            <input
+                                                name="emailAddr"
+                                                ng-model-options="{updateOn: 'blur'}"
+                                                ng-model="login.signupInfo.email"
+                                                ng-change="login.checkAccountAvailability('email',login.signupInfo.email)"
+                                                required
+                                                account-available="login.available.email"
+                                                type="email" >
                                             <div ng-messages="signupForm.emailAddr.$error" ng-show="signupForm.emailAddr.$touched">
                                                 <div ng-message="required" >
                                                     You need to enter a valid e-mail address.
                                                 </div>
+                                                <div ng-message="accountAvailable">
+                                                    Sorry, an account with this e-mail address already exists.
+                                                </div>
                                             </div>
                                         </md-input-container>
                                     </div>
+                                    <div flex="15" layout="row" >
+                                        <md-input-container>
+                                            <label>
+                                                Password
+                                            </label>
+                                            <input
+                                                type="password"
+                                                ng-model="login.signupInfo.password"
+                                                ng-model-options="{updateOn: 'blur'}"
+
+                                                name="password" required>
+                                        </md-input-container>
+                                    </div>
+                                    <div flex="15" layout="row">
+                                        <md-input-container>
+                                            <label>
+                                                Confirm Password
+                                            </label>
+                                            <input
+                                                type="password"
+                                                name="passwordConf"
+                                                ng-model-options="{updateOn: 'blur'}"
+                                                ng-model="login.signupInfo.passwordConfirmation"
+                                                required
+                                                pw-check="login.signupInfo.password">
+
+                                            <div ng-messages="signupForm.passwordConf.$error" >
+                                                <div ng-message="pwCheck">
+                                                    Your passwords don't match
+                                                </div>
+                                                <div ng-message="required">
+                                                    You need to add a password!
+                                                </div>
+
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+
                                     <br>
                                     <div flex="15" layout="row" layout-align="center">
                                         <md-button class="md-raised md-primary" ng-click="login.register(login.signupInfo)" ng-disabled="login.disableRegister(signupForm.$valid, login.signupInfo)">
@@ -567,19 +602,7 @@
                 </div>
                 <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.getCurrPage()=='study'" >
                     You are on the Study page! This page is still under development. Come back later for more :3
-                    <label for="password">Password</label>
-                       <input type="password" id="password" name="password" ng-model="formData.password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required  />
-                   <span ng-show="myForm.password.$error.required && myForm.password.$dirty">required</span>
-                   <span ng-show="!myForm.password.$error.required && (myForm.password.$error.minlength || myForm.password.$error.maxlength) && myForm.password.$dirty">Passwords must be between 8 and 20 characters.</span>
-                   <span ng-show="!myForm.password.$error.required && !myForm.password.$error.minlength && !myForm.password.$error.maxlength && myForm.password.$error.pattern && myForm.password.$dirty">Must contain one lower &amp; uppercase letter, and one non-alpha character (a number or a symbol.)</span>
-                       <br />
 
-
-                       <label for="password_c">Confirm Password</label>
-                       <input type="password" id="password_c" name="password_c" ng-model="formData.password_c" valid-password-c required  />
-                   <span ng-show="myForm.password_c.$error.required && myForm.password_c.$dirty">Please confirm your password.</span>
-                   <span ng-show="!myForm.password_c.$error.required && myForm.password_c.$error.noMatch && myForm.password.$dirty">Passwords do not match.</span>
-                       <br />
                 </div>
                 <div flex-gt-md="25" flex-md="15" flex-sm="5" hide-xs style="width: 550px">
                 </div>

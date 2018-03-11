@@ -294,6 +294,7 @@ router.get('/users',function(req,res){
         userInfo: {}
     }
 
+    console.log('query is ',req.query);
     //this is how you make a generic mongo query, seems legit
     if (req.query.userName){
         options.userInfo.userName= req.query.userName;
@@ -311,21 +312,16 @@ router.get('/users',function(req,res){
 
 router.post('/users/login',function(req,res){
 
-    //console.log(userName)
-    //console.log(password)
-    console.log(req.data)
-    console.log(req.params)
     console.log(req.body)
 
     if(req.body.userName && req.body.password){
-        var name = req.body.userName;
-        var password = req.body.password
 
         var options = {
             db: 'app',
+            collection: 'users',
             userInfo: {
-                userName: name,
-                password: password
+                userName: req.body.userName,
+                password: req.body.password
             }
         }
 
@@ -338,7 +334,7 @@ router.post('/users/login',function(req,res){
                 response.statusCode = '400'
                 response.errMsg = 'no such user found'
             }else{
-                var user = result.content //parse response
+                var user = result.content[0] //parse response
                 console.log('found user', user)
 
                 if(user.password===req.body.password){
@@ -378,12 +374,12 @@ router.put('/users',function(req,res){
 
 router.post('/users',function(req,res){
     //NEED A WAY TO GENERATE ID
-    //Account.register(new Account({username: req.body}))
     var account = {}
-    account.userName = req.body.userName
-    account.password = req.body.password
-    account.isAdmin = false
-    account.signupDate = 'today'
+    account.userName = req.body.userName;
+    account.password = req.body.password;
+    account.isAdmin = false  //this should never be decided by user
+    account.signupDate = (new Date()).toLocaleDateString();
+    account.email = req.body.email;
     //account.id = 0
     //and whatever other relevant info
 
