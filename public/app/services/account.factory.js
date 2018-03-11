@@ -73,31 +73,40 @@ app.factory('account',function(sharedProps,$q,$http){
         let params = {
             email: email
         }
-        obj.getAccount(params).then(function(user){
 
+        obj.getAccount(params).then(function(users){
+            let user = users[0]
             if(user){
-                let pwd = '1234'; //make this randomly generate somehow
+                let pwd = 'abcd'; //make this randomly generate somehow
 
-                user.password = pwd;
-
-                obj.editUser(user);
-
-                let options = {
-                    url : '/emails/passwords',
-                    method : 'POST',
-                    data: {
-                        to: user.email,
-                        pwd: pwd,
-                        userName: user.userName
-                    },
-                    verbose: true
+                let newUserInfo = {
+                    password: pwd
                 }
 
-                sharedProps.httpReq(options).then(function(res){
-                    console.log(res)
-                    deferred.resolve(res)
-                })
+                console.log(user)
+                obj.editUser(user._id,newUserInfo).then(function(){
+                    let options = {
+                        url : '/emails/passwords',
+                        method : 'POST',
+                        data: {
+                            to: user.email,
+                            password: pwd,
+                            userName: user.userName
+                        },
+                        verbose: true
+                    }
+
+                    console.log(options)
+                    sharedProps.httpReq(options).then(function(res){
+                        console.log(res)
+                        deferred.resolve(res)
+                    })
+                });
+
+
+
             }else{
+                deferred.resolve('')
                 console.log('no user with that e-mail found, how to show them?');
             }
 
@@ -135,7 +144,7 @@ app.factory('account',function(sharedProps,$q,$http){
             verbose: true,
         }
 
-        console.log(query)
+        //console.log(query)
 
         sharedProps.httpReq(options).then(function(res){
             let users;
@@ -153,18 +162,29 @@ app.factory('account',function(sharedProps,$q,$http){
     }
     //WIP
     //need to pass in user ID as query param, need to add auto-incrementing ID before this works
-    obj.editUser = function(userInfo){
+    obj.editUser = function(userID,newUserInfo){
         //idk how to do this
+        let deferred = $q.defer();
 
         var options = {
-            url: '/users/',
-            data: userInfo,
+            url: '/users',
+            data: {
+                _id: userID,
+                newUserInfo: newUserInfo
+            },
             method: 'PUT'
         }
 
         sharedProps.httpReq(options).then(function(result){
-            return result
+            if(result.statusCode=='200'){
+                //everything went well
+            }else if(result.statusCode=='400'){
+                //something went wrong
+                console.log('something went wrong when editing the user');
+            }
+            deferred.resolve(result);
         })
+        return deferred.promise;
     }
 
     obj.register = function(signupInfo){

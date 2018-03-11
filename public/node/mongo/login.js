@@ -97,9 +97,20 @@ exports.editUser = function(options,onResult){
             onResult({'statusCode': '400','errMsg': err})
         }
         var db = database.db(options.db);
-        var collection = db.collection('users');
+        var collection = db.collection(options.collection);
 
+        var query = {
+            _id: mongo.ObjectID(options._id)
+        }
+
+        var newValues = { $set: options.newUserInfo};
         //do some query
+        collection.updateOne(query,newValues,function(err,res){
+            if(err) throw err;
+            console.log('1 document updated');
+            database.close();
+            onResult({'statusCode': '200','nUpdated': '1'})
+        })
 
     })
 }

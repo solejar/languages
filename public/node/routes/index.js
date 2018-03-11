@@ -59,7 +59,7 @@ router.get('/en',function(req,res){
 })
 
 router.post('/emails/passwords',function(req,res){
-    let body = 'Hi, '+req.body.userName+'}\n\nYour account\'s password has been temporarily reset to:\n\n'+ req.body.pwd;
+    let body = 'Hi, '+req.body.userName+'\n\nYour account\'s password has been temporarily reset to:\n\n'+ req.body.password;
 
     let mailOptions = {
         to: req.body.to,
@@ -370,6 +370,20 @@ router.delete('/users',function(req,res){
 
 router.put('/users',function(req,res){
     //mongo edit
+    var options = {
+        db: 'app',
+        collection: 'users',
+        _id: req.body._id,
+        newUserInfo: req.body.newUserInfo
+    }
+
+    login.editUser(options,function(result){
+        res.statusCode=result.statusCode;
+        if(res.statusCode=='400'){
+            console.log('something went wrong with editing the user')
+        }
+        res.send(result);
+    })
 })
 
 router.post('/users',function(req,res){
