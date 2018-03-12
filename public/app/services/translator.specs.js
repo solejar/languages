@@ -7,6 +7,10 @@ describe('this module handles translation and dictionary lookups',function(){
         translator = _translator_
     }))
 
+    it('should be defined',function(){
+        expect(translator).toBeDefined();
+    })
+
     it('should contain the following function',function(){
         expect(translator.translatePhrase).toBeDefined();
     })

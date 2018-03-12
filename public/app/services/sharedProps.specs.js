@@ -1,4 +1,4 @@
-describe('this factory handles general props, and http requests',function(){
+describe('sharedProps factory',function(){
     var sharedProps;
 
     beforeEach(angular.mock.module('lang'))
@@ -6,8 +6,11 @@ describe('this factory handles general props, and http requests',function(){
         sharedProps = _sharedProps_;
     }))
 
-    it('should contain the following functions',function(){
+    it('should be defined',function(){
         expect(sharedProps).toBeDefined();
+    })
+
+    it('should contain the following functions',function(){
         expect(sharedProps.getProperty).toBeDefined();
         expect(sharedProps.setProperty).toBeDefined();
         expect(sharedProps.httpReq).toBeDefined();

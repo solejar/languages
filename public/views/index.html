@@ -46,12 +46,6 @@
             <md-nav-bar
             md-selected-nav-item="header.getCurrPage()"
             nav-bar-aria-label="navigation links">
-
-                <md-nav-item md-nav-click="header.changePage('home')"  name="home" aria-label="home-nav">
-                    <md-icon  md-svg-icon="./images/home.svg">
-                    </md-icon>
-                    {{''}}
-                </md-nav-item>
                 <md-nav-item md-nav-click="header.changePage('declension')" name="declension">
                     {{header.labels.declension}}
                 </md-nav-item>
@@ -66,19 +60,26 @@
                 <md-nav-item md-nav-click="header.changePage('about')" name="about">
                     {{header.labels.about}}
                 </md-nav-item>
-                <md-nav-item md-nav-click="header.changePage('admin')" name="admin" ng-show="header.isAdmin()">
+                <md-nav-item md-nav-click="header.changePage('profile')" ng-show="header.isLoggedIn()" name="profile">
+                    {{header.labels.profile}}
+                </md-nav-item>
+                <md-nav-item md-nav-click="header.changePage('admin')" name="admin" ng-show="header.showAdminTab()">
                     {{'Admin'}}
                 </md-nav-item>
+
             </md-nav-bar>
         </div>
 
         <md-content layout="column" style="background-color: #ccffff" flex="90" layout-align="start">
             <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 50px" >
 
-                <md-button ng-show="header.getUser()" ng-click="header.changePage('profile')">
+                <md-button
+                    ng-show="header.isLoggedIn()"
+                    ng-click="header.changePage('profile')"
+                    style="text-transform: none;">
                     {{'Hi, '+header.getUser().userName}}
                 </md-button>
-                <div ng-hide="header.getUser()||header.getCurrPage()=='login'">
+                <div ng-hide="header.isLoggedIn()||header.getCurrPage()=='login'">
                     <md-button  ng-click="header.changePage('login')">
                         Sign up
                     </md-button>
@@ -90,9 +91,6 @@
             </div>
             <div layout="row">
                 <div flex-gt-md="25" flex-md="15" flex-sm="5" hide-xs style="width: 550px" >
-                </div>
-                <div flex flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='home'">
-                Home Page
                 </div>
                 <div flex flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='about'" >
                     Добро пожаловать на мое приложение!
@@ -191,12 +189,11 @@
                                             <input
                                                 type="password"
                                                 name="passwordConf"
-                                                ng-model-options="{updateOn: 'blur'}"
                                                 ng-model="login.signupInfo.passwordConfirmation"
                                                 required
                                                 pw-check="login.signupInfo.password">
 
-                                            <div ng-messages="signupForm.passwordConf.$error" >
+                                            <div ng-messages="signupForm.passwordConf.$error" ng-show="signupForm.passwordConf.$touched">
                                                 <div ng-message="pwCheck">
                                                     Your passwords don't match
                                                 </div>

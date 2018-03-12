@@ -14,17 +14,17 @@ const mongo = require('mongodb');
 const login = require('../mongo/login')
 const account = require('../mongo/account')
 
-var jwtOptions = {}
+const jwtOptions = {}
 
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
 jwtOptions.secretOrKey = config.app.JWTSecretOrKey;
 
-var strategy = new JwtStrategy(jwtOptions,function(jwt_payload,next){
+const strategy = new JwtStrategy(jwtOptions,function(jwt_payload,next){
     console.log('payload received', jwt_payload);
 
     var options = {
         userInfo: {
-            _id: mongo.objectID(jwt_payload._id)
+            _id: mongo.ObjectID(jwt_payload._id)
         },
         db: 'app',
         collection: 'users'
@@ -38,6 +38,8 @@ var strategy = new JwtStrategy(jwtOptions,function(jwt_payload,next){
         }
     })
 })
+
+passport.use(strategy);
 
 router.route('/cards')
 .get(passport.authenticate('jwt',{session: false}),function(req,res){

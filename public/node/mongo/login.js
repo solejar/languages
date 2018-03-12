@@ -3,7 +3,6 @@ var MongoClient = mongo.MongoClient;
 var url = "mongodb://localhost:27017/";
 
 exports.findUser = function(options,onResult){
-    console.log(options)
     MongoClient.connect(url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err})

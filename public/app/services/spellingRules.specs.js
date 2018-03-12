@@ -1,5 +1,6 @@
+//this is the factory that handles spelling rules
 describe('spellingRules factory',function(){
-    var spellingRules;
+    let spellingRules;
 
     beforeEach(angular.mock.module('lang'));
 
@@ -7,11 +8,13 @@ describe('spellingRules factory',function(){
         spellingRules = _spellingRules_;
     }));
 
+    it('should be defined',function(){
+        expect(spellingRules).toBeDefined();
+    })
 
     it('should contain the following functions',function(){
-        expect(spellingRules).toBeDefined();
         expect(spellingRules.check).toBeDefined();
         expect(spellingRules.getAdjType).toBeDefined();
         expect(spellingRules.genericAdjGender).toBeDefined();
-    });
+    })
 })

@@ -121,7 +121,11 @@ app.factory('account',function(sharedProps,$q,$http){
     }
 
     obj.getUser = function(){
-        return session.user;
+        if(session.user){
+            return session.user;
+        }else{
+            return {};
+        }
     }
 
     obj.setUser = function(newUser){

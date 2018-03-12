@@ -9,13 +9,15 @@ app.controller('headerCtrl',function($window, account,sharedProps){
             'declension': 'declension',
             'readings': 'readings',
             'study': 'study',
-            'about': 'about'
+            'about': 'about',
+            'profile': 'profile'
         },
         'ru': {
             'declension': 'склонения',
             'readings': 'чтения',
             'study': 'изучение',
-            'about': 'о сайте'
+            'about': 'о сайте',
+            'profile': 'профиль'
         }
     }
 
@@ -36,30 +38,40 @@ app.controller('headerCtrl',function($window, account,sharedProps){
         return user;
     }
 
-    this.isAdmin = function(){
-        var user = account.getUser()
-        if(user){
+    this.showAdminTab = function(){
+        let user = account.getUser();
+        let show = false;
+
+        if(user!={}){
             if(user.isAdmin){
-                return true;
-            }else{
-                return false;
+                show = true;
             }
-        }else{
-            return false;
         }
+        return show;
+    }
+
+    this.isLoggedIn = function(){
+        let user = account.getUser();
+        let loggedIn;
+
+        if(Object.keys(user).length==0){
+            loggedIn = false;
+        }else{
+            loggedIn = true;
+        }
+
+        return loggedIn;
     }
 
     this.pages = [
         'declension',
         'readings',
         'about',
-        'home',
         'study',
         'login',
         'profile'
     ];
 
-    //this.currPage = 'declension'
     sharedProps.setProperty('currPage','login')
 
     this.getCurrPage = function(){
@@ -69,7 +81,6 @@ app.controller('headerCtrl',function($window, account,sharedProps){
     this.changePage = function(newPage){
         if (this.pages.includes(newPage)){
             console.log(newPage);
-            //this.currPage = newPage;
             sharedProps.setProperty('currPage',newPage);
         }else{
             console.log('woah nelly, you tried switching to a non-existent page!')

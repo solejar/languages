@@ -1,12 +1,12 @@
-//var app = angular.module('lang',['ngMaterial','ngMessages']);
 var app = angular.module('lang');
 
 //this service verifies that declined words comply with Russian spelling rules
 //also can determine gender of certain words
 app.factory('spellingRules',function(){
-    var softConsList = ['г','к','х','ж','ч','ш','щ','ц'];
+    let obj = {}
 
-    var adjEndingGenders = {
+    const softConsList = ['г','к','х','ж','ч','ш','щ','ц'];
+    const adjEndingGenders = {
         'ий': 'M',
         'яя': 'F',
         'ее': 'N',
@@ -16,9 +16,8 @@ app.factory('spellingRules',function(){
         'ое': 'N'
     };
 
-    return{
-        //this function checks the spellingRules
-        check: function(origStem, origEnding){
+    //this function checks the spellingRules
+    obj.check = function(origStem, origEnding){
         //console.log(origStem + ' ' + origEnding)
 
         //доро+г
@@ -53,36 +52,37 @@ app.factory('spellingRules',function(){
 
         //дорог,ых -> их
         return newEnding+endingRemainder
-        },
+    }
 
-        //this function gets the adj type
-        getAdjType: function(adj){
-            var length = adj.length;
-            var ending = adj.substring(length-3,length);
+    //this function gets the adj type
+    obj.getAdjType = function(adj){
+        var length = adj.length;
+        var ending = adj.substring(length-3,length);
 
-            if(ending=='ний'||ending =='няя'||ending=='нее'){
-                return 'soft'
-            }else{
-                return 'hard'
-            }
-        },
-
-        //this function determines the gender of generic adjectives
-        genericAdjGender: function(word){
-            var len = word.length;
-            if(len>=2){
-                var ending = word.substring(len-2,len)
-                if (adjEndingGenders.hasOwnProperty(ending)){
-                    var gender = adjEndingGenders[ending]
-                }else{
-                    //return 'all' //if for some reason ending not in there (this is weird, but will happen if user picks params before writing adj)
-                    var gender = ''
-                }
-            }else{
-                var gender = ''
-            }
-
-            return gender
+        if(ending=='ний'||ending =='няя'||ending=='нее'){
+            return 'soft'
+        }else{
+            return 'hard'
         }
     }
+
+        //this function determines the gender of generic adjectives
+    obj.genericAdjGender= function(word){
+        var len = word.length;
+        if(len>=2){
+            var ending = word.substring(len-2,len)
+            if (adjEndingGenders.hasOwnProperty(ending)){
+                var gender = adjEndingGenders[ending]
+            }else{
+                //return 'all' //if for some reason ending not in there (this is weird, but will happen if user picks params before writing adj)
+                var gender = ''
+            }
+        }else{
+            var gender = ''
+        }
+
+        return gender
+    }
+
+    return obj;
 });

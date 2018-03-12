@@ -32,8 +32,6 @@ app.controller('endingCtrl',function(
 
     this.init = function(){
 
-        //account.loadCards() //this shouldn't be necessary!!!!
-
         let cards = account.getCards();
         console.log(cards);
         if(cards){

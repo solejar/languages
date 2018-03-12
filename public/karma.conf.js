@@ -19,13 +19,17 @@ module.exports = function(config) {
         './node_modules/angular-animate/angular-animate.min.js',
         './node_modules/angular-aria/angular-aria.min.js',
         './node_modules/angular-material/angular-material.min.js',
+        './node_modules/angular-messages/angular-messages.min.js',
         './node_modules/angular-mocks/angular-mocks.js',
         './app/app.js',
         './app/controllers/*.controller.js',
         './app/services/*.factory.js',
         './app/filters/*.filter.js',
+        './app/directives/*.directive.js',
         './app/controllers/*.specs.js',
-        './app/services/*.specs.js'
+        './app/services/*.specs.js',
+        './app/filters/*.specs.js',
+        './app/directives/*.specs.js'
     ],
 
 
