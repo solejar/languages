@@ -12,13 +12,13 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-const languages = ['ru','en']
+const languages = ['ru','en'];
 
 router.get('/:lang/',function(req,res){
     let lang = req.params.lang;
     console.log('lang is:',lang);
     if(languages.indexOf(lang)==-1){
-        res.statusCode == '404';
+        res.statusCode = '404';
         res.send({'statusCode': '404','errMsg': 'Page not found'});
     }else{
         res.render('index.html');
@@ -45,6 +45,6 @@ router.post('/emails/passwords',function(req,res){
         res.send('Email sent: '+info.response);
     });
 
-})
+});
 
 module.exports = router;

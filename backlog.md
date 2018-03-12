@@ -156,6 +156,10 @@
 * Design Docs/How-to
   * [JSDoc](http://usejsdoc.org/)
 * Credit the [artists](www.flaticon.com)  
+* Use Grunt or [NPM](https://www.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/) as a build tool
+* Lint your files
+  * eventaully, replace `==` with `===` and also `!=` with `!==`
+* Minify
 
 
 

@@ -1,4 +1,4 @@
-describe('this controller handles the admin page',function(){
+describe('Admin controller',function(){
     var adminCtrl;
 
     beforeEach(angular.mock.module('lang'));

@@ -1,9 +1,6 @@
-//var app = angular.module('lang',['ngMaterial','ngMessages']);
-//(function(){
-var app = angular.module('lang');
+//this controller is just for page switching on a larger scope.
+angular.module('lang').controller('headerCtrl',function($window, account,sharedProps){
 
-app.controller('headerCtrl',function($window, account,sharedProps){
-    //this controller is just for page switching on a larger scope.
     this.initialLabels = {
         'en': {
             'declension': 'declension',
@@ -19,24 +16,24 @@ app.controller('headerCtrl',function($window, account,sharedProps){
             'about': 'о сайте',
             'profile': 'профиль'
         }
-    }
+    };
 
     //this function sets the labels on the upper nav bar
     //Russian display isn't fleshed out for whole app however.
     this.setLabels = function(){
-        var urlPath = $window.location.href;
-        var pathSplit = urlPath.split('/')
+        let urlPath = $window.location.href;
+        let pathSplit = urlPath.split('/');
         //console.log(pathSplit[3])
-        var lang = pathSplit[3]
+        let lang = pathSplit[3];
 
         this.labels = this.initialLabels[lang];
 
-    }
+    };
 
     this.getUser = function(){
         let user = account.getUser();
         return user;
-    }
+    };
 
     this.showAdminTab = function(){
         let user = account.getUser();
@@ -48,7 +45,7 @@ app.controller('headerCtrl',function($window, account,sharedProps){
             }
         }
         return show;
-    }
+    };
 
     this.isLoggedIn = function(){
         let user = account.getUser();
@@ -61,7 +58,7 @@ app.controller('headerCtrl',function($window, account,sharedProps){
         }
 
         return loggedIn;
-    }
+    };
 
     this.pages = [
         'declension',
@@ -72,19 +69,19 @@ app.controller('headerCtrl',function($window, account,sharedProps){
         'profile'
     ];
 
-    sharedProps.setProperty('currPage','login')
+    sharedProps.setProperty('currPage','login');
 
     this.getCurrPage = function(){
         return sharedProps.getProperty('currPage');
-    }
+    };
 
     this.changePage = function(newPage){
         if (this.pages.includes(newPage)){
             console.log(newPage);
             sharedProps.setProperty('currPage',newPage);
         }else{
-            console.log('woah nelly, you tried switching to a non-existent page!')
+            console.log('woah nelly, you tried switching to a non-existent page!');
         }
-    }
+    };
 
 });

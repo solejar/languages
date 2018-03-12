@@ -11,10 +11,10 @@ const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 
 const mongo = require('mongodb');
-const login = require('../mongo/login')
-const account = require('../mongo/account')
+const login = require('../mongo/login');
+const account = require('../mongo/account');
 
-const jwtOptions = {}
+const jwtOptions = {};
 
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
 jwtOptions.secretOrKey = config.app.JWTSecretOrKey;
@@ -22,76 +22,76 @@ jwtOptions.secretOrKey = config.app.JWTSecretOrKey;
 const strategy = new JwtStrategy(jwtOptions,function(jwt_payload,next){
     console.log('payload received', jwt_payload);
 
-    var options = {
+    let options = {
         userInfo: {
             _id: mongo.ObjectID(jwt_payload._id)
         },
         db: 'app',
         collection: 'users'
-    }
+    };
 
     login.findUser(options,function(result){
-        if(result.statusCode='200'){
+        if(result.statusCode=='200'){
             next(null,result.content[0]);
         }else{
-            next(null,false)
+            next(null,false);
         }
-    })
-})
+    });
+});
 
 passport.use(strategy);
 
 router.route('/cards')
 .get(passport.authenticate('jwt',{session: false}),function(req,res){
-    var options = {
+    let options = {
         db: 'app',
         collection: 'cards',
         user_id: req.query.user_id
-    }
+    };
 
     //console.log(req.query)
-    console.log(options)
+    console.log(options);
     account.getCards(options,function(result){
-        res.statusCode = result.statusCode
+        res.statusCode = result.statusCode;
         if(result.statusCode=='200'){
-            console.log('found some cards')
+            console.log('found some cards');
         }
 
-        res.send(result)
-    })
+        res.send(result);
+    });
 })
 .post(passport.authenticate('jwt',{session:false}),function(req,res){
-    var options = {
+    let options = {
         db: 'app',
         collection: 'cards',
         card: req.body
-    }
+    };
 
-    console.log(options)
+    console.log(options);
     account.insertCard(options,function(result){
-        res.statusCode = result.statusCode
+        res.statusCode = result.statusCode;
         if(result.statusCode=='200'){
-            console.log('added a card')
+            console.log('added a card');
         }
-        res.send(result)
-    })
+        res.send(result);
+    });
 })
 .delete(passport.authenticate('jwt',{session: false}),function(req,res){
-    var options = {
+    let options = {
         db: 'app',
         collection: 'cards',
         _id: req.body._id
-    }
+    };
 
-    console.log('deleting card with id ',req.body)
+    console.log('deleting card with id ',req.body);
     account.deleteCard(options,function(result){
         res.statusCode = result.statusCode;
         if(result.statusCode=='200'){
-            console.log('deleted a card!')
+            console.log('deleted a card!');
         }
         res.send(result);
-    })
-})
+    });
+});
 
 router.route('/')
 .get(function(req,res){
@@ -99,7 +99,7 @@ router.route('/')
         db: 'app',
         collection: 'users',
         userInfo: {}
-    }
+    };
 
     console.log('query is ',req.query);
     //this is how you make a generic mongo query, seems legit
@@ -109,31 +109,31 @@ router.route('/')
         options.userInfo.email = req.query.email;
     }
 
-    console.log('getting these users,',options.userInfo)
+    console.log('getting these users,',options.userInfo);
     login.findUser(options,function(result){
         res.statusCode = result.statusCode;
         res.send(result);
-    })
+    });
 })
 .delete(function(req,res){
     //mongo delete
 })
 .put(function(req,res){
     //mongo edit
-    var options = {
+    let options = {
         db: 'app',
         collection: 'users',
         _id: req.body._id,
         newUserInfo: req.body.newUserInfo
-    }
+    };
 
     login.editUser(options,function(result){
         res.statusCode=result.statusCode;
         if(res.statusCode=='400'){
-            console.log('something went wrong with editing the user')
+            console.log('something went wrong with editing the user');
         }
         res.send(result);
-    })
+    });
 })
 .post(function(req,res){
     //NEED A WAY TO GENERATE ID
@@ -143,26 +143,26 @@ router.route('/')
         isAdmin: false,  //this should never be decided by user
         signupDate: (new Date()).toLocaleDateString(),
         email: req.body.email
-    }
+    };
 
-    var options = {
+    let options = {
         db: 'app',
         collection: 'users',
         loginInfo: account,
-    }
+    };
 
     let q = {};
     if(options.loginInfo.email){
-        q['email'] = options.loginInfo.email;
+        q.email = options.loginInfo.email;
     }else if (options.loginInfo.userName){
-        q['userName'] = options.loginInfo.userName;
+        q.userName = options.loginInfo.userName;
     }
 
-    q_options = {
+    let q_options = {
         db: options.db,
         collection: options.collection,
         userInfo: q,
-    }
+    };
 
     login.insertUser(options,function(result){
         console.log('onResult: ('+ result.statusCode + ')');
@@ -171,64 +171,64 @@ router.route('/')
         if(res.statusCode =='200'){
             console.log('looking for user with params,',q_options);
             login.findUser(q_options,function(user){
-                console.log('user found',user)
+                console.log('user found',user);
                 if (user.content.length==1){
-                    console.log()
-                    var payload = {_id: user.content[0]._id};
-                    var token = jwt.sign(payload,jwtOptions.secretOrKey);
-                    res.statusCode = '200'
+                    console.log();
+                    let payload = {_id: user.content[0]._id};
+                    let token = jwt.sign(payload,jwtOptions.secretOrKey);
+                    res.statusCode = '200';
 
-                    response.statusCode ='200'
-                    response.content = {}
-                    response.content.user = user.content[0]
+                    response.statusCode ='200';
+                    response.content = {};
+                    response.content.user = user.content[0];
                     response.content.token = token;
 
                     console.log('response of',response);
                     res.send(response);
                 }else{
-                    console.log('too many users')
+                    console.log('too many users');
                 }
 
-            })
+            });
 
         }
 
-    })
-})
+    });
+});
 
 router.post('/login',function(req,res){
 
-    console.log(req.body)
+    console.log(req.body);
 
     if(req.body.userName && req.body.password){
 
-        var options = {
+        let options = {
             db: 'app',
             collection: 'users',
             userInfo: {
                 userName: req.body.userName,
             }
-        }
+        };
 
         login.findUser(options,function(result){
             //console.log('onResult: (' + result.statusCode + ')');
-            let response = {}
+            let response = {};
             if(result.statusCode=='400'){
-                console.log('user not found')
-                res.statusCode = '400'
-                response.statusCode = '400'
-                response.errMsg = 'no such user found'
+                console.log('user not found');
+                res.statusCode = '400';
+                response.statusCode = '400';
+                response.errMsg = 'no such user found';
             }else{
                 //console.log('result of findUser', result.content)
-                var user = result.content[0] //parse response
-                console.log('found user', user)
+                let user = result.content[0]; //parse response
+                console.log('found user', user);
 
                 if(user.password===req.body.password){
-                    var payload = {_id: user._id};
-                    var token = jwt.sign(payload,jwtOptions.secretOrKey);
-                    res.statusCode = '200'
-                    response.statusCode ='200'
-                    response.content = {}
+                    let payload = {_id: user._id};
+                    let token = jwt.sign(payload,jwtOptions.secretOrKey);
+                    res.statusCode = '200';
+                    response.statusCode ='200';
+                    response.content = {};
                     response.content.user = user;
                     response.content.token = token;
 
@@ -241,15 +241,15 @@ router.post('/login',function(req,res){
             }
             console.log('sending back this response: ',response);
             res.send(response);
-        })
+        });
     }else{
-        console.log(req.body)
-        var result = {}
-        result.statusCode = '400'
-        result.errMsg = 'Need to supply name and password'
-        res.send(result)
+        console.log(req.body);
+        let result = {};
+        result.statusCode = '400';
+        result.errMsg = 'Need to supply name and password';
+        res.send(result);
     }
 
-})
+});
 
 module.exports = router;

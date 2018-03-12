@@ -1,13 +1,10 @@
-//var app = angular.module('lang',['ngMaterial','ngMessages']);
-var app = angular.module('lang');
-
-app.factory('translator',function(sharedProps,$q){
-    var obj = {}
+angular.module('lang').factory('translator',function(sharedProps,$q){
+    const obj = {};
 
     obj.translatePhrase = function(phrase){
-        var deferred = $q.defer()
+        const deferred = $q.defer();
 
-        var options = {
+        let options = {
             url: 'ru/translations',
             params: {
                 phrase: phrase,
@@ -15,15 +12,15 @@ app.factory('translator',function(sharedProps,$q){
             },
             method: 'GET',
             verbose: false
-        }
+        };
 
         sharedProps.httpReq(options).then(function(res){
-            deferred.resolve(res.text)
-            console.log(res)
-        }.bind(this))
+            deferred.resolve(res.text);
+            console.log(res);
+        }.bind(this));
 
-        return deferred.promise
-    }
+        return deferred.promise;
+    };
 
-    return obj
-})
+    return obj;
+});
