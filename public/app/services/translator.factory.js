@@ -1,11 +1,13 @@
+//this factory handles phrase/word translation
 angular.module('lang').factory('translator',function(sharedProps,$q){
     const obj = {};
 
+    //this function translates a phrase
     obj.translatePhrase = function(phrase){
         const deferred = $q.defer();
 
         let options = {
-            url: 'ru/translations',
+            url: 'declension/translations',
             params: {
                 phrase: phrase,
                 targetLang: this.targetLang
@@ -15,8 +17,9 @@ angular.module('lang').factory('translator',function(sharedProps,$q){
         };
 
         sharedProps.httpReq(options).then(function(res){
-            deferred.resolve(res.text);
             console.log(res);
+            deferred.resolve(res.text);
+
         }.bind(this));
 
         return deferred.promise;

@@ -14,6 +14,11 @@ const mongo = require('mongodb');
 const login = require('../mongo/login');
 const account = require('../mongo/account');
 
+//we store db urls in here
+const mongoUrls = config.mongoUrls;
+const db = 'app'; //every endpoint here is coming from app db
+const mongoUrl = mongoUrls[db];
+
 const jwtOptions = {};
 
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
@@ -26,8 +31,9 @@ const strategy = new JwtStrategy(jwtOptions,function(jwt_payload,next){
         userInfo: {
             _id: mongo.ObjectID(jwt_payload._id)
         },
-        db: 'app',
-        collection: 'users'
+        db: db,
+        collection: 'users',
+        url: mongoUrl
     };
 
     login.findUser(options,function(result){
@@ -44,9 +50,10 @@ passport.use(strategy);
 router.route('/cards')
 .get(passport.authenticate('jwt',{session: false}),function(req,res){
     let options = {
-        db: 'app',
+        db: db,
         collection: 'cards',
-        user_id: req.query.user_id
+        user_id: req.query.user_id,
+        url: mongoUrl
     };
 
     //console.log(req.query)
@@ -62,9 +69,10 @@ router.route('/cards')
 })
 .post(passport.authenticate('jwt',{session:false}),function(req,res){
     let options = {
-        db: 'app',
+        db: db,
         collection: 'cards',
-        card: req.body
+        card: req.body,
+        url: mongoUrl
     };
 
     console.log(options);
@@ -78,9 +86,10 @@ router.route('/cards')
 })
 .delete(passport.authenticate('jwt',{session: false}),function(req,res){
     let options = {
-        db: 'app',
+        db: db,
         collection: 'cards',
-        _id: req.body._id
+        _id: req.body._id,
+        url: mongoUrl
     };
 
     console.log('deleting card with id ',req.body);
@@ -96,9 +105,10 @@ router.route('/cards')
 router.route('/')
 .get(function(req,res){
     let options = {
-        db: 'app',
+        db: db,
         collection: 'users',
-        userInfo: {}
+        userInfo: {},
+        url: mongoUrl
     };
 
     console.log('query is ',req.query);
@@ -121,10 +131,11 @@ router.route('/')
 .put(function(req,res){
     //mongo edit
     let options = {
-        db: 'app',
+        db: db,
         collection: 'users',
         _id: req.body._id,
-        newUserInfo: req.body.newUserInfo
+        newUserInfo: req.body.newUserInfo,
+        url: mongoUrl
     };
 
     login.editUser(options,function(result){
@@ -146,9 +157,10 @@ router.route('/')
     };
 
     let options = {
-        db: 'app',
+        db: db,
         collection: 'users',
         loginInfo: account,
+        url: mongoUrl
     };
 
     let q = {};
@@ -162,6 +174,7 @@ router.route('/')
         db: options.db,
         collection: options.collection,
         userInfo: q,
+        url: options.url
     };
 
     login.insertUser(options,function(result){
@@ -203,11 +216,12 @@ router.post('/login',function(req,res){
     if(req.body.userName && req.body.password){
 
         let options = {
-            db: 'app',
+            db: db,
             collection: 'users',
             userInfo: {
                 userName: req.body.userName,
-            }
+            },
+            url: mongoUrl
         };
 
         login.findUser(options,function(result){

@@ -1,6 +1,9 @@
 //this controller is just for page switching on a larger scope.
 angular.module('lang').controller('headerCtrl',function($window, account,sharedProps){
 
+    let startingPage = 'login';
+    sharedProps.setProperty('currPage',startingPage);
+
     this.initialLabels = {
         'en': {
             'declension': 'declension',
@@ -68,8 +71,6 @@ angular.module('lang').controller('headerCtrl',function($window, account,sharedP
         'login',
         'profile'
     ];
-
-    sharedProps.setProperty('currPage','login');
 
     this.getCurrPage = function(){
         return sharedProps.getProperty('currPage');

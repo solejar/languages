@@ -9,7 +9,7 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="./node_modules/angular-material/angular-material.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./node_modules/font-awesome/css/font-awesome.min.css">
 
     <script type="text/javascript" src="./node_modules/angular/angular.min.js"></script>
 
@@ -22,7 +22,7 @@
 
     <script type="text/javascript" src="./app/controllers/header.controller.js"></script>
     <script type="text/javascript" src="./app/controllers/footer.controller.js"></script>
-    <script type="text/javascript" src="./app/controllers/ending.controller.js"></script>
+    <script type="text/javascript" src="./app/controllers/declinerCtrl.controller.js"></script>
     <script type="text/javascript" src="./app/controllers/login.controller.js"></script>
     <script tpye="text/javascript" src="./app/controllers/admin.controller.js"></script>
     <script type="text/javascript" src="./app/controllers/profile.controller.js"></script>
@@ -286,90 +286,90 @@
                         </md-button>
                     </div>
                 </div>
-                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='declension'" layout-margin ng-init="ending.init()" ng-controller="endingCtrl as ending" layout="column" >
+                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='declension'" layout-margin ng-init="decliner.init()" ng-controller="declinerCtrl as decliner" layout="column" >
                     <md-whiteframe  style="background-color: #FAFAFA; overflow: auto"class="md-whiteframe-12dp" layout="column">
                         <div layout="column" flex="noshrink">
                             <md-toolbar>
-                                <div class="md-toolbar-tools" ng-if="ending.pageInitialized" style="text-align: center">
-                                    {{ending.labels.header.display}}
+                                <div class="md-toolbar-tools" ng-if="decliner.pageInitialized" style="text-align: center">
+                                    {{decliner.labels.header.display}}
                                 </div>
                             </md-toolbar>
                             <br>
 
                             <div layout="row" flex="noshrink" style="height: 10px" layout-align="end center">
-                                <md-button class="md-accent" ng-click="ending.clearToInitial()" ng-hide="ending.disableClear()">Clear
+                                <md-button class="md-accent" ng-click="decliner.clearToInitial()" ng-hide="decliner.disableClear()">Clear
                                 </md-button>
                             </div>
-                            <div layout="row" ng-if="ending.pageInitialized" id="phrase-input" layout-align="center" layout-wrap>
+                            <div layout="row" ng-if="decliner.pageInitialized" id="phrase-input" layout-align="center" layout-wrap>
 
                                 <md-autocomplete flex-gt-md="20" flex-md="15" flex-sm="20" flex-xs="20"
-                                    md-selected-item="ending.selectedPrep"
-                                    md-search-text="ending.prepSearchText"
-                                    md-search-text-change="ending.searchTextChange(ending.prepSearchText)"
-                                    md-selected-item-change="ending.changePrep(ending.selectedPrep)"
-                                    md-items="item in ending.querySearch(ending.prepSearchText)"
+                                    md-selected-item="decliner.selectedPrep"
+                                    md-search-text="decliner.prepSearchText"
+                                    md-search-text-change="decliner.searchTextChange(decliner.prepSearchText)"
+                                    md-selected-item-change="decliner.changePrep(decliner.selectedPrep)"
+                                    md-items="item in decliner.querySearch(decliner.prepSearchText)"
                                     md-item-text="item.name"
                                     md-min-length="0"
                                     placeholder="Preposition">
                                 <md-item-template>
-                                    <span md-highlight-text="ending.prepSearchText" md-highlight-flags="^i">
+                                    <span md-highlight-text="decliner.prepSearchText" md-highlight-flags="^i">
                                         {{item.name}}
                                     </span>
                                 </md-item-template>
                                 <md-not-found>
-                                    No prepositions matching "{{ending.prepSearchText}}" were found.
+                                    No prepositions matching "{{decliner.prepSearchText}}" were found.
                                 </md-not-found>
                                 </md-autocomplete>
                                 <md-input-container flex-gt-md="25" flex-md="20"flex-sm="40" flex-xs="40" >
                                     <label>
-                                    {{ending.labels.adjSelect.display}}
+                                    {{decliner.labels.adjSelect.display}}
                                     </label>
-                                    <input ng-model="ending.currPhrase.adj" ng-blur="ending.inputBlur(ending.currPhrase.adj,'adj')" >
+                                    <input ng-model="decliner.currPhrase.adj" ng-blur="decliner.inputBlur(decliner.currPhrase.adj,'adj')" >
                                 </md-input-container>
                                 <md-input-container flex-gt-sm="25" flex-sm="40" >
                                     <label>
-                                    {{ending.labels.nounSelect.display}}
+                                    {{decliner.labels.nounSelect.display}}
                                     </label>
-                                    <input ng-model="ending.currPhrase.noun" ng-blur="ending.inputBlur(ending.currPhrase.noun,'noun')">
+                                    <input ng-model="decliner.currPhrase.noun" ng-blur="decliner.inputBlur(decliner.currPhrase.noun,'noun')">
                                 </md-input-container>
                             </div>
-                            <div layout="row" layout-align="center" ng-if="ending.pageInitialized" layout-wrap id="quality-select">
+                            <div layout="row" layout-align="center" ng-if="decliner.pageInitialized" layout-wrap id="quality-select">
 
                                 <md-input-container flex-gt-sm="20" flex-sm="25" >
-                                    <md-tooltip ng-show="ending.onlyOneCase" md-delay="230">{{ending.labels.caseForcedTooltip.display}}
+                                    <md-tooltip ng-show="decliner.onlyOneCase" md-delay="230">{{decliner.labels.caseForcedTooltip.display}}
                                     </md-tooltip>
                                     <label >
-                                    {{ending.labels.caseSelect.display}}
+                                    {{decliner.labels.caseSelect.display}}
                                     </label>
-                                    <md-select ng-model="ending.currPhrase.padex" ng-disabled="ending.onlyOneCase" aria-label="Падеж">
-                                        <md-option ng-repeat="case in ending.currPhrase.prep.cases" ng-value="case" >
-                                        {{ending.labels.caseSelect.options[case].display}}
+                                    <md-select ng-model="decliner.currPhrase.padex" ng-disabled="decliner.onlyOneCase" aria-label="Падеж">
+                                        <md-option ng-repeat="case in decliner.currPhrase.prep.cases" ng-value="case" >
+                                        {{decliner.labels.caseSelect.options[case].display}}
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
-                                <md-input-container ng-if="ending.currPhrase.padex=='винительный'" flex-gt-sm="25" >
-                                    <label>{{ending.labels.animateSelect.display}}</label>
-                                    <md-tooltip ng-show="ending.animateKnown()" md-delay="230">{{ending.labels.animateForcedTooltip.display}}</md-tooltip>
-                                    <md-select ng-model="ending.currPhrase.animate" aria-label="Одушевленность" ng-disabled="ending.animateKnown()" >
-                                        <md-option ng-repeat="state in ending.labels.animateSelect.options"  ng-value="state.value">
+                                <md-input-container ng-if="decliner.currPhrase.padex=='винительный'" flex-gt-sm="25" >
+                                    <label>{{decliner.labels.animateSelect.display}}</label>
+                                    <md-tooltip ng-show="decliner.animateKnown()" md-delay="230">{{decliner.labels.animateForcedTooltip.display}}</md-tooltip>
+                                    <md-select ng-model="decliner.currPhrase.animate" aria-label="Одушевленность" ng-disabled="decliner.animateKnown()" >
+                                        <md-option ng-repeat="state in decliner.labels.animateSelect.options"  ng-value="state.value">
                                         {{state.display}}
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
                                 <md-input-container flex-gt-sm="15" >
-                                    <md-tooltip ng-show="ending.genderKnown()" md-delay="230">{{ending.labels.genderForcedTooltip.display}}</md-tooltip>
-                                    <label>{{ending.labels.genderSelect.display}}</label>
-                                    <md-select ng-model="ending.currPhrase.gender" ng-disabled="ending.genderKnown()" aria-label="Род" >
-                                        <md-option ng-repeat="gender in ending.labels.genderSelect.options" ng-value="gender.value">
+                                    <md-tooltip ng-show="decliner.genderKnown()" md-delay="230">{{decliner.labels.genderForcedTooltip.display}}</md-tooltip>
+                                    <label>{{decliner.labels.genderSelect.display}}</label>
+                                    <md-select ng-model="decliner.currPhrase.gender" ng-disabled="decliner.genderKnown()" aria-label="Род" >
+                                        <md-option ng-repeat="gender in decliner.labels.genderSelect.options" ng-value="gender.value">
                                         {{gender.display}}
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
                                 <md-input-container flex-gt-sm="20">
-                                    <label>{{ending.labels.plurSelect.display}}</label>
-                                    <md-select ng-model="ending.currPhrase.plurality" aria-label="Множество" >
-                                        <md-option ng-repeat="plurality in ending.labels.plurSelect.options" ng-value="plurality.value">
-                                        {{plurality.display[ending.currPhrase.gender]}}
+                                    <label>{{decliner.labels.plurSelect.display}}</label>
+                                    <md-select ng-model="decliner.currPhrase.plurality" aria-label="Множество" >
+                                        <md-option ng-repeat="plurality in decliner.labels.plurSelect.options" ng-value="plurality.value">
+                                        {{plurality.display[decliner.currPhrase.gender]}}
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
@@ -377,18 +377,18 @@
 
                             <div id="interact-bar" layout="row" layout-align="start center">
 
-                                <md-button class="md-primary md-raised" ng-click="ending.generateCard()" ng-disabled="ending.disableDecline()">
+                                <md-button class="md-primary md-raised" ng-click="decliner.generateCard()" ng-disabled="decliner.disableDecline()">
 
                                 Decline Phrase
                                 </md-button>
-                                <i class="fa fa-spinner fa-spin" style="font-size:24px;color: #3F51B5" ng-show="ending.showWaitSpin"></i>
+                                <i class="fa fa-spinner fa-spin" style="font-size:24px;color: #3F51B5" ng-show="decliner.showWaitSpin"></i>
 
                             </div>
                             <br>
                             <md-divider class="md-primary"></md-divider>
                         </div>
                         <div  id="tessellated-outputs" layout-margin>
-                            <div ng-repeat="card in ending.cards">
+                            <div ng-repeat="card in decliner.cards">
                                 <md-whiteframe  class="md-whiteframe-12dp" style="background-color: #ffffb3" layout="column">
                                     <div id="main-phrase" layout="row" layout-align = "left center"  layout-margin>
                                         <md-button ng-click="card.markup.expanded=!(card.markup.expanded)">
@@ -401,7 +401,7 @@
                                         <h3 flex="70" ng-click="card.markup.expanded=!card.markup.expanded">{{card.content.declinedPhrase| prepositionFilter}}
                                         </h3>
                                         <div flex layout="row" layout-align="end">
-                                            <md-button ng-click="ending.removeCard(ending.cards, $index)" class="md-raised md-warn" >
+                                            <md-button ng-click="decliner.removeCard(decliner.cards, $index)" class="md-raised md-warn" >
                                                 <md-icon md-svg-icon="./images/garbage_k.svg">
                                                 </md-icon>
 
@@ -584,17 +584,17 @@
                                         </div>
                                         <div flex layout="column" layout-align="start end">
                                             <md-menu  >
-                                                <md-button ng-click="ending.openMenu($mdMenu,$event)" class="md-icon-button">
+                                                <md-button ng-click="decliner.openMenu($mdMenu,$event)" class="md-icon-button">
                                                     <md-icon md-menu-origin md-svg-icon="./images/options_k.svg"></md-icon>
                                                 </md-button>
                                                 <md-menu-content width="2">
                                                     <md-menu-item >
-                                                        <md-button ng-click="ending.reportCard(card,header.user)">
+                                                        <md-button ng-click="decliner.reportCard(card,header.user)">
                                                             Report
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
-                                                        <md-button ng-click="ending.markCard(card,header.user)">
+                                                        <md-button ng-click="decliner.markCard(card,header.user)">
                                                             Mark
                                                         </md-button>
                                                     </md-menu-item>

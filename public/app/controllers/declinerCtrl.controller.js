@@ -1,4 +1,4 @@
-angular.module('lang').controller('endingCtrl',function(
+angular.module('lang').controller('declinerCtrl',function( //keep an eye on this name, it might get confused with the service
     sharedProps,
     spellingRules,
     decliner,
@@ -258,6 +258,7 @@ angular.module('lang').controller('endingCtrl',function(
         }
     };
 
+    //these three function are helpers for the preposition automcomplete
     this.querySearch = function(query){
 
         let results = query ? this.prepositions.filter(this.createFilterFor(query)): this.prepositions;
@@ -281,8 +282,7 @@ angular.module('lang').controller('endingCtrl',function(
         }
     };
 
-
-
+    //this function generates a card
     this.generateCard = function(){
         //console.log('generating a card');
         this.showWaitSpin = true;
@@ -306,6 +306,7 @@ angular.module('lang').controller('endingCtrl',function(
                             };
 
                             this.cards.push(card);
+                            this.clearToInitial();
 
                         }else{
                             console.log('uh oh, apparent malfunction in adding card!');
@@ -319,8 +320,10 @@ angular.module('lang').controller('endingCtrl',function(
                     };
 
                     this.cards.push(card);
+                    this.clearToInitial();
 
                 }
+
 
             }.bind(this));
         }.bind(this));

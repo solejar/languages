@@ -1,9 +1,8 @@
 const mongo = require('mongodb');
 const MongoClient = mongo.MongoClient;
-const url = "mongodb://localhost:27017/";
 
 exports.findUser = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err});
         }
@@ -35,7 +34,7 @@ exports.findUser = function(options,onResult){
 };
 
 exports.insertUser = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err});
         }
@@ -62,7 +61,7 @@ exports.insertUser = function(options,onResult){
 };
 
 exports.editUser = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err});
         }

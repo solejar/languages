@@ -1,13 +1,21 @@
 const express = require('express');
 const router = express.Router();
 
+const config = require('../config');
+const mongoUrls = config.mongoUrls;
+
 const translate = require('google-translate-api');
-const decliner = require('../mongo/decliner.js');
+const decliner = require('../mongo/decliner');
+
+const db = 'ru'; //every endpoint here is coming from ru db
+const mongoUrl = mongoUrls[db];
 
 router.get('/prepositions',function(req,res){
+
     let options = {
-        db: 'ru',
-        collection: 'prepositions'
+        db: db,
+        collection: 'prepositions',
+        url: mongoUrl
     };
 
     decliner.getPrepositions(options,function(result){
@@ -21,8 +29,9 @@ router.get('/labels',function(req,res){
 
     let options = {
         lang: req.params.lang,
-        db: 'ru',
-        collection: 'labels'
+        db: db,
+        collection: 'labels',
+        url: mongoUrl
     };
 
     decliner.getLabels(options,function(result){
@@ -34,9 +43,11 @@ router.get('/labels',function(req,res){
 
 
 router.get('/ruleGroups',function(req,res){
+
     let options = {
-        db: 'ru',
+        db: db,
         collection: 'ruleGroups',
+        url: mongoUrl
     };
 
     if (typeof req.query.q !== 'undefined' && req.query.q){
@@ -73,8 +84,9 @@ router.get('/translations',function(req,res){
 
 router.get('/exceptions',function(req,res){
     let options = {
-        db: 'ru',
-        query: req.query
+        db: db,
+        query: req.query,
+        url: mongoUrl
     };
 
     decliner.getExceptions(options,function(result){
@@ -87,7 +99,9 @@ router.get('/exceptions',function(req,res){
 router.route('/errorReports')
 .get(function(req,res){
     let options = {
-        db: 'ru'
+        db: db,
+        collection: 'errorReports',
+        url: mongoUrl
     };
 
     res.set('Content-Type','application/json');
@@ -99,14 +113,16 @@ router.route('/errorReports')
     });
 })
 .post(function(req,res){
-    var body = req.body;
+    let body = req.body;
     res.set('Content-Type','application/json');
 
     console.log(req.body);
 
     let options = {
         body: body,
-        db: 'ru'
+        db: db,
+        collection: 'errorReports',
+        url: mongoUrl
     };
 
     decliner.postErrorReports(options,function(result){
@@ -119,7 +135,9 @@ router.route('/errorReports')
 router.route('/testResults')
 .get(function(req,res){
     let options = {
-        db: 'ru'
+        db: db,
+        collection: 'testResults',
+        url: mongoUrl
     };
 
     res.set('Content-Type','application/json');
@@ -138,7 +156,8 @@ router.route('/testResults')
 
     let options = {
         body: body,
-        db: 'ru'
+        db: db,
+        collection: 'testResults'
     };
 
     decliner.postTestResults(options,function(result){

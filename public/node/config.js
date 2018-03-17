@@ -1,24 +1,15 @@
-let config = {
+const config = {
     email: {
         account: process.env.EMAIL_ACCT||"none",
         password: process.env.EMAIL_PWD||"1234",
         service: process.env.EMAIL_SERVICE||"gmail"
     },
-    mongo: {
-        db: {
-            ru: {
-                url: 'ds257848.mlab.com:57848',
-
-            },
-            app: {
-                url: 'ds257858.mlab.com:57858'
-            }
-        },
-        dbUser: process.env.MONGO_DBUSER||"sean",
-        dbPassword: process.env.MONGO_DBPWD||"1234"
+    mongoUrls: {
+        ru: "mongodb://" + (process.env.MONGO_DBUSER||"sean") + ":" + (process.env.MONGO_DBPWD||"1234")+ "@ds257858.mlab.com:57858/ru",
+        app: "mongodb://" + (process.env.MONGO_DBUSER||"sean") + ":" + (process.env.MONGO_DBPWD||"1234")+ "@ds257848.mlab.com:57848/app"
     },
     app: {
-        JWTSecretOrKey: process.env.JWT_SECRET||'1234'
+        JWTSecretOrKey: process.env.JWT_SECRET||"1234"
     }
 };
 

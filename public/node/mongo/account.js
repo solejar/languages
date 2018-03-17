@@ -1,13 +1,12 @@
 const mongo = require('mongodb');
 const MongoClient = mongo.MongoClient;
-const url = "mongodb://localhost:27017/";
 
 exports.editCard = function(options,onResult){
 
 };
 
 exports.deleteCard = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err});
         }
@@ -37,7 +36,7 @@ exports.insertCard = function(options,onResult){
     let user_id = mongo.ObjectID(options.card.user_id);
     options.card.user_id = user_id;
 
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err});
         }
@@ -64,7 +63,7 @@ exports.insertCard = function(options,onResult){
 };
 
 exports.getCards = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err});
         }

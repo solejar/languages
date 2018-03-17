@@ -1,8 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb://localhost:27017/";
 
 exports.postErrorReports = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err});
         }
@@ -29,7 +28,7 @@ exports.postErrorReports = function(options,onResult){
 };
 
 exports.getErrorReports = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err});
         }
@@ -58,7 +57,7 @@ exports.getErrorReports = function(options,onResult){
 };
 
 exports.postTestResults = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err});
         }
@@ -85,7 +84,7 @@ exports.postTestResults = function(options,onResult){
 };
 
 exports.getTestResults = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err});
         }
@@ -115,7 +114,7 @@ exports.getTestResults = function(options,onResult){
 };
 
 exports.getExceptions = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400', 'errMsg': err});
         }
@@ -159,7 +158,7 @@ exports.getExceptions = function(options,onResult){
 
 exports.getRuleGroups = function(options,onResult){
     console.log('this function was called once');
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResults({'statusCode': '400', 'errMsg': err});
         }
@@ -183,7 +182,7 @@ exports.getRuleGroups = function(options,onResult){
                 onResult(response);
                 database.close();
 
-            })
+            });
         }else{
             let projection = "ruleGroups." + options.q;
             let params = {};
@@ -211,8 +210,8 @@ exports.getRuleGroups = function(options,onResult){
 };
 
 exports.getPrepositions = function(options,onResult){
-
-    MongoClient.connect(url,function(err,database){
+    //console.log('prep options:',options);
+    MongoClient.connect(options.url,function(err,database){
         if (err) {
             onResult({'statusCode': '400','errMsg': err});
         }
@@ -240,7 +239,7 @@ exports.getPrepositions = function(options,onResult){
 };
 
 exports.getLabels = function(options,onResult){
-    MongoClient.connect(url,function(err,database){
+    MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err});
         }

@@ -1,4 +1,4 @@
-describe('Endings controller',function(){
+describe('Controller for declension page',function(){
     /*var createController, $q;
 
     beforeEach(inject(function(){
