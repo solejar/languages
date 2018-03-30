@@ -1,5 +1,5 @@
 //this factory is responsible for modifying a user's card collection
-angular.module('lang').factory('account',function(sharedProps,$q,$http){
+angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFactory){
 
     //JSON which holds client data about the session, currently only user data
     let session = {}; //we might want this to be a const
@@ -50,7 +50,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http){
                 //console.log('logged in fine')
                 obj.setUser(res.content.user);
                 obj.setToken(res.content.token);
-                obj.loadCards();
+                cardFactory.loadCards(session.user);
 
             }
             deferred.resolve(res);
@@ -202,166 +202,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http){
 
     };
 
-    obj.getCards = function(){
-        let cards = session.cards;
-        if(cards){
-            return cards;
-        }else{
-            return [];
-        }
 
-    };
-
-    obj.loadCards = function(){
-        const deferred = $q.defer();
-        let user = obj.getUser();
-
-        if(user){
-            //console.log('theres a user logged in: ',user);
-
-            let cardOptions = {
-                url: '/users/cards/',
-                method: 'GET',
-                verbose: true,
-                params: {
-                  user_id: user._id
-                }
-            };
-
-            sharedProps.httpReq(cardOptions).then(function(res){
-                if(res.statusCode=='200'){
-                    session.cards = res.content;
-                    console.log(session.cards);
-                }else{
-                    console.log('something went horribly wrong with fetching the cards!');
-                }
-
-                deferred.resolve(res);
-            });
-
-        }else{
-            console.log('trying to get cards for nobody!');
-            deferred.resolve([]);
-        }
-
-        return deferred.promise;
-
-
-    };
-
-    obj.removeCard= function(card){
-        const deferred = $q.defer();
-
-        console.log(card);
-
-        let data = {
-            _id: card._id
-        };
-
-        let options = {
-          url: '/users/cards',
-          method: 'DELETE',
-          verbose: true,
-          data: data
-        };
-
-        console.log(options.data);
-
-        sharedProps.httpReq(options).then(function(result){
-            if(result.statusCode=='200'){
-                console.log('successfully removed the card from the user!');
-            }else{
-                console.log('not successful in removing the card from the user'); //technically something should resolve here i'm just doing this for testing
-            }
-
-            deferred.resolve(result);
-
-        });
-
-        return deferred.promise;
-    };
-
-    obj.addCard = function(card){
-        const deferred = $q.defer();
-
-        let user = obj.getUser();
-
-        let data = {
-            user_id: user._id,
-            content: card.content,
-            meta: card.meta
-        };
-
-        let options = {
-          url: '/users/cards/',
-          method: 'POST',
-          data: data,
-          verbose: true
-        };
-
-        sharedProps.httpReq(options).then(function(result){
-            console.log('finished posting a card!');
-            if(result.statusCode=='200'){
-                console.log('successfully added the card to the user!');
-            }else{
-                console.log('not successful in adding the card to the user');
-            }
-            deferred.resolve(result);
-        });
-
-        return deferred.promise;
-    };
-
-    //WIP
-    obj.editCard = function(card){
-        let user = obj.getUser();
-
-        let options = {
-            url: '/users/cards',
-            data: {
-                _id: user._id
-            },
-            method: 'PUT'
-        };
-
-        sharedProps.httpReq(options).then(function(result){
-            if(result.statusCode=='200'){
-                console.log('successfully removed the card from the user!');
-            }else{
-                console.log('not succesful in removing the card from the user');
-            }
-        });
-
-        if(card.saved){
-            //edit the card
-            return 2;
-        }else{
-            //add the word
-            return 3;
-        }
-    };
-
-    //WIP
-    obj.markCard = function(card){
-
-        let user = obj.getUser();
-
-        let options = {
-            url: '/users/cards',
-            data: {
-                _id: user._id
-            },
-            method: 'PUT'
-        };
-
-        sharedProps.httpReq(options).then(function(result){
-            if(result.statusCode=='200'){
-                console.log('successfully removed the card from the user!');
-            }else{
-                console.log('not successful in removing the card from the user');
-            }
-        });
-    };
 
     return obj;
 });

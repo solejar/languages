@@ -100,6 +100,28 @@ router.route('/cards')
         }
         res.send(result);
     });
+})
+.put(passport.authenticate('jwt',{session:false}),function(req,res){
+    let options = {
+        db: db,
+        collection: 'cards',
+        _id: req.body.card_id,
+        card: req.body.card,
+        url: mongoUrl
+    };
+
+    console.log('card edit values: ',req.body.card);
+    console.log('editing card with id ',req.body.card_id);
+    account.editCard(options,function(result){
+        res.statusCode = result.statusCode;
+        if(result.statusCode=='200'){
+            console.log('edit was succesful!');
+
+        }else{
+            console.log('edit was not succesful');
+        }
+        res.send(result);
+    });
 });
 
 router.route('/')

@@ -8,7 +8,6 @@
 - учитель Not the same as as писатель 
 - double-check the `ng-blur()` is working as expected with `currGender`
 - **if decliner uses default ruleGroup, something is up. Let's indicate it.**
-- **add auto-complete for prepositions input**
 - Consider generalizing a 'stem change' case, let's use remove like 10-15 rule groups, but adds more controller logic (might not be worth it)
 - Should generating a card clear inputs? Decide yes or no.
 - Should a warning be generate before removing a card ( in general and also for this)
@@ -16,10 +15,9 @@
 ### Non-functional
 
 - how should components reorder here to effectively use space real estate? 
-
 - **Make it look good for flex-xs**
-
 - (try to) remove borders around whiteframe for only mobile view (`flex-xs`).    
+- Make `ng-autocomplete` not look like poopoo
 
 
 ## Login
@@ -30,9 +28,6 @@
 - level of language (not sure how to implement, add later)
 - show some example words, see if they know them. (after we set up reading section)
 - Allow signin with email or username if applicable ( Not a priority)
-- **Check for existing account with such a name before making it valid**
-- Resetting password by sending e-mail on account
-  - Just need to get the edit users endpoint up
 
 **Non-functional**
 
@@ -103,13 +98,13 @@
 - Look at adding [schema validation](mongoosejs.com)
 - Consider removing 'word ' field from exception
 - For specific exceptions, remove animate/inanimate if not needed (maybe this is not worth the trouble, it's a really trivial amount of space)
+- Move db, url from the routes page to the mongo, just less code and makes more sense
 
 **Node**
 
 - pipe output to a file or db (figure out what level of logging info to track)
-- improve `REST` endpoints, parse inputs/path urls on start, abstract such logic out of the Mongo
-- Make API input size agnostic (one or many)
-- If I am always sending `JWT` in `Header: Authorization`, and this has `$user._id` stored in it, isn't it the case that none of the endpoints actually need to send `userInfo`? Or maybe we want to leave it that way so that you can use it on a user other than yourself, if `isAdmin: true` perhaps. Actually, I agree with that. 
+- Make API input size agnostic (one or many) 
+
 
 
 
@@ -131,7 +126,7 @@
 
   ​
 
-##Home
+##Profile
 
 **Functional**
 
@@ -152,20 +147,21 @@
 
 ##Admin
 
-* Buy a domain, some online mongo allocation as well
+* Move onto a deployment server
 * Design Docs/How-to
   * [JSDoc](http://usejsdoc.org/)
-* Credit the [artists](www.flaticon.com)  
+* Credit the [artists](www.flaticon.com) 
+  * <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com
+  * <div>Icons made by <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
 * Use Grunt or [NPM](https://www.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/) as a build tool
 * Lint your files
-  * eventaully, replace `==` with `===` and also `!=` with `!==`
+  * eventually, replace `==` with `===` and also `!=` with `!==`
 * Minify
 
 
 
 ## Potential Ideas
 
-- make home and profile same view
 - add editing functionality to the cards
 - integrate [Tatoeba](https://tatoeba.org/eng/)
 - word bank!

@@ -2,7 +2,35 @@ const mongo = require('mongodb');
 const MongoClient = mongo.MongoClient;
 
 exports.editCard = function(options,onResult){
+    MongoClient.connect(options.url,function(err,database){
+        if(err){
+            onResult({'statusCode': '400','errMsg': err});
+        }
 
+        const db = database.db(options.db);
+        const collection = db.collection(options.collection);
+
+        const _id = mongo.ObjectID(options._id);
+
+        let query = {
+            _id: _id
+        };
+
+        let newValues = { $set: options.card};
+        
+        console.log('query for edit:',query);
+        console.log('new values for edit: ',newValues);
+
+
+        collection.findOneAndUpdate(query,newValues,function(err,documents){
+            if(err) throw err;
+            console.log('1 document updated');
+            database.close();
+            onResult({'statusCode': '200','content': documents[0]});
+        });
+
+
+    });
 };
 
 exports.deleteCard = function(options,onResult){
@@ -49,7 +77,7 @@ exports.insertCard = function(options,onResult){
                 onResult({'statusCode': '400','errMsg': err});
             }
             console.log("1 card inserted into db");
-
+            console.log(res);
             let response = {
                 'statusCode': '200',
                 'content': {"nInserted": "1"}

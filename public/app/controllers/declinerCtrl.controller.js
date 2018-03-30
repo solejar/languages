@@ -5,7 +5,8 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
     translator,
     $q,
     $window,
-    account)
+    account,
+    cardFactory)
 {
 
     //list of prepositions and their associated case options
@@ -27,7 +28,7 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
 
     this.init = function(){
 
-        let cards = account.getCards();
+        let cards = cardFactory.getCards();
         console.log(cards);
         if(cards){
             this.cards = cards.map(function(card){
@@ -202,51 +203,6 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
         return !(a||b||c||d||e||f||g);
     };
 
-    //need to consolidate screen removal with account removal
-    this.removeCard = function(array,index){
-
-        if(account.getUser()){
-            let card = array[index];
-            account.removeCard(card).then(function(res){
-                if(res.statusCode=='200'){
-                    array.splice(index,1);
-                    //just splice it out of the array, don't really feel like reuploading the list redundantly
-                }
-            }.bind(this));
-        }else{
-            array.splice(index,1);
-        }
-
-
-    };
-
-    this.markCard = function(card){
-        account.markCard(card);
-    };
-
-    //WIP
-    //maybe we need to look at a generic card template before we can decide how to do this
-    this.reportCard = function(card){
-        let data = {};
-        data.currPhrase = card.phrase;
-        data.cardOptions = {stars: card.stars,expanded: card.expanded, saved: card.saved};
-
-        let errorReportOptions = {
-            url: '/declension/errorReports',
-            data: data,
-            method: 'POST',
-            verbose: false
-        };
-
-        console.log('submitting an error report!');
-        sharedProps.httpReq(errorReportOptions).then(function(res){
-            if(res.statusCode=='200'){
-                console.log('successfully submitted a report!');
-            }
-
-        });
-    };
-
     //just QoL, disables case select when there's only one case option
     //this happens frequently btw, usually род.
     this.checkCaseCount = function(caseArr){
@@ -297,13 +253,11 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                 card.content = this.currPhrase;
                 card.meta = {};
 
-                if(account.getUser()){
-                    account.addCard(card).then(function(res){
-                        if(res.statusCode=='200'){
+                let user = account.getUser();
+                if(user){
 
-                            card.markup = {
-                                expanded: false
-                            };
+                    cardFactory.addCard(card,user).then(function(res){
+                        if(res.statusCode=='200'){
 
                             this.cards.push(card);
                             this.clearToInitial();
@@ -316,7 +270,8 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                 }else{
 
                     card.markup={
-                        expanded: false
+                        expanded: false,
+                        starred: false
                     };
 
                     this.cards.push(card);

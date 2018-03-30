@@ -26,12 +26,14 @@
     <script type="text/javascript" src="./app/controllers/login.controller.js"></script>
     <script tpye="text/javascript" src="./app/controllers/admin.controller.js"></script>
     <script type="text/javascript" src="./app/controllers/profile.controller.js"></script>
+    <script type="text/javascript" src="./app/controllers/deck.controller.js"></script>
     <script type="text/javascript" src="./app/services/sharedProps.factory.js"></script>
     <script type="text/javascript" src="./app/services/spellingRules.factory.js"></script>
     <script type="text/javascript" src="./app/services/account.factory.js"></script>
     <script type="text/javascript" src="./app/services/decliner.factory.js"></script>
     <script type="text/javascript" src="./app/services/translator.factory.js"></script>
     <script type="text/javascript" src="./app/services/tester.factory.js"></script>
+    <script type="text/javascript" src="./app/services/card.factory.js"></script>
     <script type="text/javascript" src="./app/filters/prepositions.filter.js">
     </script>
     <script type="text/javascript" src="./app/directives/pwCheck.directive.js"></script>
@@ -389,22 +391,32 @@
                         </div>
                         <div  id="tessellated-outputs" layout-margin>
                             <div ng-repeat="card in decliner.cards">
-                                <md-whiteframe  class="md-whiteframe-12dp" style="background-color: #ffffb3" layout="column">
+                                <md-whiteframe ng-controller="deckCtrl as deck" class="md-whiteframe-12dp" style="background-color: #ffffb3" layout="column">
                                     <div id="main-phrase" layout="row" layout-align = "left center"  layout-margin>
-                                        <md-button ng-click="card.markup.expanded=!(card.markup.expanded)">
+                                        <md-button ng-click="deck.changeCardFocus(card)">
                                             <md-icon ng-if="!card.markup.expanded" md-svg-icon="./images/right-arrow_k.svg">
                                             </md-icon>
                                             <md-icon ng-if="card.markup.expanded" md-svg-icon="./images/down-arrow_k.svg">
                                             </md-icon>
                                             {{''}}
                                         </md-button>
-                                        <h3 flex="70" ng-click="card.markup.expanded=!card.markup.expanded">{{card.content.declinedPhrase| prepositionFilter}}
+                                        <h3 flex="70" ng-click="deck.changeCardFocus(card)">{{card.content.declinedPhrase| prepositionFilter}}
                                         </h3>
                                         <div flex layout="row" layout-align="end">
-                                            <md-button ng-click="decliner.removeCard(decliner.cards, $index)" class="md-raised md-warn" >
+                                            <md-button ng-click="deck.starCard(card)">
+                                                <md-icon ng-if="!card.meta.starred" md-svg-icon="./images/star_w.svg">
+                                                </md-icon>
+                                                <md-icon ng-if="card.meta.starred" md-svg-icon="./images/star_k.svg">
+                                                </md-icon>
+                                                {{''}}
+                                            </md-button>
+                                            <md-button ng-click="deck.editModeSwap(card)" ng-if="deck.enableEditMode(card)" >
+                                                <md-icon md-svg-icon="./images/pencil_edit_button.svg">
+                                                </md-icon>
+                                            </md-button>
+                                            <md-button ng-click="deck.removeCard(decliner.cards, $index)" class="md-raised md-warn" >
                                                 <md-icon md-svg-icon="./images/garbage_k.svg">
                                                 </md-icon>
-
                                             </md-button>
                                         </div>
 
@@ -583,23 +595,6 @@
                                             </div>
                                         </div>
                                         <div flex layout="column" layout-align="start end">
-                                            <md-menu  >
-                                                <md-button ng-click="decliner.openMenu($mdMenu,$event)" class="md-icon-button">
-                                                    <md-icon md-menu-origin md-svg-icon="./images/options_k.svg"></md-icon>
-                                                </md-button>
-                                                <md-menu-content width="2">
-                                                    <md-menu-item >
-                                                        <md-button ng-click="decliner.reportCard(card,header.user)">
-                                                            Report
-                                                        </md-button>
-                                                    </md-menu-item>
-                                                    <md-menu-item>
-                                                        <md-button ng-click="decliner.markCard(card,header.user)">
-                                                            Mark
-                                                        </md-button>
-                                                    </md-menu-item>
-                                                </md-menu-content>
-                                            </md-menu>
                                         </div>
                                     </div>
                                 </md-whiteframe>
