@@ -84,7 +84,8 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
 
         let data = {
             user_id: user._id,
-            content: card.content,
+            front: card.front,
+            back: card.back,
             meta: card.meta,
         };
 
@@ -111,8 +112,9 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
     //WIP
     obj.pruneID = function(card){
         let prunedCard = {
-            content: card.content,
-            meta: card.meta,
+            front: card.front,
+            back: card.back,
+            meta: card.meta
         };
 
         return prunedCard;

@@ -34,7 +34,8 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
             this.cards = cards.map(function(card){
                 let cardContainer = {
                     _id: card._id,
-                    content: card.content,
+                    front: card.front,
+                    back: card.back,
                     meta: card.meta,
                     markup: {}
                 };
@@ -250,8 +251,52 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                 //console.log('just translated it')
                 this.currPhrase.translation = translation;
                 let card = {};
-                card.content = this.currPhrase;
-                card.meta = {};
+
+                let adj = this.currPhrase.adj;
+                let noun = this.currPhrase.noun;
+                let prep = this.currPhrase.prep;
+
+                let sourceContent = prep.name;
+                if(adj){
+                    sourceContent += '+'+adj;
+                }
+                if(noun){
+                    sourceContent += '+'+noun;
+                }
+
+                let endContent = this.currPhrase.declinedPhrase;
+
+                card.front = {
+                    subcontents: [
+                        {
+                            name: 'Case',
+                            value: this.currPhrase.padex
+                        },
+                        {
+                            name: 'Gender',
+                            value: this.currPhrase.gender
+                        },
+                        {
+                            name: 'Plurality',
+                            value: this.currPhrase.plurality
+                        }
+                    ],
+                    content: sourceContent
+                };
+
+                card.back = {
+                    subcontents: [
+                        {
+                            name: 'Translation',
+                            value: this.currPhrase.translation
+                        }
+                    ],
+                    content: endContent
+                };
+                //card.c = this.currPhrase;
+                card.meta = {
+                    starred: false
+                };
 
                 let user = account.getUser();
                 if(user){

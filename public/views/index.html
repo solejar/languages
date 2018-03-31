@@ -400,7 +400,7 @@
                                             </md-icon>
                                             {{''}}
                                         </md-button>
-                                        <h3 flex="70" ng-click="deck.changeCardFocus(card)">{{card.content.declinedPhrase| prepositionFilter}}
+                                        <h3 flex="70" ng-click="deck.changeCardFocus(card)">{{card.front.content}}
                                         </h3>
                                         <div flex layout="row" layout-align="end">
                                             <md-button ng-click="deck.starCard(card)">
@@ -410,7 +410,7 @@
                                                 </md-icon>
                                                 {{''}}
                                             </md-button>
-                                            <md-button ng-click="deck.editModeSwap(card)" ng-if="deck.enableEditMode(card)" >
+                                            <md-button ng-click="deck.editModeSwap(card,'expand')" ng-if="deck.enableEditMode(card)" >
                                                 <md-icon md-svg-icon="./images/pencil_edit_button.svg">
                                                 </md-icon>
                                             </md-button>
@@ -421,181 +421,73 @@
                                         </div>
 
                                     </div>
-                                    <div layout="row" id="expanded-phrase" ng-if="card.markup.expanded">
-                                        <div flex="90" layout="column" >
-                                            <div flex="100" layout="row" layout-margin layout-wrap>
-                                                <div flex="30"  layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
-                                                        <div flex="25">
-                                                        </div>
-                                                        <div layout="row" flex>
-                                                            <div flex="10">
-                                                            </div>
-                                                            <div flex>
-                                                            {{' Translation:  '}}
-                                                            </div>
-                                                        </div>
-                                                        <div flex="20">
-                                                        </div>
-                                                    </div>
-                                                    <div flex style="background-color: white;" layout="row" layout-align="center">
-                                                        <div flex="15">
-                                                        </div>
-                                                        <div flex="70"  style="font-weight: bold;">
-                                                        {{card.content.translation}}
-                                                        </div>
-                                                        <div flex="15">
-                                                        </div>
-                                                    </div>
+                                    <div layout="row" id="expanded-phrase" layout-align="center" ng-if="card.markup.expanded">
+                                        <div flex="90" layout="column" ng-if="!card.markup.edit" >
+                                            <div flex="20" layout="row" layout-align="end">
+                                                <md-button ng-click="deck.flipCard(card)">
+                                                    <md-icon md-svg-icon="./images/flip_k.svg">
+                                                    </md-icon>
+                                                </md-button>
+                                            </div>
+                                            <div flex="80" layout="row" ng-if="!card.markup.flipped" layout-margin layout-wrap>
+                                                <div id="main">
+                                                    {{card.front.content}}
                                                 </div>
-                                                <div flex="30" layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
-                                                        <div flex="25">
+                                                <div layout="row" layout-margin layout-wrap>
+                                                    <div layout="column" ng-repeat="subcontent in card.front.subcontents">
+                                                        <div flex="30" style="bold">
+                                                            {{subcontent.name}}
                                                         </div>
-                                                        <div layout="row" flex>
-                                                            <div flex="10">
-                                                            </div>
-                                                            <div flex>
-                                                            {{'Adj:  '}}
-                                                            </div>
-                                                        </div>
-                                                        <div flex="20">
-                                                        </div>
-                                                    </div>
-                                                    <div flex style="background-color: white;" layout="row" layout-align="center">
-                                                        <div flex="15">
-                                                        </div>
-                                                        <p flex="70" style="font-weight: bold">
-                                                        {{card.content.adj}}
-                                                        </p>
-                                                        <div flex="15">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div flex="30"  layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
-                                                        <div flex="25">
-                                                        </div>
-                                                        <div layout="row" flex>
-                                                            <div flex="10">
-                                                            </div>
-                                                            <div flex>
-                                                            {{'Noun:  '}}
-                                                            </div>
-                                                        </div>
-                                                        <div flex="20">
-                                                        </div>
-                                                    </div>
-                                                    <div flex style="background-color: white;" layout="row" layout-align="center">
-                                                        <div flex="15">
-                                                        </div>
-                                                        <p flex="70" style="font-weight: bold">
-                                                        {{card.content.noun}}
-                                                        </p>
-                                                        <div flex="15">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div flex="30"  layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
-                                                        <div flex="25">
-                                                        </div>
-                                                        <div layout="row" flex>
-                                                            <div flex="10">
-                                                            </div>
-                                                            <div flex>
-                                                            {{'Case:  '}}
-                                                            </div>
-                                                        </div>
-                                                        <div flex="20">
-                                                        </div>
-                                                    </div>
-                                                    <div flex style="background-color: white;" layout="row" layout-align="center">
-                                                        <div flex="15">
-                                                        </div>
-                                                        <p flex="70" style="font-weight: bold">
-                                                        {{card.content.padex}}
-                                                        </p>
-                                                        <div flex="15">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div flex="30" ng-if="card.content.animate"  layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
-                                                        <div flex="25">
-                                                        </div>
-                                                        <div layout="row" flex>
-                                                            <div flex="10">
-                                                            </div>
-                                                            <div flex>
-                                                            {{'Animateness:  '}}
-                                                            </div>
-                                                        </div>
-                                                        <div flex="20">
-                                                        </div>
-                                                    </div>
-                                                    <div flex style="background-color: white;" layout="row" layout-align="center">
-                                                        <div flex="15">
-                                                        </div>
-                                                        <p flex="70" style="font-weight: bold">
-                                                        {{card.content.animate}}
-                                                        </p>
-                                                        <div flex="15">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div flex="30" style="background-color: blue;" layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
-                                                        <div flex="25">
-                                                        </div>
-                                                        <div layout="row" flex>
-                                                            <div flex="10">
-                                                            </div>
-                                                            <div flex>
-                                                            {{'Gender:  '}}
-                                                            </div>
-                                                        </div>
-                                                        <div flex="20">
-                                                        </div>
-                                                    </div>
-                                                    <div flex style="background-color: white;" layout="row" layout-align="center">
-                                                        <div flex="15">
-                                                        </div>
-                                                        <p flex="70" style="font-weight: bold">
-                                                        {{card.content.gender}}
-                                                        </p>
-                                                        <div flex="15">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div flex="30" style="background-color: blue;" layout="column">
-                                                    <div flex="40" style="background-color: #3F51B5; color: white;" class="md-primary" layout-align="center" layout="column" >
-                                                        <div flex="25">
-                                                        </div>
-                                                        <div layout="row" flex>
-                                                            <div flex="10">
-                                                            </div>
-                                                            <div flex>
-                                                            {{'Plurality:  '}}
-                                                            </div>
-                                                        </div>
-                                                        <div flex="20">
-                                                        </div>
-                                                    </div>
-                                                    <div flex style="background-color: white;" layout="row" layout-align="center">
-                                                        <div flex="15">
-                                                        </div>
-                                                        <p flex="70" style="font-weight: bold">
-                                                        {{card.content.plurality}}
-                                                        </p>
-                                                        <div flex="15">
+                                                        <div flex="60">
+                                                            {{subcontent.value}}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div flex="80" layout="row" ng-if="card.markup.flipped" layout-margin layout-wrap>
+                                                <div id="main">
+                                                    {{card.back.content}}
+                                                </div>
+                                                <div layout="row" layout-margin layout-wrap>
+                                                    <div layout="column" ng-repeat="subcontent in card.back.subcontents">
+                                                        <div flex="30" style="bold">
+                                                            {{subcontent.name}}
+                                                        </div>
+                                                        <div flex="60">
+                                                            {{subcontent.value}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
-                                        <div flex layout="column" layout-align="start end">
+                                        <div flex="90" layout="column" ng-if="card.markup.edit" layout-align="center space-around">
+                                            <div layout="column" flex="50">
+                                                <div flex="80" layout="column">
+                                                    <div layout="row" layout-align="start">
+                                                        <div>
+                                                            {{'Front: '}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div flex="50" layout="column">
+                                                    <div layout="row" flex="20" layout-align="start">
+                                                        <div>
+                                                            {{'Back: '}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div layout="row" flex="none" style="height: 30px;" layout-align="end">
+                                                <md-button ng-click="deck.saveEdits(card)" ng-disabled="card.markup.editFresh">
+                                                    Save
+                                                </md-button>
+                                                <md-button ng-click="deck.editModeSwap(card,'same')">
+                                                    Cancel
+                                                </md-button>
+                                            </div>
                                         </div>
+
                                     </div>
                                 </md-whiteframe>
                             </div>

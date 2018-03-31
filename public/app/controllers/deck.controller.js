@@ -8,7 +8,8 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
         let result = {
             _id: card._id,
             user_id: card.user_id,
-            content: card.content,
+            front: card.front,
+            back: card.back,
             meta: card.meta
         };
 
@@ -24,7 +25,7 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
     };
 
     this.enableEditMode = function(card){
-        if (account.getUser()){
+        if (account.getUser()&&card.markup){
             if(card.markup.edit){ //if card already in edit don't show button
                 return false;
             }else{
@@ -36,14 +37,31 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
         }
     };
 
-    this.editModeSwap = function(card){
-        card.markup.edit= !card.markup.edit;
+    this.saveEdits = function(card){
+        this.editCard(card.temporary_edits).then(function(result){
+            if(result.statusCode=='200'){
+                this.editModeSwap(card); //clear out the temporary_edits
+                console.log('editing went all well!');
+            }
+        }.bind(this));
+
+
     };
 
-    this.saveEdits = function(card){
-        this.editCard(card);
+    this.editModeSwap = function(card,markup){
+        card.temporary_edits = {
+            user_id: card.user_id,
+            _id: card._id,
+            front: card.front,
+            back: card.back,
+            meta: card.meta
+        };
         card.markup.edit = !card.markup.edit;
+        card.markup.editFresh = true;
 
+        if(markup=='expand'){
+            card.markup.expanded = true;
+        }
     };
 
     this.starCard = function(card){
@@ -53,6 +71,10 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
             this.editCard(card);
         }
 
+    };
+
+    this.flipCard = function(card){
+        card.markup.flipped = !card.markup.flipped;
     };
 
     //need to consolidate screen removal with account removal
