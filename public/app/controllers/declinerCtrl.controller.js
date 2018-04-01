@@ -37,7 +37,11 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                     front: card.front,
                     back: card.back,
                     meta: card.meta,
-                    markup: {}
+                    markup: {
+                        expanded: false,
+                        edit: false,
+                        flipped: false
+                    }
                 };
 
                 return cardContainer;
@@ -304,6 +308,12 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                     cardFactory.addCard(card,user).then(function(res){
                         if(res.statusCode=='200'){
 
+                            card.markup={
+                                expanded: false,
+                                starred: false,
+                                flipped: false
+                            };
+
                             this.cards.push(card);
                             this.clearToInitial();
 
@@ -316,7 +326,8 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
 
                     card.markup={
                         expanded: false,
-                        starred: false
+                        starred: false,
+                        flipped: false
                     };
 
                     this.cards.push(card);

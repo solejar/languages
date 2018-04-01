@@ -11,11 +11,17 @@ angular.module('lang').controller('loginCtrl',function(sharedProps,account, $mdD
         userName: true
     };
 
-    this.loginFiled = false;
+    this.loginFailed = false;
+    this.disableLogin = false;
+
+    this.disableLoginButton = function(form){
+        return form.$invalid&&this.disableLogin;
+    };
 
     //function to login, called by login button
     this.attemptLogin = function(loginInfo){
         console.log('attempting login');
+        this.disableLogin = true;
         account.login(loginInfo).then(function(res){
             if(res.statusCode=='200'){//if login successful, redirect to profile page
                 this.loginFailed = false;

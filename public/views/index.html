@@ -10,6 +10,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="./node_modules/angular-material/angular-material.min.css">
     <link rel="stylesheet" href="./node_modules/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/custom.css">
 
     <script type="text/javascript" src="./node_modules/angular/angular.min.js"></script>
 
@@ -42,7 +43,7 @@
 </head>
 
 <body ng-controller="headerCtrl as header" >
-    <md-content  layout="column" style="background-color: #ccffff; height: 100%; %" layout-align="start" >
+    <md-content  layout="column" style="background-color: #ccffff; height: 100%;" layout-align="start" >
         <div id= "nav-bar"   style="background-color: #FAFAFA" ng-init="header.setLabels()">
 
             <md-nav-bar
@@ -72,7 +73,7 @@
             </md-nav-bar>
         </div>
 
-        <md-content layout="column" style="background-color: #ccffff" flex="90" layout-align="start">
+        <md-content layout="column" class="background" flex="90" layout-align="start">
             <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 50px" >
 
                 <md-button
@@ -114,7 +115,7 @@
                                 </div>
                             </md-toolbar>
 
-                            <div flex="100" style="background-color: #FAFAFA;"layout="column" layout-align="start center">
+                            <div flex="100" class="plain" layout="column" layout-align="start center">
                                 <form layout="column" flex="90" name="signupForm" layout-align="space-around">
                                     <div flex="25" layout="row" id="signupUserName" >
                                         <md-input-container>
@@ -217,7 +218,7 @@
                                 </form>
                             </div>
                         </md-whiteframe>
-                        <div flex="10" style="background-color: #ccffff" layout="row" layout-align="center">
+                        <div flex="10" class="background" layout="row" layout-align="center">
                             <md-divider class="md-primary">
                             </md-divider>
                         </div>
@@ -227,7 +228,7 @@
                                     {{'Login'}}
                                 </div>
                             </md-toolbar>
-                            <div flex="100" layout="column" layout-align="start center" style="background-color: #FAFAFA;">
+                            <div flex="100" layout="column" layout-align="start center" class="plain">
                                 <form name="loginForm" flex="60" layout="column" layout-align="space-around">
                                     <div flex="20" layout="row">
                                         <md-input-container flex="80">
@@ -250,12 +251,12 @@
                                         Sorry, but you have entered an invalid username/password.
                                     </div>
                                     <div flex="20" layout="row" layout-align="center">
-                                        <md-button class="md-primary md-raised" ng-click="login.attemptLogin(login.signin)" ng-disabled="loginForm.$invalid">
+                                        <md-button class="md-primary md-raised" ng-click="login.attemptLogin(login.signin)" ng-disabled="login.disableLoginButton(loginForm)">
                                             Log in
                                         </md-button>
                                     </div>
                                 </form>
-                                <md-button flex="15" ng-click="login.showPasswordPrompt($event)" style="text-transform: none;">
+                                <md-button ng-click="login.showPasswordPrompt($event)" style="text-transform: none;">
                                     Forgot Password?
                                 </md-button>
                             </div>
@@ -391,103 +392,120 @@
                         </div>
                         <div  id="tessellated-outputs" layout-margin>
                             <div ng-repeat="card in decliner.cards">
-                                <md-whiteframe ng-controller="deckCtrl as deck" class="md-whiteframe-12dp" style="background-color: #ffffb3" layout="column">
-                                    <div id="main-phrase" layout="row" layout-align = "left center"  layout-margin>
-                                        <md-button ng-click="deck.changeCardFocus(card)">
-                                            <md-icon ng-if="!card.markup.expanded" md-svg-icon="./images/right-arrow_k.svg">
+                                <md-whiteframe ng-controller="deckCtrl as deck" class="md-whiteframe-12dp secondary" layout="column" layout-margin>
+                                    <div flex="none" style="height: 30px;" id="main-phrase" layout="row" layout-align="start center">
+                                        <md-button class="small-button" ng-click="deck.changeCardFocus(card)">
+                                            <md-icon ng-hide="card.markup.expanded" md-svg-icon="./images/right-arrow_k.svg">
                                             </md-icon>
-                                            <md-icon ng-if="card.markup.expanded" md-svg-icon="./images/down-arrow_k.svg">
+                                            <md-icon ng-show="card.markup.expanded" md-svg-icon="./images/down-arrow_k.svg">
                                             </md-icon>
                                             {{''}}
                                         </md-button>
-                                        <h3 flex="70" ng-click="deck.changeCardFocus(card)">{{card.front.content}}
-                                        </h3>
+                                        <div flex style="text-align: center; font-size: 1.17em; font-weight:bold;" ng-hide="card.markup.expanded" ng-click="deck.changeCardFocus(card)">
+                                            {{card.front.content}}
+                                        </div>
                                         <div flex layout="row" layout-align="end">
-                                            <md-button ng-click="deck.starCard(card)">
-                                                <md-icon ng-if="!card.meta.starred" md-svg-icon="./images/star_w.svg">
-                                                </md-icon>
-                                                <md-icon ng-if="card.meta.starred" md-svg-icon="./images/star_k.svg">
-                                                </md-icon>
-                                                {{''}}
-                                            </md-button>
-                                            <md-button ng-click="deck.editModeSwap(card,'expand')" ng-if="deck.enableEditMode(card)" >
-                                                <md-icon md-svg-icon="./images/pencil_edit_button.svg">
-                                                </md-icon>
-                                            </md-button>
-                                            <md-button ng-click="deck.removeCard(decliner.cards, $index)" class="md-raised md-warn" >
+
+                                            <md-button ng-click="deck.removeCard(decliner.cards, $index)" class="md-raised md-warn small-button" >
                                                 <md-icon md-svg-icon="./images/garbage_k.svg">
                                                 </md-icon>
                                             </md-button>
                                         </div>
 
                                     </div>
-                                    <div layout="row" id="expanded-phrase" layout-align="center" ng-if="card.markup.expanded">
-                                        <div flex="90" layout="column" ng-if="!card.markup.edit" >
-                                            <div flex="20" layout="row" layout-align="end">
-                                                <md-button ng-click="deck.flipCard(card)">
-                                                    <md-icon md-svg-icon="./images/flip_k.svg">
-                                                    </md-icon>
-                                                </md-button>
-                                            </div>
-                                            <div flex="80" layout="row" ng-if="!card.markup.flipped" layout-margin layout-wrap>
-                                                <div id="main">
-                                                    {{card.front.content}}
+                                    <div flex layout="row" id="expanded-phrase" layout-align="center" ng-if="card.markup.expanded" layout-margin>
+                                        <div layout="column" flex>
+                                            <div flex class="card" id="expanded view"layout="column" ng-if="!card.markup.edit">
+                                                <div flex="20" layout="row" layout-align="start center">
+                                                    <b flex style="margin-left: 5px;" ng-hide="card.markup.flipped">
+                                                        {{'Front: '}}
+                                                    </b>
+                                                    <b flex style="margin-left: 5px;" ng-show="card.markup.flipped">
+                                                        {{'Back: '}}
+                                                    </b>
+                                                    <div layout="row" layout-align="end">
+                                                        <md-button class="small-button" ng-click="deck.starCard(card)">
+                                                            <md-icon ng-hide="card.meta.starred" md-svg-icon="./images/star_w.svg">
+                                                            </md-icon>
+                                                            <md-icon ng-show="card.meta.starred" md-svg-icon="./images/star_y.svg">
+                                                            </md-icon>
+                                                            {{''}}
+                                                        </md-button>
+                                                        <md-button class="small-button" ng-click="deck.editModeSwap(card,'expand')" ng-if="deck.enableEditMode(card)" >
+                                                            <md-icon md-svg-icon="./images/pencil_edit_button.svg">
+                                                            </md-icon>
+                                                        </md-button>
+                                                        <md-button class="small-button" ng-click="deck.flipCard(card)">
+                                                            <md-icon md-svg-icon="./images/flip_k.svg">
+                                                            </md-icon>
+                                                        </md-button>
+                                                    </div>
                                                 </div>
-                                                <div layout="row" layout-margin layout-wrap>
-                                                    <div layout="column" ng-repeat="subcontent in card.front.subcontents">
-                                                        <div flex="30" style="bold">
-                                                            {{subcontent.name}}
-                                                        </div>
-                                                        <div flex="60">
-                                                            {{subcontent.value}}
+                                                <div flex="80" layout-align="start" layout="column" ng-if="!card.markup.flipped">
+                                                    <div flex="20" style="text-align: center; font-size: 1.5em; font-weight: bold;">
+                                                        {{card.front.content}}
+                                                    </div>
+                                                    <div flex="80" layout="row" layout-align="center">
+                                                        <div flex="75" flex="50" layout="row" layout-align="center" layout-margin layout-wrap>
+                                                            <div flex layout="column" ng-repeat="subcontent in card.front.subcontents" layout-margin>
+                                                                <b flex>
+                                                                    {{subcontent.name +':'}}
+                                                                </b>
+                                                                <div flex>
+                                                                    {{subcontent.value}}
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div flex="80" layout="row" ng-if="card.markup.flipped" layout-margin layout-wrap>
-                                                <div id="main">
-                                                    {{card.back.content}}
-                                                </div>
-                                                <div layout="row" layout-margin layout-wrap>
-                                                    <div layout="column" ng-repeat="subcontent in card.back.subcontents">
-                                                        <div flex="30" style="bold">
-                                                            {{subcontent.name}}
-                                                        </div>
-                                                        <div flex="60">
-                                                            {{subcontent.value}}
+                                                <div flex="80" layout-align="start" layout="column" ng-if="card.markup.flipped">
+                                                    <div flex="20" style="text-align: center; font-size: 1.5em; font-weight: bold;">
+                                                        {{card.back.content}}
+                                                    </div>
+                                                    <div flex="80" layout="row" layout-align="center">
+                                                        <div flex="75" flex="50" layout="row" layout-align="center" layout-margin layout-wrap>
+                                                            <div flex layout="column" ng-repeat="subcontent in card.back.subcontents" layout-margin>
+                                                                <b flex>
+                                                                    {{subcontent.name +':'}}
+                                                                </b>
+                                                                <div flex>
+                                                                    {{subcontent.value}}
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+
+
                                             </div>
 
-                                        </div>
-                                        <div flex="90" layout="column" ng-if="card.markup.edit" layout-align="center space-around">
-                                            <div layout="column" flex="50">
-                                                <div flex="80" layout="column">
-                                                    <div layout="row" layout-align="start">
-                                                        <div>
-                                                            {{'Front: '}}
+                                            <div flex layout="column" ng-if="card.markup.edit" layout-align="center space-around">
+                                                <div layout="column" flex="50">
+                                                    <div flex="80" layout="column">
+                                                        <div layout="row" layout-align="start">
+                                                            <div>
+                                                                {{'Front: '}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div flex="50" layout="column">
+                                                        <div layout="row" flex="20" layout-align="start">
+                                                            <div>
+                                                                {{'Back: '}}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div flex="50" layout="column">
-                                                    <div layout="row" flex="20" layout-align="start">
-                                                        <div>
-                                                            {{'Back: '}}
-                                                        </div>
-                                                    </div>
+                                                <div layout="row" flex="none" style="height: 30px;" layout-align="end">
+                                                    <md-button ng-click="deck.saveEdits(card)" ng-disabled="card.markup.editFresh">
+                                                        Save
+                                                    </md-button>
+                                                    <md-button ng-click="deck.editModeSwap(card,'same')">
+                                                        Cancel
+                                                    </md-button>
                                                 </div>
                                             </div>
-                                            <div layout="row" flex="none" style="height: 30px;" layout-align="end">
-                                                <md-button ng-click="deck.saveEdits(card)" ng-disabled="card.markup.editFresh">
-                                                    Save
-                                                </md-button>
-                                                <md-button ng-click="deck.editModeSwap(card,'same')">
-                                                    Cancel
-                                                </md-button>
-                                            </div>
                                         </div>
-
                                     </div>
                                 </md-whiteframe>
                             </div>
@@ -506,7 +524,7 @@
             </div>
         </md-content>
 
-        <div layout="row" id="footer" flex="none" ng-controller="footerCtrl as footer" style="background-color: #3F51B5; height: 80px; font-size: 10pt; color:white" layout-align="space-around center" >
+        <div layout="row" id="footer" flex="none" class="secondary" ng-controller="footerCtrl as footer" style="height: 80px; font-size: 10pt" layout-align="space-around center" >
             <div flex class="md-primary" layout="column" layout-align="center"  flex  >
                 <br>
                 <div flex style="text-align: center">Display Language:

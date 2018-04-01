@@ -1,7 +1,9 @@
 angular.module('lang').controller('deckCtrl',function(account,cardFactory){
     this.changeCardFocus = function(card){
         card.markup.expanded = !card.markup.expanded;
-
+        if(!card.markup.expanded){
+            card.markup.flipped = false;
+        }
     };
 
     this.pruneMarkup = function(card){

@@ -1,0 +1,20 @@
+.background {
+    background-color: #CCFFFF;
+}
+.plain {
+    background-color: #FAFAFA;
+    color: black;
+}
+.card {
+    background-color: #FFFFB3;
+    color: black;
+}
+.secondary {
+    background-color: #3F51B5;
+    color: white;
+}
+.small-button {
+    /*width: 30px;*/
+    text-align: center;
+    min-width: 36px;
+}
