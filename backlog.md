@@ -152,7 +152,7 @@
   * [JSDoc](http://usejsdoc.org/)
 * Credit the [artists](www.flaticon.com) 
   * <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com
-  * <div>Icons made by <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+  * <div>Icons made by <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com
 * Use Grunt or [NPM](https://www.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/) as a build tool
 * Lint your files
   * eventually, replace `==` with `===` and also `!=` with `!==`
