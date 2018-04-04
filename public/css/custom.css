@@ -8,6 +8,11 @@
 .card {
     background-color: #FFFFB3;
     color: black;
+    height: 300px;
+}
+.subcontent{
+    background-color: #d1d194;
+    color: black;
 }
 .secondary {
     background-color: #3F51B5;

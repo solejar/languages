@@ -37,6 +37,7 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                     front: card.front,
                     back: card.back,
                     meta: card.meta,
+                    starred: card.starred,
                     markup: {
                         expanded: false,
                         edit: false,
@@ -298,9 +299,7 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                     content: endContent
                 };
                 //card.c = this.currPhrase;
-                card.meta = {
-                    starred: false
-                };
+                card.starred = false;
 
                 let user = account.getUser();
                 if(user){
@@ -310,7 +309,6 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
 
                             card.markup={
                                 expanded: false,
-                                starred: false,
                                 flipped: false
                             };
 
@@ -326,7 +324,6 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
 
                     card.markup={
                         expanded: false,
-                        starred: false,
                         flipped: false
                     };
 

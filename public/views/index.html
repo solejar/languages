@@ -393,7 +393,7 @@
                         <div  id="tessellated-outputs" layout-margin>
                             <div ng-repeat="card in decliner.cards">
                                 <md-whiteframe ng-controller="deckCtrl as deck" class="md-whiteframe-12dp secondary" layout="column" layout-margin>
-                                    <div flex="none" style="height: 30px;" id="main-phrase" layout="row" layout-align="start center">
+                                    <div flex="10" id="main-phrase" layout="row" layout-align="start center">
                                         <md-button class="small-button" ng-click="deck.changeCardFocus(card)">
                                             <md-icon ng-hide="card.markup.expanded" md-svg-icon="./images/right-arrow_k.svg">
                                             </md-icon>
@@ -415,8 +415,10 @@
                                     </div>
                                     <div flex layout="row" id="expanded-phrase" layout-align="center" ng-if="card.markup.expanded" layout-margin>
                                         <div layout="column" flex>
-                                            <div flex class="card" id="expanded view"layout="column" ng-if="!card.markup.edit">
-                                                <div flex="20" layout="row" layout-align="start center">
+                                            <div flex="none" class="card" layout-align="start" id="expanded view"layout="column" ng-if="!card.markup.edit">
+                                                <div flex="5" >
+                                                </div>
+                                                <div flex="25" layout="row" layout-align="start start">
                                                     <b flex style="margin-left: 5px;" ng-hide="card.markup.flipped">
                                                         {{'Front: '}}
                                                     </b>
@@ -425,9 +427,9 @@
                                                     </b>
                                                     <div layout="row" layout-align="end">
                                                         <md-button class="small-button" ng-click="deck.starCard(card)">
-                                                            <md-icon ng-hide="card.meta.starred" md-svg-icon="./images/star_w.svg">
+                                                            <md-icon ng-hide="card.starred" md-svg-icon="./images/star_w.svg">
                                                             </md-icon>
-                                                            <md-icon ng-show="card.meta.starred" md-svg-icon="./images/star_y.svg">
+                                                            <md-icon ng-show="card.starred" md-svg-icon="./images/star_y.svg">
                                                             </md-icon>
                                                             {{''}}
                                                         </md-button>
@@ -441,14 +443,18 @@
                                                         </md-button>
                                                     </div>
                                                 </div>
-                                                <div flex="80" layout-align="start" layout="column" ng-if="!card.markup.flipped">
-                                                    <div flex="20" style="text-align: center; font-size: 1.5em; font-weight: bold;">
-                                                        {{card.front.content}}
+                                                <div flex="70" layout-align="start" layout="column" ng-if="!card.markup.flipped">
+                                                    <div flex="30" layout="column" layout-align="center" style="text-align: center; font-size: 1.5em; font-weight: bold;">
+                                                        <span flex="50">
+                                                            {{card.front.content}}
+                                                        </span>
                                                     </div>
-                                                    <div flex="80" layout="row" layout-align="center">
-                                                        <div flex="75" flex="50" layout="row" layout-align="center" layout-margin layout-wrap>
-                                                            <div flex layout="column" ng-repeat="subcontent in card.front.subcontents" layout-margin>
-                                                                <b flex>
+                                                    <div flex="10">
+                                                    </div>
+                                                    <div flex="55" layout="row" layout-align="center start">
+                                                        <div flex="80" flex="50" layout="row" layout-align="center" layout-margin layout-wrap>
+                                                            <div flex="25" class="subcontent" layout="column" ng-repeat="subcontent in card.front.subcontents" layout-margin>
+                                                                <b flex="15">
                                                                     {{subcontent.name +':'}}
                                                                 </b>
                                                                 <div flex>
@@ -456,16 +462,22 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div flex="5">
                                                     </div>
                                                 </div>
-                                                <div flex="80" layout-align="start" layout="column" ng-if="card.markup.flipped">
-                                                    <div flex="20" style="text-align: center; font-size: 1.5em; font-weight: bold;">
-                                                        {{card.back.content}}
+                                                <div flex="70" layout-align="start" layout="column" ng-if="card.markup.flipped">
+                                                    <div flex="30" layout="column" layout-align="center" style="text-align: center; font-size: 1.5em; font-weight: bold;">
+                                                        <span flex="50">
+                                                            {{card.back.content}}
+                                                        </span>
                                                     </div>
-                                                    <div flex="80" layout="row" layout-align="center">
-                                                        <div flex="75" flex="50" layout="row" layout-align="center" layout-margin layout-wrap>
-                                                            <div flex layout="column" ng-repeat="subcontent in card.back.subcontents" layout-margin>
-                                                                <b flex>
+                                                    <div flex="10">
+                                                    </div>
+                                                    <div flex="55" layout="row" layout-align="center start">
+                                                        <div flex="80" layout="row" layout-align="center" layout-margin layout-wrap>
+                                                            <div flex="25" class="subcontent" layout="column" ng-repeat="subcontent in card.back.subcontents" layout-margin>
+                                                                <b flex="15">
                                                                     {{subcontent.name +':'}}
                                                                 </b>
                                                                 <div flex>
@@ -473,6 +485,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div flex="5">
                                                     </div>
                                                 </div>
 

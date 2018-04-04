@@ -3,7 +3,10 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
     let cards = [];
 
     obj.getCards = function(){
+        //console.log('')
         if(cards){
+            //console.log('yes, there are cards');
+
             return cards;
         }else{
             return [];
@@ -67,6 +70,12 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
 
         sharedProps.httpReq(options).then(function(result){
             if(result.statusCode=='200'){
+                for(let i = 0;i<cards.length;i++){
+                    if (cards[i]._id == data._id){
+                        cards.splice(i,1);
+                        deferred.resolve(result);
+                    }
+                }
                 console.log('successfully removed the card from the user!');
             }else{
                 console.log('not successful in removing the card from the user'); //technically something should resolve here i'm just doing this for testing
@@ -87,6 +96,7 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
             front: card.front,
             back: card.back,
             meta: card.meta,
+            starred: card.starred
         };
 
         let options = {
@@ -99,6 +109,7 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
         sharedProps.httpReq(options).then(function(result){
             console.log('finished posting a card!');
             if(result.statusCode=='200'){
+                cards.push(data);
                 console.log('successfully added the card to the user!');
             }else{
                 console.log('not successful in adding the card to the user');
@@ -114,7 +125,8 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
         let prunedCard = {
             front: card.front,
             back: card.back,
-            meta: card.meta
+            meta: card.meta,
+            starred: card.starred
         };
 
         return prunedCard;
