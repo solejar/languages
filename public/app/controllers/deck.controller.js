@@ -56,6 +56,7 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
             _id: card._id,
             front: card.front,
             back: card.back,
+            starred: card.starred,
             meta: card.meta
         };
         card.markup.edit = !card.markup.edit;
@@ -67,7 +68,7 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
     };
 
     this.starCard = function(card){
-        card.meta.starred = !card.meta.starred;
+        card.starred = !card.starred;
 
         if(account.getUser()){
             this.editCard(card);

@@ -3,16 +3,37 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
     let cards = [];
 
     obj.getCards = function(){
-        //console.log('')
-        if(cards){
-            //console.log('yes, there are cards');
 
+        if(cards){
             return cards;
         }else{
             return [];
         }
 
     };
+
+    obj.markupCards = function(baseCards){
+        let markupCards;
+
+        markupCards = baseCards.map(function(card){
+            let cardContainer = {
+                _id: card._id,
+                front: card.front,
+                back: card.back,
+                starred: card.starred,
+                markup: {
+                    expanded: false,
+                    edit: false,
+                    flipped: false
+                },
+
+            };
+
+            return cardContainer;
+        });
+        return markupCards;
+    };
+
 
     obj.loadCards = function(user){
         const deferred = $q.defer();
@@ -47,8 +68,8 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
 
         return deferred.promise;
 
-
     };
+
 
     obj.removeCard= function(card){
         const deferred = $q.defer();
@@ -91,12 +112,16 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
     obj.addCard = function(card,user){
         const deferred = $q.defer();
 
+        let currentTime = new Date();
+
         let data = {
             user_id: user._id,
             front: card.front,
             back: card.back,
-            meta: card.meta,
-            starred: card.starred
+            learningStage: 0,
+            type: 'learning',
+            starred: false,
+            dueTime: currentTime
         };
 
         let options = {
@@ -125,7 +150,6 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
         let prunedCard = {
             front: card.front,
             back: card.back,
-            meta: card.meta,
             starred: card.starred
         };
 

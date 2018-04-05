@@ -29,25 +29,8 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
     this.init = function(){
 
         let cards = cardFactory.getCards();
+        cards = cardFactory.markupCards(cards);
         console.log(cards);
-        if(cards){
-            this.cards = cards.map(function(card){
-                let cardContainer = {
-                    _id: card._id,
-                    front: card.front,
-                    back: card.back,
-                    meta: card.meta,
-                    starred: card.starred,
-                    markup: {
-                        expanded: false,
-                        edit: false,
-                        flipped: false
-                    }
-                };
-
-                return cardContainer;
-            });
-        }
 
         let urlPath = $window.location.href;
         let pathSplit = urlPath.split('/');
@@ -298,8 +281,6 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                     ],
                     content: endContent
                 };
-                //card.c = this.currPhrase;
-                card.starred = false;
 
                 let user = account.getUser();
                 if(user){
