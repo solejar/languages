@@ -2,13 +2,20 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
     const obj = {};
     let cards = [];
 
-    obj.getCards = function(){
+    obj.getCards = function(type){
 
-        if(cards){
-            return cards;
-        }else{
+        if(!cards){
             return [];
         }
+
+        if(!type||(type=='all')){ //assume null input to mean user wants all cards
+            return cards;
+        }else{
+            //else only return cards of the desired types
+            let filteredCards = cards.filter(card => card.type==type);
+            return filteredCards;
+        }
+
 
     };
 
@@ -109,7 +116,7 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
         return deferred.promise;
     };
 
-    obj.addCard = function(card,user){
+    obj.addCard = function(card,user,type){
         const deferred = $q.defer();
 
         let currentTime = new Date();
@@ -119,8 +126,9 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
             front: card.front,
             back: card.back,
             learningStage: 0,
-            type: 'learning',
+            stage: 'learning',
             starred: false,
+            type: type, //did it come from declension?
             dueTime: currentTime
         };
 

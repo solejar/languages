@@ -6,11 +6,8 @@
 
 - some weird adjectives don't work, like numerals
 - учитель Not the same as as писатель 
-- double-check the `ng-blur()` is working as expected with `currGender`
 - **if decliner uses default ruleGroup, something is up. Let's indicate it.**
 - Consider generalizing a 'stem change' case, let's use remove like 10-15 rule groups, but adds more controller logic (might not be worth it)
-- Should generating a card clear inputs? Decide yes or no.
-- Should a warning be generate before removing a card ( in general and also for this)
 
 ### Non-functional
 
@@ -41,19 +38,13 @@
 **Functional**
 
 * Generate some sort of HTML template for this
-* Add edit functionality (?)
-  * Editing assumes end-user responsibility for card content
-  * If this is the case, there won't be reporting
+* Add edit functionality
 * Add mark functionality
-  * Mark as difficult? Important? Should this be a one-time thing or no?
-  * To answer this question, need to think of review algorithm more
-* Add report functionality
-  * Reporting assumes immutable, site-generated cards that might be wrong
-  * Not sure what makes more sense
+  * This is a starring, purely for tagging purposes
 
 **Nonfunctional**
 
-* Need to think of some general schema for this sort of thing, so that it works for different inputs. This is a big looming question.
+* Need to make subcontent view section more flexible than it currently is; it's gonna stop working with a larger subcontent, and that's not chill.
 
 
 
@@ -76,18 +67,13 @@
 
 **Functional** 
 
-- add algorithm for card review
-  - -1.3<EF<2.5
-  - 1,2,3,4 response.
-  - Adjust EF accordingly
-  - Adjust next time interval accordingly
-  - add 'fuzz' to prevent cards from being same order
-- figure out how to generate tests (probably just go with simple card review)
+- 2 options for reviews:
+  - One, take all cards that are past due, and show them in random order
+  - Two, keep all cards in order. Make sure to interleave new cards with review cards/relearn cards(?), also might want to limit # of new cards user is learning per day.
 
 **Nonfunctional**
 
-- what will this look like?
-- what fields needed? To display, or otherwise
+- Need to add visual component that identifies how well you know the word. This should presumably be a function of the interval.
 
 
 

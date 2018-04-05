@@ -28,7 +28,7 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
 
     this.init = function(){
 
-        let cards = cardFactory.getCards();
+        let cards = cardFactory.getCards('declension');
         cards = cardFactory.markupCards(cards);
         console.log(cards);
 
@@ -285,7 +285,7 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                 let user = account.getUser();
                 if(user){
 
-                    cardFactory.addCard(card,user).then(function(res){
+                    cardFactory.addCard(card,user,'declension').then(function(res){
                         if(res.statusCode=='200'){
 
                             card.markup={
