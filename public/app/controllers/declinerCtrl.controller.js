@@ -28,9 +28,10 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
 
     this.init = function(){
 
-        let cards = cardFactory.getCards('declension');
-        cards = cardFactory.markupCards(cards);
-        console.log(cards);
+        let tempCards = cardFactory.getCards('declension');
+        //let cards = cardFactory.getCards('declension'); soon my friends!
+        this.cards = cardFactory.markupCards(tempCards);
+        console.log(this.cards);
 
         let urlPath = $window.location.href;
         let pathSplit = urlPath.split('/');
