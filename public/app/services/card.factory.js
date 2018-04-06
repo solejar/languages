@@ -19,6 +19,11 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
 
     };
 
+    obj.countCards = function(type){
+        let cardSubSet = obj.getCards(type);
+        return cardSubSet.length;
+    };
+
     obj.markupCards = function(baseCards){
         let markupCards;
 
@@ -39,6 +44,39 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
             return cardContainer;
         });
         return markupCards;
+    };
+
+    obj.getDueCards = function(){
+        let dueCards;
+        let currDate = new Date();
+
+        //filter out the due cards
+        dueCards = cards.filter(
+            card => card.dueDate<currDate
+        );
+
+        //shuffle them
+        obj.shuffleDeck(dueCards);
+
+        return dueCards;
+    };
+
+    obj.shuffleDeck = function(array){
+        let currentIndex = array.length, temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
     };
 
 

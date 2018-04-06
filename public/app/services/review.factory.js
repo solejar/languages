@@ -10,42 +10,6 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
     const intervalModifier = 1;
     const failurePenalty = 0;
 
-    obj.getDueCards = function(){
-        let dueCards;
-        let currDate = new Date();
-
-        //filter out the due cards
-        dueCards = cardFactory.getCards().filter(
-            card => card.dueDate<currDate
-        );
-
-        //add markup
-        dueCards = cardFactory.markupCards(dueCards);
-
-        //shuffle them
-        obj.shuffleDeck(dueCards);
-
-        return dueCards;
-    };
-
-    obj.shuffleDeck = function(array){
-        let currentIndex = array.length, temporaryValue, randomIndex;
-
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-
-            // And swap it with the current element.
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-
-    };
-
     obj.reviewCard = function(card, answer){
 
         let dueDate;
@@ -160,6 +124,8 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
 
         return newDueDate;
     };
+
+
 
     return obj;
 });
