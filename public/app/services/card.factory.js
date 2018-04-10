@@ -2,7 +2,7 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
     const obj = {};
     let cards = [];
 
-    obj.getCards = function(type){
+    obj.getCardsByType = function(type){
 
         if(!cards){
             return [];
@@ -19,8 +19,23 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
 
     };
 
-    obj.countCards = function(type){
-        let cardSubSet = obj.getCards(type);
+    obj.getCardsByStage = function(stage){
+        if(!cards){
+            return [];
+        }
+
+        if(!stage||(stage=='all')){ //assume null input to mean user wants all cards
+            return cards;
+        }else{
+            //else only return cards of the desired types
+            let filteredCards = cards.filter(card => card.stage==stage);
+            return filteredCards;
+        }
+    };
+
+    obj.countCards = function(stage){
+        let cardSubSet = obj.getCardsByStage(stage);
+        console.log('for stage: ',stage,' found these cards:',cardSubSet);
         return cardSubSet.length;
     };
 
@@ -28,17 +43,11 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
         let markupCards;
 
         markupCards = baseCards.map(function(card){
-            let cardContainer = {
-                _id: card._id,
-                front: card.front,
-                back: card.back,
-                starred: card.starred,
-                markup: {
-                    expanded: false,
-                    edit: false,
-                    flipped: false
-                },
-
+            let cardContainer = card;
+            cardContainer.markup = {
+                expanded: false,
+                edit: false,
+                flipped: false
             };
 
             return cardContainer;
@@ -52,12 +61,17 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
 
         //filter out the due cards
         dueCards = cards.filter(
-            card => card.dueDate<currDate
+            card => (new Date(card.dueTime))<currDate
         );
 
         //shuffle them
         obj.shuffleDeck(dueCards);
 
+        //console.log('cards found are:', cards);
+        //console.log('date compare result: ', cards[0].dueTime<currDate);
+        //console.log('currDate:',currDate);
+        //console.log('dueDate:',cards[0].dueTime);
+        console.log('due cards were found to be:', dueCards);
         return dueCards;
     };
 
@@ -193,12 +207,12 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
 
     //WIP
     obj.pruneID = function(card){
-        let prunedCard = {
-            front: card.front,
-            back: card.back,
-            starred: card.starred
-        };
-
+        let prunedCard = {};
+        for(let property in card){
+            if(property!='markup'&&property!='_id'){
+                prunedCard[property] = card[property];
+            }
+        }
         return prunedCard;
     };
 

@@ -23,3 +23,15 @@
     text-align: center;
     min-width: 36px;
 }
+.again {
+    background-color: #ba190b;
+}
+.hard {
+    background-color: #e8807a;
+}
+.good {
+    background-color: #e2df6f;
+}
+.easy {
+    background-color: #7fd847;
+}

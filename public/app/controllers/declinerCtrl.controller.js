@@ -28,7 +28,7 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
 
     this.init = function(){
 
-        let tempCards = cardFactory.getCards('declension');
+        let tempCards = cardFactory.getCardsByType('declension');
         //let cards = cardFactory.getCards('declension'); soon my friends!
         this.cards = cardFactory.markupCards(tempCards);
         console.log(this.cards);
@@ -245,12 +245,15 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                 let noun = this.currPhrase.noun;
                 let prep = this.currPhrase.prep;
 
-                let sourceContent = prep.name;
+                let sourceContent = "'"+prep.name+"'+'";
                 if(adj){
-                    sourceContent += '+'+adj;
+                    sourceContent += adj;
+                    if(noun){
+                        sourceContent+= " ";
+                    }
                 }
                 if(noun){
-                    sourceContent += '+'+noun;
+                    sourceContent += noun + "'=?";
                 }
 
                 let endContent = this.currPhrase.declinedPhrase;

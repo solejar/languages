@@ -11,6 +11,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
     const failurePenalty = 0;
 
     obj.reviewCard = function(card, answer){
+        console.log('about to review a card, with answer: ', answer);
 
         let dueDate;
 
@@ -46,7 +47,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
             }
 
             card.learningStage = card.newStage;
-            card.dueDate = dueDate;
+            card.dueTime = dueDate;
 
         }else if(card.stage=='review'){
             let easeFactor = card.easeFactor;
@@ -86,12 +87,12 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
             let newDueDate = obj.calculateDueDate(newInterval, 'day');
 
             card.reviewInterval = newInterval;
-            card.easeFactor = card.newEaseFactor;
+            card.easeFactor = newEaseFactor;
 
             if(card.stage=='relearning'){
-                card.dueDate = new Date();
+                card.dueTime = new Date();
             }else{
-                card.dueDate = newDueDate;
+                card.dueTime = newDueDate;
             }
         }
 
