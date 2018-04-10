@@ -209,7 +209,7 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
     obj.pruneID = function(card){
         let prunedCard = {};
         for(let property in card){
-            if(property!='markup'&&property!='_id'){
+            if(property!='markup'&&property!='_id'&&property!='user_id'){
                 prunedCard[property] = card[property];
             }
         }
