@@ -37,7 +37,12 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
 
     //function called when user answers a card
     this.submitChoice = function(card, answer){
-        review.reviewCard(card,answer);
+        if(card.stage=='learning'||card.stage=='relearning'){
+            review.learnCard(card,answer);
+        }else if(card.stage=='review'){
+            review.reviewCard(card,answer);
+        }
+        
         this.currReviewIndex++;
     };
 

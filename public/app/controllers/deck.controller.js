@@ -76,6 +76,17 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
 
     };
 
+    //side must be 'front' or 'back'
+    this.addSubcontent = function(card,side){
+
+        let newSubContent = {
+            name: '',
+            value: ''
+        };
+
+        card[side].subcontents.push(newSubContent);
+    };
+
     this.flipCard = function(card){
         card.markup.flipped = !card.markup.flipped;
     };

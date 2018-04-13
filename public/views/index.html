@@ -426,7 +426,7 @@
                                                     <b flex style="margin-left: 5px;" ng-show="card.markup.flipped">
                                                         {{'Back: '}}
                                                     </b>
-                                                    <div layout="row" layout-align="end">
+                                                    <div flex layout="row" layout-align="end">
                                                         <md-button class="small-button" ng-click="deck.starCard(card)">
                                                             <md-icon ng-hide="card.starred" md-svg-icon="./images/star_w.svg">
                                                             </md-icon>
@@ -434,6 +434,30 @@
                                                             </md-icon>
                                                             {{''}}
                                                         </md-button>
+                                                        <div flex="10" layout="column" ng-if="card.stage=='learning'">
+                                                            <div flex="30">
+                                                            </div>
+                                                            <span flex="25" style="text-align: center; font-size: 1.2em; font-weight: bold;">
+                                                                {{'L'}}
+                                                            </span>
+                                                            <div flex="45">
+                                                            </div>
+                                                        </div>
+                                                        <div flex="15" layout="column" layout-align="end" ng-if="card.stage=='relearning'">
+                                                            <span style="text-align: center; background-color: red;">
+                                                                {{'R'}}
+                                                            </span>
+                                                        </div>
+                                                        <div flex ng-if="card.stage=='review'||card.stage=='relearning'" ng-switch="card.difficulty">
+                                                            <md-icon ng-switch-when="1" md-svg-icon="./images/difficultyIcon1_grey.svg">
+                                                            </md-icon>
+                                                            <md-icon ng-switch-when="2" md-svg-icon="./images/difficultyIcon2_grey.svg">
+                                                            </md-icon>
+                                                            <md-icon ng-switch-when="3" md-svg-icon="./images/difficultyIcon3_grey.svg">
+                                                            </md-icon>
+                                                            <md-icon ng-switch-when="4" md-svg-icon="./images/difficultyIcon4_grey.svg">
+                                                            </md-icon>
+                                                        </div>
                                                         <md-button class="small-button" ng-click="deck.editModeSwap(card,'expand')" ng-if="deck.enableEditMode(card)" >
                                                             <md-icon md-svg-icon="./images/pencil_edit_button.svg">
                                                             </md-icon>
@@ -494,7 +518,7 @@
 
                                             </div>
 
-                                            <div flex layout="column" class="card" ng-if="card.markup.edit" layout-align="center space-around">
+                                            <form name="cardEditForm" flex layout="column" class="card" ng-if="card.markup.edit" layout-align="center space-around">
                                                 <div flex="5" >
                                                 </div>
                                                 <div flex="10" layout="row" layout-align="start start">
@@ -502,7 +526,7 @@
                                                         {{'Front: '}}
                                                     </b>
                                                     <div flex="25" layout="row" layout-align"end">
-                                                        <md-button class="md-raised small-button" ng-click="deck.saveEdits(card)" ng-disabled="card.markup.editFresh">
+                                                        <md-button class="md-raised small-button" ng-click="deck.saveEdits(card)" ng-disabled="cardEditForm.$dirty">
                                                             <md-icon md-svg-icon="./images/save_k.svg">
                                                             </md-icon>
                                                         </md-button>
@@ -512,21 +536,41 @@
                                                     </div>
                                                 </div>
                                                 <div flex="35" layout-align="start" layout="column">
-                                                    <div flex="30" layout="column" layout-align="start" style="text-align: center; font-size: 1.5em; font-weight: bold;">
-                                                        <span flex="80">
-                                                            {{card.front.content}}
-                                                        </span>
+                                                    <div flex="30" layout="row" layout-align="center" style="font-size: 1.5em; font-weight: bold;">
+                                                        <md-input-container flex="50">
+                                                            <label >
+                                                            {{'Main content'}}
+                                                            </label>
+                                                            <input ng-model="card.front.content" >
+
+                                                        </md-input-container>
                                                     </div>
                                                     <div flex="70" layout="row" layout-align="center start">
                                                         <div flex="90" flex="50" layout="row" layout-align="center" layout-margin layout-wrap>
                                                             <div flex="25" class="subcontent" layout="column" ng-repeat="subcontent in card.front.subcontents" layout-margin>
-                                                                <b flex="15">
-                                                                    {{subcontent.name +':'}}
-                                                                </b>
-                                                                <div flex>
-                                                                    {{subcontent.value}}
+                                                                <div ng-if="0" flex="15" layout-align="end">
+                                                                    <md-button class="md-raised md-warn small-button" ng-click="deck.removeSubcontent(card,'front',$index)">
+                                                                        <md-icon md-svg-icon="./images/ex_k.svg">
+                                                                        </md-icon>
+                                                                    </md-button>
                                                                 </div>
+                                                                <md-input-container flex="15">
+                                                                    <label>
+                                                                    {{'Name'}}
+                                                                    </label>
+                                                                    <input ng-model="subcontent.name">
+                                                                </md-input-container>
+                                                                <md-input-container flex="30">
+                                                                    <label>
+                                                                    {{'Value'}}
+                                                                    </label>
+                                                                    <input ng-model="subcontent.value">
+                                                                </md-input-container>
                                                             </div>
+                                                            <md-button class="md-raised small-button" ng-click="deck.addSubcontent(card,'front')" ng-disabled="cardEditForm.$dirty">
+                                                                <md-icon md-svg-icon="./images/plus_k.svg">
+                                                                </md-icon>
+                                                            </md-button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -536,27 +580,36 @@
                                                     </b>
                                                 </div>
                                                 <div flex="35"  layout-align="start" layout="column">
-                                                    <div flex="30" layout="column" layout-align="start" style="text-align: center; font-size: 1.5em; font-weight: bold;">
-                                                        <span flex="80">
-                                                            {{card.back.content}}
-                                                        </span>
+                                                    <div flex="30" layout="row" layout-align="center start" style="text-align: center; font-size: 1.5em; font-weight: bold;">
+                                                        <md-input-container flex="50">
+                                                            <label>
+                                                            {{'Main content'}}
+                                                            </label>
+                                                            <input ng-model="card.back.content" >
+                                                        </md-input-container>
                                                     </div>
                                                     <div flex="70" layout="row" layout-align="center start">
                                                         <div flex="90" flex="50" layout="row" layout-align="center" layout-margin layout-wrap>
                                                             <div flex="25" class="subcontent" layout="column" ng-repeat="subcontent in card.back.subcontents" layout-margin>
-                                                                <b flex="15">
-                                                                    {{subcontent.name +':'}}
-                                                                </b>
-                                                                <div flex>
-                                                                    {{subcontent.value}}
-                                                                </div>
+                                                                <md-input-container flex="15">
+                                                                    <label>
+                                                                    {{'Name'}}
+                                                                    </label>
+                                                                    <input ng-model="subcontent.name">
+                                                                </md-input-container>
+                                                                <md-input-container flex="15">
+                                                                    <label>
+                                                                    {{'Value'}}
+                                                                    </label>
+                                                                    <input ng-model="subcontent.value">
+                                                                </md-input-container>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                 </div>
 
-                                            </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </md-whiteframe>

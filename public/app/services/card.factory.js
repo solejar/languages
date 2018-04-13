@@ -44,10 +44,12 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
 
         markupCards = baseCards.map(function(card){
             let cardContainer = card;
+
             cardContainer.markup = {
                 expanded: false,
                 edit: false,
-                flipped: false
+                flipped: false,
+
             };
 
             return cardContainer;

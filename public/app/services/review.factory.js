@@ -15,88 +15,129 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
 
         let dueDate;
 
-        if(card.stage=='learning'||card.stage=='relearning'){
+        //get the current ease and review interval
+        let easeFactor = card.easeFactor;
+        let newEaseFactor;
 
-            let currStage = card.learningStage;
-            let newStage;
+        let currInterval = card.reviewInterval;
+        let newInterval;
 
-            if(answer == 'again'){
-                newStage = 0;
-            }else if(answer == 'good'){
-                newStage = currStage + 1;
-            }else if(answer == 'easy'){
-                newStage = currStage+1;
+        //and adjust them based on the answer given
+        if(answer == 'again'){
 
+            newEaseFactor = easeFactor - 0.2; //makes card appear more frequently
+            newInterval = failurePenalty*currInterval; //defaults to 0
+            if(!newInterval){
+                newInterval = 1; //one is the default number of days, if interval was set to 0
             }
 
-            if(newStage>maxLearningStage){
-                if(card.stage=='learning'){ //if it was a relearning card, it already has these values
-                    card.reviewInterval = initialInterval;
-                    card.easeFactor = initialEaseFactor; //this is the default
+            //change the card stage to reflect
+            card.stage = 'relearning';
+            card.learningStage = 0;
 
-                    dueDate = obj.calculateDueDate(card.reviewInterval,'day');
-                }
+        }else if(answer == 'hard'){
 
-                card.stage = 'review';
+            newEaseFactor = easeFactor - 0.15;
+            newInterval = currInterval*1.2;
 
-            }else{
+        }else if(answer=='good'){
+            newEaseFactor = easeFactor;
+            newInterval = currInterval * newEaseFactor;
 
-                let timeStep = learningSteps[newStage];
-                dueDate = obj.calculateDueDate(timeStep,'minute');
+        }else if(answer=='easy'){
 
-            }
+            newEaseFactor = easeFactor + 0.15;
+            newInterval = currInterval*easyBonus*newEaseFactor; //gives an added boost to easy cards
 
-            card.learningStage = card.newStage;
+        }
+
+        if(1.3>newEaseFactor){
+            newEaseFactor = 1.3;
+        }
+
+        newInterval = newInterval*intervalModifier;
+        //per Anki docs, new interval is always at least one day more than currInterval
+        if(newInterval<(currInterval+1)){
+            newInterval = currInterval + 1;
+        }
+
+        dueDate = obj.calculateDueDate(newInterval, 'day');
+
+        card.reviewInterval = newInterval;
+        card.easeFactor = newEaseFactor;
+
+        card.difficulty = obj.calculateRanking(card.dueTime);
+
+        if(card.stage=='relearning'){ //this means you messed up the review
+            card.dueTime = new Date();
+        }else{
             card.dueTime = dueDate;
-
-        }else if(card.stage=='review'){
-            let easeFactor = card.easeFactor;
-            let newEaseFactor;
-
-            let currInterval = card.reviewInterval;
-            let newInterval;
-
-            if(answer == 'again'){
-                newEaseFactor = easeFactor - 0.2;
-                newInterval = failurePenalty*currInterval;
-
-                card.stage = 'relearning';
-                card.learningStage = 0;
-
-            }else if(answer == 'hard'){
-
-                newEaseFactor = easeFactor - 0.15;
-                if(1.3>newEaseFactor){
-                    newEaseFactor = 1.3;
-                }
-                newInterval = currInterval*1.2;
-            }else if(answer=='good'){
-                newEaseFactor = easeFactor;
-                newInterval = currInterval * newEaseFactor;
-            }else if(answer=='easy'){
-                newEaseFactor = easeFactor + 0.15;
-                newInterval = currInterval*easyBonus*newEaseFactor;
-            }
-
-            newInterval = newInterval*intervalModifier;
-            //per Anki docs, new interval is always at least one day more than currInterval
-            if(newInterval<(currInterval+1)){
-                newInterval = currInterval + 1;
-            }
-
-            let newDueDate = obj.calculateDueDate(newInterval, 'day');
-
-            card.reviewInterval = newInterval;
-            card.easeFactor = newEaseFactor;
-
-            if(card.stage=='relearning'){
-                card.dueTime = new Date();
-            }else{
-                card.dueTime = newDueDate;
-            }
         }
 
         cardFactory.editCard(card);
+    };
+
+    obj.learnCard = function(card,answer){
+
+        let dueDate;
+
+        let currStage = card.learningStage;
+        let newStage;
+
+        //increment up learning stages with response
+        if(answer == 'again'){
+            newStage = 0;
+        }else if(answer == 'good'){
+            newStage = currStage + 1;
+        }else if(answer == 'easy'){
+            newStage = currStage+2;
+        }
+
+        //if your response would take you past the total number of learning stages,
+        //it becomes a review card
+        if(newStage>maxLearningStage){
+            if(card.stage=='learning'){ //if it was a relearning card, it already has these values, and we don't need them
+                card.reviewInterval = initialInterval;
+                card.easeFactor = initialEaseFactor;
+
+                dueDate = obj.calculateDueDate(card.reviewInterval,'day');
+            }
+
+            card.stage = 'review';
+            card.learningStage = maxLearningStage+1; //this isn't really necessary
+
+        }else{
+
+            let timeStep = learningSteps[newStage];
+            dueDate = obj.calculateDueDate(timeStep,'minute');
+
+            card.learningStage = card.newStage;
+
+        }
+
+        card.dueTime = dueDate;
+
+        cardFactory.editCard(card);
+
+    };
+
+    obj.calculateRanking = function(cardDueTime){
+        let ranking;
+
+        let currTime = new Date();
+        let timeDiffDays =  (cardDueTime-currTime)/(24*60*60*1000);
+
+        if(timeDiffDays<7){
+            ranking = 4;
+        }else if(timeDiffDays<31){
+            ranking = 3;
+        }else if(timeDiffDays<62){
+            ranking = 2;
+        }else{
+            ranking = 1;
+        }
+
+        return ranking;
     };
 
     const secondModifier = 1000;
