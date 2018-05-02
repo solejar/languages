@@ -353,8 +353,8 @@
                                 </md-input-container>
                                 <md-input-container ng-if="decliner.currPhrase.padex=='винительный'" flex-gt-sm="25" >
                                     <label>{{decliner.labels.animateSelect.display}}</label>
-                                    <md-tooltip ng-show="decliner.animateKnown()" md-delay="230">{{decliner.labels.animateForcedTooltip.display}}</md-tooltip>
-                                    <md-select ng-model="decliner.currPhrase.animate" aria-label="Одушевленность" ng-disabled="decliner.animateKnown()" >
+                                    <md-tooltip ng-show="decliner.animateKnown" md-delay="230">{{decliner.labels.animateForcedTooltip.display}}</md-tooltip>
+                                    <md-select ng-model="decliner.currPhrase.animate" aria-label="Одушевленность" ng-disabled="decliner.animateKnown" >
                                         <md-option ng-repeat="state in decliner.labels.animateSelect.options"  ng-value="state.value">
                                         {{state.display}}
                                         </md-option>
@@ -403,19 +403,19 @@
                                             <div flex style="text-align: center; font-size: 1.17em; font-weight:bold; color: black" ng-hide="card.markup.expanded" ng-click="deck.changeCardFocus(card)">
                                                 {{card.front.content}}
                                             </div>
-                                            <div flex="30" style="background-color: brown;" layout="row" layout-align="end">
-                                                <md-button style="background-color: green;" class="small-button" ng-click="deck.starCard(card)">
+                                            <div flex="30" layout="row" layout-align="end">
+                                                <md-button  class="small-button" ng-click="deck.starCard(card)">
                                                     <md-icon ng-hide="card.starred" md-svg-icon="./images/star_w.svg">
                                                     </md-icon>
                                                     <md-icon ng-show="card.starred" md-svg-icon="./images/star_y.svg">
                                                     </md-icon>
                                                     {{''}}
                                                 </md-button>
-                                                <md-button style="background-color: red;" class="small-button" ng-click="deck.editModeSwap(card,'expand')" ng-if="deck.enableEditMode(card)" >
+                                                <md-button  class="small-button" ng-click="deck.editModeSwap(card,'expand')" ng-if="deck.enableEditMode(card)" >
                                                     <md-icon md-svg-icon="./images/pencil_edit_button.svg">
                                                     </md-icon>
                                                 </md-button>
-                                                <div flex="10" style="background-color: blue;" layout="column" layout-align="center" class="small-button" ng-if="card.stage=='learning'">
+                                                <div flex="10"  layout="column" layout-align="center" class="small-button" ng-if="card.stage=='learning'">
                                                     <md-icon md-svg-icon="./images/learning_icon.svg">
                                                     </md-icon>
                                                 </div>
@@ -423,7 +423,7 @@
                                                     <md-icon md-svg-icon="./images/relearning_icon.svg">
                                                     </md-icon>
                                                 </div>
-                                                <div style="background-color: yellow;" flex class="small-button" ng-if="card.stage=='review'||card.stage=='relearning'" ng-switch="card.difficulty">
+                                                <div flex class="small-button" ng-if="card.stage=='review'||card.stage=='relearning'" ng-switch="card.difficulty">
                                                     <md-icon ng-switch-when="1" md-svg-icon="./images/difficultyIcon1_grey.svg">
                                                     </md-icon>
                                                     <md-icon ng-switch-when="2" md-svg-icon="./images/difficultyIcon2_grey.svg">
@@ -745,11 +745,18 @@
                                     {{'See Answer'}}
                                 </md-button>
                             </div>
-                            <div layout="row" flex="15" layout-align="center" ng-if="card.markup.flipped">
-                                <md-button ng-if="review.enableChoicesDisplay(card, 'learning')" ng-class="choice" ng-click="review.submitChoice(card,choice);" ng-repeat="choice in review.learningChoices">
+                            <div layout="row" flex="15" ng-if="card.stage=='learning'" layout-align="center" ng-if="card.markup.flipped">
+                                <md-button  ng-class="choice" ng-click="review.submitChoice(card,choice);" ng-repeat="choice in review.learningChoices">
                                     {{choice}}
                                 </md-button>
-                                <md-button ng-if="review.enableChoicesDisplay(card.stage,'learning')" ng-class="choice" ng-click="review.submitChoice(card,choice);" ng-repeat="choice in review.reviewChoices">
+                            </div>
+                            <div layout="row" ng-if="card.stage=='review'" flex="15" layout-align="center" ng-if="card.markup.flipped">
+                                <md-button ng-class="choice" ng-click="review.submitChoice(card,choice);" ng-repeat="choice in review.reviewChoices">
+                                    {{choice}}
+                                </md-button>
+                            </div>
+                            <div layout="row" ng-if="card.stage=='relearning'" flex="15" layout-align="center" ng-if="card.markup.flipped">
+                                <md-button ng-class="choice" ng-click="review.submitChoice(card,choice);" ng-repeat="choice in review.relearningChoices">
                                     {{choice}}
                                 </md-button>
                             </div>

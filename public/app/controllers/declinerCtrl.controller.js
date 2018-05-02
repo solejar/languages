@@ -286,6 +286,9 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                     content: endContent
                 };
 
+                card.stage = 'learning';
+                card.learningStage = 0;
+
                 let user = account.getUser();
                 if(user){
 
@@ -294,6 +297,7 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
 
                             card.markup={
                                 expanded: false,
+                                edit: false,
                                 flipped: false
                             };
 
@@ -309,6 +313,7 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
 
                     card.markup={
                         expanded: false,
+                        edit: false,
                         flipped: false
                     };
 
@@ -396,17 +401,19 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
 
     this.checkAnimate = function(exception){
         //we can only tell if a word is animate if it's a specific exception case we know about
-        if(typeof exception !== null){
-            this.nounAnimate = exception.animate;
+
+        if(typeof exception != null){
+            this.animateKnown = true;
+            this.currPhrase.animate = exception.animate;
         }else{
-            this.nounAnimate = '';
+            this.animateKnown = false;
         }
     };
 
-    this.animateKnown = function(){
+    /*this.animateKnown = function(){
 
         return !!(this.nounAnimate);
-    };
+    };*/
 
     this.currPhrase.gender = '';
     //basically overloading '==' for genders

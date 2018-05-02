@@ -3,6 +3,7 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
     //array of answer options for card reviewing
     this.learningChoices = ['again','good','easy'];
     this.reviewChoices = ['again','hard','good','easy'];
+    this.relearningChoices = ['again','good'];
 
     this.currReviewIndex = 0;//signals that you must show top of array
 
@@ -18,7 +19,8 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
         this.relearningCount = cardFactory.countCards('relearning');
     };
 
-    this.enableChoicesDisplay = function(card, choicesType){
+    //this is so obtuse
+    /*this.enableChoicesDisplay = function(card, choicesType){
         let enableBool = false;
         console.log(card);
         let stage = card.stage;
@@ -33,7 +35,7 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
         }
         console.log('for stage: ',stage, ' and choicesType: ', choicesType, 'enableBool is: ',enableBool);
         return enableBool;
-    };
+    };*/
 
     //function called when user answers a card
     this.submitChoice = function(card, answer){
@@ -42,7 +44,7 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
         }else if(card.stage=='review'){
             review.reviewCard(card,answer);
         }
-        
+
         this.currReviewIndex++;
     };
 

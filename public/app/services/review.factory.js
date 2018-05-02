@@ -2,8 +2,8 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
     const obj = {};
 
     //how to connect all of these to user account?
-    const maxLearningStage = 2; //0 is first stage, so 3 total stages here
-    const learningSteps = [0,1,10];
+    const maxLearningStage = 1; //0 is first stage, so 2 total stages here
+    const learningSteps = [1,10];
     const initialInterval = 1; //1 day is default interval
     const initialEaseFactor = 2.5;
     const easyBonus = 1.3;
@@ -90,7 +90,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
         }else if(answer == 'good'){
             newStage = currStage + 1;
         }else if(answer == 'easy'){
-            newStage = currStage+2;
+            newStage = maxLearningStage+1; //automatically graduate
         }
 
         //if your response would take you past the total number of learning stages,

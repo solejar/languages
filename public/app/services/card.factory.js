@@ -179,8 +179,10 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
             user_id: user._id,
             front: card.front,
             back: card.back,
-            learningStage: 0,
-            stage: 'learning',
+            //learningStage: 0,
+            learningStage: card.learningStage,
+            stage: card.stage,
+            //stage: 'learning',
             starred: false,
             type: type, //did it come from declension?
             dueTime: currentTime

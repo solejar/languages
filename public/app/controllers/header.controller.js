@@ -69,7 +69,8 @@ angular.module('lang').controller('headerCtrl',function($window, account,sharedP
         'about',
         'study',
         'login',
-        'profile'
+        'profile',
+        'admin'
     ];
 
     this.getCurrPage = function(){

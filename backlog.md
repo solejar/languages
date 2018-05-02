@@ -39,8 +39,6 @@
 
 * Generate some sort of HTML template for this
 * Add edit functionality
-* Add mark functionality
-  * This is a starring, purely for tagging purposes
 
 **Nonfunctional**
 
@@ -67,9 +65,9 @@
 
 **Functional** 
 
-- 2 options for reviews:
-  - One, take all cards that are past due, and show them in random order
-  - Two, keep all cards in order. Make sure to interleave new cards with review cards/relearn cards(?), also might want to limit # of new cards user is learning per day.
+- Due cards are currently shuffled. But they should be in order, with noise added. And I guess a limit to new cards per day? 
+  - Some parts of this are arbitrary, but I need to at least make sure that if you get it wrong, it gets put back into the pile immediately
+- Perhaps add the next interval under the choice?
 
 **Nonfunctional**
 
