@@ -301,7 +301,8 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                                 flipped: false
                             };
 
-                            this.cards.push(card);
+                            //this.cards.push(card);
+                            this.cards.unshift(card);
                             this.clearToInitial();
 
                         }else{
@@ -317,7 +318,8 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                         flipped: false
                     };
 
-                    this.cards.push(card);
+                    //this.cards.push(card);
+                    this.cards.unshift(card);
                     this.clearToInitial();
 
                 }

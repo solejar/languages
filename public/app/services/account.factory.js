@@ -50,10 +50,15 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
                 //console.log('logged in fine')
                 obj.setUser(res.content.user);
                 obj.setToken(res.content.token);
-                cardFactory.loadCards(session.user);
+                cardFactory.loadCards(session.user).then(function(cardLoadResponse){
+                    if(cardLoadResponse.statusCode=='200'){
+                        console.log('user card info retrieved, redirecting to profile');
+                        deferred.resolve(res);
+                    }
+                });
 
             }
-            deferred.resolve(res);
+
 
         });
 

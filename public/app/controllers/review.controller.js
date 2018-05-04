@@ -8,41 +8,38 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
     this.currReviewIndex = 0;//signals that you must show top of array
 
     this.cards = [];
-    this.learningCount = 0;
-    this.reviewCount = 0;
-    this.relearningCount = 0;
+    this.counts = {
+        learning: 0,
+        review: 0,
+        relearning: 0
+    };
 
     this.init = function(){
         this.loadCards();
-        this.learningCount = cardFactory.countCards('learning');
-        this.reviewCount = cardFactory.countCards('review');
-        this.relearningCount = cardFactory.countCards('relearning');
+        this.counts.learning = cardFactory.countCards('learning');
+        this.counts.review = cardFactory.countCards('review');
+        this.counts.relearning = cardFactory.countCards('relearning');
     };
-
-    //this is so obtuse
-    /*this.enableChoicesDisplay = function(card, choicesType){
-        let enableBool = false;
-        console.log(card);
-        let stage = card.stage;
-        if(choicesType=='learning'){
-            if(stage=='learning'||stage=='relearning'){
-                enableBool = true;
-            }
-        }else if(choicesType=='review'){
-            if(stage=='review'){
-                enableBool = true;
-            }
-        }
-        console.log('for stage: ',stage, ' and choicesType: ', choicesType, 'enableBool is: ',enableBool);
-        return enableBool;
-    };*/
 
     //function called when user answers a card
     this.submitChoice = function(card, answer){
-        if(card.stage=='learning'||card.stage=='relearning'){
-            review.learnCard(card,answer);
+        if(card.stage=='learning'){
+            let graduated = review.learnCard(card,answer);
+            if(graduated){
+                this.counts.learning--;
+            }
+
         }else if(card.stage=='review'){
             review.reviewCard(card,answer);
+            if(answer=='again'){
+                this.counts.relearning++;
+            }
+            this.counts.review--;
+        }else if(card.stage=='relearning'){
+            let graduated = review.learnCard(card,answer);
+            if(graduated){
+                this.counts.review--;
+            }
         }
 
         this.currReviewIndex++;

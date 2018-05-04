@@ -95,12 +95,15 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
 
         //if your response would take you past the total number of learning stages,
         //it becomes a review card
+        let graduated = false;
         if(newStage>maxLearningStage){
+            graduated = true;
             if(card.stage=='learning'){ //if it was a relearning card, it already has these values, and we don't need them
                 card.reviewInterval = initialInterval;
                 card.easeFactor = initialEaseFactor;
 
                 dueDate = obj.calculateDueDate(card.reviewInterval,'day');
+                card.difficulty = obj.calculateRanking(card.dueTime);
             }
 
             card.stage = 'review';
@@ -118,6 +121,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
         card.dueTime = dueDate;
 
         cardFactory.editCard(card);
+        return graduated;
 
     };
 

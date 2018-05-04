@@ -3,6 +3,8 @@ angular.module('lang').controller('loginCtrl',function(sharedProps,account, $mdD
 
     //model to hold registration form data
     this.signupInfo = {};
+    this.showLoginWaitSpin = false;
+    this.showSignupWaitSpin = false;
 
     //model that gets updated on email/username blur
     //used by directive to set validity, this might not be the best way to do it though
@@ -18,10 +20,15 @@ angular.module('lang').controller('loginCtrl',function(sharedProps,account, $mdD
         return form.$invalid&&this.disableLogin;
     };
 
+    this.disableSignup = function(form){
+        return form.$invalid&&this.disableSignup;
+    };
+
     //function to login, called by login button
     this.attemptLogin = function(loginInfo){
         console.log('attempting login');
         this.disableLogin = true;
+        this.showLoginWaitSpin = true;
         account.login(loginInfo).then(function(res){
             if(res.statusCode=='200'){//if login successful, redirect to profile page
                 this.loginFailed = false;
@@ -31,13 +38,15 @@ angular.module('lang').controller('loginCtrl',function(sharedProps,account, $mdD
                 console.log('login error',res);
                 this.loginFailed = true;
             }
+            this.showLoginWaitSpin = false;
         }.bind(this));
 
     };
 
     //function to register, called by signup button
     this.register = function(loginInfo){
-
+        this.showSignupWaitSpin = true;
+        this.disableSignup = true;
         account.register(loginInfo).then(function(res){
             if(res.statusCode=='200'){//if registration successful, redirect to profile
 
@@ -45,6 +54,8 @@ angular.module('lang').controller('loginCtrl',function(sharedProps,account, $mdD
             }else{
                 console.log('login error',res);
             }
+            this.disableSignup = false;
+            this.showSignupWaitSpin = false; //only need this here cause in other case page redirects
         }.bind(this));
 
     };
