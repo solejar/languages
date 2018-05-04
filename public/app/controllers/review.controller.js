@@ -22,27 +22,51 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
     };
 
     //function called when user answers a card
-    this.submitChoice = function(card, answer){
+    this.submitChoice = function(card, answer,oldIndex){
+        let updatedCard;
         if(card.stage=='learning'){
-            let graduated = review.learnCard(card,answer);
-            if(graduated){
+            updatedCard = review.learnCard(card,answer);
+            if(updatedCard.stage=='review'){
                 this.counts.learning--;
             }
 
         }else if(card.stage=='review'){
-            review.reviewCard(card,answer);
+            updatedCard = review.reviewCard(card,answer);
             if(answer=='again'){
                 this.counts.relearning++;
             }
             this.counts.review--;
         }else if(card.stage=='relearning'){
-            let graduated = review.learnCard(card,answer);
-            if(graduated){
+            updatedCard = review.learnCard(card,answer);
+            if(updatedCard.stage=='review'){
                 this.counts.review--;
             }
         }
 
+        if(updatedCard.stage=='learning'||updatedCard.stage=='relearning'){
+            //all failed cards need to be reinserted.
+            //all learning cards keep getting reinserted.
+            this.reinsertCard(updatedCard,oldIndex);
+        }
+
         this.currReviewIndex++;
+    };
+
+    //sometimes
+    this.reinsertCard = function(updatedCard,oldIndex){
+        //get rid of the old version of the card in the local list
+        //console.log('presumably old card is ',this.cards[oldIndex]);
+        //console.log('card attempting to add is ',updatedCard);
+        this.cards.splice(oldIndex,1);
+
+        let index = 0;
+        let newDueDate = updatedCard.dueTime;
+        while(this.cards[index].dueTime-newDueDate>0){
+            index++;
+        }
+
+        //and add the updated one where it belongs in order
+        this.cards.splice(index++,0,updatedCard);
     };
 
     //called on startup

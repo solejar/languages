@@ -75,6 +75,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
         }
 
         cardFactory.editCard(card);
+        return card;
     };
 
     obj.learnCard = function(card,answer){
@@ -95,9 +96,9 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
 
         //if your response would take you past the total number of learning stages,
         //it becomes a review card
-        let graduated = false;
+
         if(newStage>maxLearningStage){
-            graduated = true;
+
             if(card.stage=='learning'){ //if it was a relearning card, it already has these values, and we don't need them
                 card.reviewInterval = initialInterval;
                 card.easeFactor = initialEaseFactor;
@@ -121,7 +122,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
         card.dueTime = dueDate;
 
         cardFactory.editCard(card);
-        return graduated;
+        return card;
 
     };
 
@@ -149,6 +150,11 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
     const hourModifier = minuteModifier*60;
     const dayModifier = hourModifier*24;
 
+    //plus minus range for random fuzz added to review interval
+    const fuzzRange = 15;
+
+    //put it in minutes
+    const fuzzRangeMinutes = fuzzRange*minuteModifier;
     obj.calculateDueDate = function(interval, unit){
         let currDate = new Date();
 
@@ -166,7 +172,13 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
             modifier = dayModifier;
         }
 
-        let newDueDate = new Date(currDate.getTime() + interval*modifier);
+        let baseTime = interval*modifier;
+        if(unit!='sec'&&unit!='minute'){
+            let fuzz = fuzzRangeMinutes*(Math.random()-0.5);
+            baseTime += fuzz;
+        }
+
+        let newDueDate = new Date(currDate.getTime() + baseTime);
 
         return newDueDate;
     };

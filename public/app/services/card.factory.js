@@ -54,6 +54,7 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
 
             return cardContainer;
         });
+
         return markupCards;
     };
 
@@ -66,8 +67,8 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
             card => (new Date(card.dueTime))<currDate
         );
 
-        //shuffle them
-        obj.shuffleDeck(dueCards);
+        //for now toying with getting rid of this
+        //obj.shuffleDeck(dueCards);
 
         //console.log('cards found are:', cards);
         //console.log('date compare result: ', cards[0].dueTime<currDate);
@@ -77,6 +78,7 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
         return dueCards;
     };
 
+    //I'm gonna try to make this obselete
     obj.shuffleDeck = function(array){
         let currentIndex = array.length, temporaryValue, randomIndex;
 

@@ -746,17 +746,17 @@
                                     </md-button>
                                 </div>
                                 <div layout="row" flex="15" ng-if="card.stage=='learning'&&card.markup.flipped" layout-align="center">
-                                    <md-button  ng-class="choice" ng-click="review.submitChoice(card,choice);" ng-repeat="choice in review.learningChoices">
+                                    <md-button  ng-class="choice" ng-click="review.submitChoice(card,choice,review.currReviewIndex);" ng-repeat="choice in review.learningChoices">
                                         {{choice}}
                                     </md-button>
                                 </div>
                                 <div layout="row" ng-if="card.stage=='review'&&card.markup.flipped" flex="15" layout-align="center">
-                                    <md-button ng-class="choice" ng-click="review.submitChoice(card,choice);" ng-repeat="choice in review.reviewChoices">
+                                    <md-button ng-class="choice" ng-click="review.submitChoice(card,choice,review.currReviewIndex);" ng-repeat="choice in review.reviewChoices">
                                         {{choice}}
                                     </md-button>
                                 </div>
                                 <div layout="row" ng-if="card.stage=='relearning'&&card.markup.flipped" flex="15" layout-align="center">
-                                    <md-button ng-class="choice" ng-click="review.submitChoice(card,choice);" ng-repeat="choice in review.relearningChoices">
+                                    <md-button ng-class="choice" ng-click="review.submitChoice(card,choice,review.currReviewIndex);" ng-repeat="choice in review.relearningChoices">
                                         {{choice}}
                                     </md-button>
                                 </div>
