@@ -7,6 +7,7 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
 
     this.currReviewIndex = 0;//signals that you must show top of array
 
+
     this.cards = [];
     this.counts = {
         learning: 0,
@@ -19,6 +20,7 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
         this.counts.learning = cardFactory.countCards('learning');
         this.counts.review = cardFactory.countCards('review');
         this.counts.relearning = cardFactory.countCards('relearning');
+        this.maxNewCards = account.getSetting('maxNewCards');
     };
 
     //function called when user answers a card

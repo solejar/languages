@@ -71,7 +71,7 @@
 
 **Nonfunctional**
 
-- Need to add visual component that identifies how well you know the word. This should presumably be a function of the interval.
+- 
 
 
 

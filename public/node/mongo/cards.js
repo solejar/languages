@@ -17,7 +17,7 @@ exports.editCard = function(options,onResult){
         };
 
         let newValues = { $set: options.card};
-        
+
         console.log('query for edit:',query);
         console.log('new values for edit: ',newValues);
 
@@ -33,7 +33,7 @@ exports.editCard = function(options,onResult){
     });
 };
 
-exports.deleteCard = function(options,onResult){
+exports.deleteCardbyID = function(options,onResult){
     MongoClient.connect(options.url,function(err,database){
         if(err){
             onResult({'statusCode': '400','errMsg': err});
@@ -49,6 +49,60 @@ exports.deleteCard = function(options,onResult){
                 throw err;
             }else{
                 console.log("successfully deleted a card");
+            }
+            let response = {
+                statusCode: '200',
+                content: results
+            };
+            onResult(response);
+        });
+
+    });
+};
+
+exports.deleteCardbyUser = function(options,onResult){
+    MongoClient.connect(options.url,function(err,database){
+        if(err){
+            onResult({'statusCode': '400','errMsg': err});
+        }
+
+        const db = database.db(options.db);
+        const collection = db.collection(options.collection);
+
+        const user_id = mongo.ObjectID(options.user_id);
+
+        collection.deleteMany({user_id: user_id},function(err,results){
+            if(err){
+                throw err;
+            }else{
+                console.log("successfully deleted a users cards");
+            }
+            let response = {
+                statusCode: '200',
+                content: results
+            };
+            onResult(response);
+        });
+
+    });
+};
+
+exports.deleteAllCards = function(options,onResult){
+    MongoClient.connect(options.url,function(err,database){
+        if(err){
+            onResult({'statusCode': '400','errMsg': err});
+        }
+
+        const db = database.db(options.db);
+        const collection = db.collection(options.collection);
+
+        const card_id = mongo.ObjectID(options._id);
+
+        collection.deleteMany({},function(err,results){
+            if(err){
+                throw err;
+            }else{
+                console.log("successfully deleted all cards");
             }
             let response = {
                 statusCode: '200',

@@ -11,8 +11,8 @@ const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 
 const mongo = require('mongodb');
-const login = require('../mongo/login');
-const account = require('../mongo/account');
+const usersDB = require('../mongo/users');
+const cardsDB = require('../mongo/cards');
 
 //we store db urls in here
 const mongoUrls = config.mongoUrls;
@@ -23,6 +23,18 @@ const jwtOptions = {};
 
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
 jwtOptions.secretOrKey = config.app.JWTSecretOrKey;
+
+const baseCardOptions = {
+    db: db,
+    url: mongoUrl,
+    collection: 'cards'
+};
+
+const baseUserOptions = {
+    db: db,
+    collection: 'users',
+    url: mongoUrl
+};
 
 const strategy = new JwtStrategy(jwtOptions,function(jwt_payload,next){
     console.log('payload received', jwt_payload);
@@ -36,7 +48,7 @@ const strategy = new JwtStrategy(jwtOptions,function(jwt_payload,next){
         url: mongoUrl
     };
 
-    login.findUser(options,function(result){
+    usersDB.findUser(options,function(result){
         if(result.statusCode=='200'){
             next(null,result.content[0]);
         }else{
@@ -49,16 +61,12 @@ passport.use(strategy);
 
 router.route('/cards')
 .get(passport.authenticate('jwt',{session: false}),function(req,res){
-    let options = {
-        db: db,
-        collection: 'cards',
-        user_id: req.query.user_id,
-        url: mongoUrl
-    };
+    let options = baseCardOptions;
+    options.user_id = req.query.user_id;
 
     //console.log(req.query)
     console.log(options);
-    account.getCards(options,function(result){
+    cardsDB.getCards(options,function(result){
         res.statusCode = result.statusCode;
         if(result.statusCode=='200'){
             console.log('found some cards');
@@ -68,15 +76,11 @@ router.route('/cards')
     });
 })
 .post(passport.authenticate('jwt',{session:false}),function(req,res){
-    let options = {
-        db: db,
-        collection: 'cards',
-        card: req.body,
-        url: mongoUrl
-    };
+    let options = baseCardOptions;
+    options.card = req.body;
 
     console.log(options);
-    account.insertCard(options,function(result){
+    cardsDB.insertCard(options,function(result){
         res.statusCode = result.statusCode;
         if(result.statusCode=='200'){
             console.log('added a card');
@@ -85,40 +89,47 @@ router.route('/cards')
     });
 })
 .delete(passport.authenticate('jwt',{session: false}),function(req,res){
-    let options = {
-        db: db,
-        collection: 'cards',
-        _id: req.body._id,
-        url: mongoUrl
-    };
 
-    console.log('deleting card with id ',req.body);
-    account.deleteCard(options,function(result){
-        res.statusCode = result.statusCode;
-        if(result.statusCode=='200'){
-            console.log('deleted a card!');
-        }
-        res.send(result);
-    });
+    let options = baseCardOptions;
+    if(req.body.user_id){
+        options.user_id = req.body.user_id;
+
+        console.log('deleting cards from user: ',req.body);
+        cardsDB.deleteCardbyUser(options,function(result){
+            res.statusCode = result.statusCode;
+            if(result.statusCode=='200'){
+                console.log('deleted all of a users cards!');
+            }
+            res.send(result);
+        });
+    }else if(req.body._id){
+        options._id = req.body._id;
+
+        console.log('deleting card with id ',req.body);
+        cardsDB.deleteCardbyID(options,function(result){
+            res.statusCode = result.statusCode;
+            if(result.statusCode=='200'){
+                console.log('deleted a card!');
+            }
+            res.send(result);
+        });
+    }
+
 })
 .put(passport.authenticate('jwt',{session:false}),function(req,res){
-    let options = {
-        db: db,
-        collection: 'cards',
-        _id: req.body.card_id,
-        card: req.body.card,
-        url: mongoUrl
-    };
+    let options = baseCardOptions;
+    options._id = req.body.card_id;
+    options.card = req.body.card;
 
     console.log('card edit values: ',req.body.card);
     console.log('editing card with id ',req.body.card_id);
-    account.editCard(options,function(result){
+    cardsDB.editCard(options,function(result){
         res.statusCode = result.statusCode;
         if(result.statusCode=='200'){
-            console.log('edit was succesful!');
+            console.log('edit was successful!');
 
         }else{
-            console.log('edit was not succesful');
+            console.log('edit was not successful');
         }
         res.send(result);
     });
@@ -126,12 +137,8 @@ router.route('/cards')
 
 router.route('/')
 .get(function(req,res){
-    let options = {
-        db: db,
-        collection: 'users',
-        userInfo: {},
-        url: mongoUrl
-    };
+    let options = baseUserOptions;
+    options.userInfo = {};
 
     console.log('query is ',req.query);
     //this is how you make a generic mongo query, seems legit
@@ -142,25 +149,55 @@ router.route('/')
     }
 
     console.log('getting these users,',options.userInfo);
-    login.findUser(options,function(result){
+    usersDB.findUser(options,function(result){
         res.statusCode = result.statusCode;
         res.send(result);
     });
 })
 .delete(function(req,res){
     //mongo delete
+    let options = baseUserOptions;
+    let cardOptions = baseCardOptions;
+
+    if(req.body._id==null){
+
+        cardsDB.deleteAllCards(cardOptions,function(result){
+            if(res.statusCode=='400'){
+                console.log('nuking the cards didnt work');
+            }else{
+                console.log('cards nuked successfully');
+            }
+        });
+
+        usersDB.deleteAllUsers(options,function(result){
+            res.statusCode = result.statusCode;
+            res.send(result);
+        });
+    }else{
+
+        cardOptions.user_id = req.body._id;
+        cardsDB.deleteCardbyUser(cardOptions,function(result){
+            if(res.statusCode=='400'){
+                console.log('removed the users cards unsuccesfully');
+            }else{
+                console.log('removed the users cards succesfully');
+            }
+        });
+
+        options._id = req.body._id;
+        usersDB.deleteUser(options,function(result){
+            res.statusCode = result.statusCode;
+            res.send(result);
+        });
+    }
 })
 .put(function(req,res){
     //mongo edit
-    let options = {
-        db: db,
-        collection: 'users',
-        _id: req.body._id,
-        newUserInfo: req.body.newUserInfo,
-        url: mongoUrl
-    };
+    let options = baseUserOptions;
+    options.newUserInfo = req.body.newUserInfo;
+    options._id = req.body._id;
 
-    login.editUser(options,function(result){
+    usersDB.editUser(options,function(result){
         res.statusCode=result.statusCode;
         if(res.statusCode=='400'){
             console.log('something went wrong with editing the user');
@@ -178,12 +215,8 @@ router.route('/')
         email: req.body.email
     };
 
-    let options = {
-        db: db,
-        collection: 'users',
-        loginInfo: account,
-        url: mongoUrl
-    };
+    let options = baseUserOptions;
+    options.loginInfo = account;
 
     let q = {};
     if(options.loginInfo.email){
@@ -199,13 +232,13 @@ router.route('/')
         url: options.url
     };
 
-    login.insertUser(options,function(result){
+    usersDB.insertUser(options,function(result){
         console.log('onResult: ('+ result.statusCode + ')');
         res.statusCode = result.statusCode;
         let response = {};
         if(res.statusCode =='200'){
             console.log('looking for user with params,',q_options);
-            login.findUser(q_options,function(user){
+            usersDB.findUser(q_options,function(user){
                 console.log('user found',user);
                 if (user.content.length==1){
                     console.log();
@@ -237,16 +270,12 @@ router.post('/login',function(req,res){
 
     if(req.body.userName && req.body.password){
 
-        let options = {
-            db: db,
-            collection: 'users',
-            userInfo: {
-                userName: req.body.userName,
-            },
-            url: mongoUrl
+        let options = baseUserOptions;
+        options.userInfo = {
+            userName: req.body.userName,
         };
 
-        login.findUser(options,function(result){
+        usersDB.findUser(options,function(result){
             //console.log('onResult: (' + result.statusCode + ')');
             let response = {};
             if(result.statusCode=='400'){

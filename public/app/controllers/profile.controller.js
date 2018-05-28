@@ -2,15 +2,31 @@
 angular.module('lang').controller('profileCtrl',function(account,sharedProps){
     this.logout = function(){
         account.logout();
-        sharedProps.setProperty('currPage','login');
     };
 
-    this.editUser = function(userID,newInfo){
-        console.log('editing user');
+    this.user = {
+        userName:  '',
+        settings: {},
+        _id: ''
+    };
 
-        account.editUser(newInfo).then(function(editedUser){
+    this.init = function(){
+        this.user = account.getUser();
+        this.settings = this.user.settings;
+        console.log('this users settings are:',this.settings);
+    };
+
+    this.changeSettings = function(newSettings){
+        let newInfo = {
+            settings: newSettings
+        };
+
+        let _id  = this.user._id;
+
+        account.editUser(_id,newInfo).then(function(editedUser){
             account.setUser(editedUser);
         });
+
     };
 
     this.changePassword = function(newPassword){
@@ -18,15 +34,16 @@ angular.module('lang').controller('profileCtrl',function(account,sharedProps){
             password: newPassword
         };
 
-        let _id = account.getUser()._id;
+        let _id = this.user._id;
 
-        this.editUser(_id,newInfo);
+        account.editUser(_id,newInfo).then(function(editedUser){
+            account.setUser(editedUser);
+        });
     };
 
     this.removeUser = function(){
-        let user = account.getUser();
 
-        account.removeUser(user).then(function(result){
+        account.removeUser(this.user).then(function(result){
             if(result.statusCode=='200'){
                 this.logout();
             }else{
@@ -36,7 +53,4 @@ angular.module('lang').controller('profileCtrl',function(account,sharedProps){
 
     };
 
-    this.getUser = function(){
-        return account.getUser();
-    };
 });

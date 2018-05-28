@@ -6,6 +6,7 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
         }
     };
 
+
     this.pruneMarkup = function(card){
         let result = {
             _id: card._id,

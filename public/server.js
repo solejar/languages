@@ -40,7 +40,7 @@ app.listen(port,(err)=>{
         return console.log('something bad happened',err);
     }
 
-    console.log('server is listening on 8080, howdy');
+    console.log('Howdy, server is listening on port:  ',port);
 });
 
 module.exports = app;

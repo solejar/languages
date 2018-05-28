@@ -82,4 +82,53 @@ exports.editUser = function(options,onResult){
         });
 
     });
-}
+};
+
+exports.deleteUser = function(options,onResult){
+    MongoClient.connect(options.url,function(err,database){
+        if(err){
+            onResult({'statusCode': '400','errMsg': err});
+        }
+        const db = database.db(options.db);
+        const collection = db.collection(options.collection);
+
+        const user_id = mongo.ObjectID(options.user_id);
+
+        collection.deleteOne({_id: user_id},function(err,results){
+            if(err){
+                throw err;
+            }else{
+                console.log("successfully deleted a user");
+            }
+            let response = {
+                statusCode: '200',
+                content: results
+            };
+            onResult(response);
+        });
+    });
+
+};
+
+exports.deleteAllUsers = function(options,onResult){
+    MongoClient.connect(options.url,function(err,database){
+        if(err){
+            onResult({'statusCode': '400','errMsg': err});
+        }
+        const db = database.db(options.db);
+        const collection = db.collection(options.collection);
+
+        collection.deleteMany({},function(err,results){
+            if(err){
+                throw err;
+            }else{
+                console.log("successfully deleted a user");
+            }
+            let response = {
+                statusCode: '200',
+                content: results
+            };
+            onResult(response);
+        });
+    });
+};

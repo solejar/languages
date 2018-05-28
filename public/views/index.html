@@ -283,9 +283,14 @@
                             {{'Test rule groups'}}
                         </md-button>
                     </div>
+                    <div layout="row">
+                        <md-button ng-click="admin.nukeConfirm($event)" class="md-raised md-warn">
+                            {{'Nuke Accounts'}}
+                        </md-button>
+                    </div>
                 </div>
-                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='profile'" layout-margin   layout="column" ng-controller="profileCtrl as profile">
-                    {{'Profile page for: ' + profile.getUser().userName}}
+                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='profile'" layout-margin   layout="column" ng-init="profile.init()" ng-controller="profileCtrl as profile">
+                    {{'Profile page for: ' + profile.user.userName}}
                     <div>
                         <md-button ng-click="profile.logout()">
                             {{'Logout'}}

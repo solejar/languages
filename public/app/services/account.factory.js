@@ -5,10 +5,28 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
     let session = {}; //we might want this to be a const
     const obj = {};
 
+    const defaultSettings = {
+        'maxNewCards': {
+            'value': 20,
+            'type': 'positiveInteger'
+        }
+    };
+
     //remove authorization header, clear out session object
     obj.logout = function(){
         session = {};
         $http.defaults.headers.common.Authorization = '';
+        sharedProps.setProperty('currPage','login');
+    };
+
+    obj.getSetting = function(setting){
+
+        if(session.user.settings[setting]){
+            return session.user.settings[setting].value;
+        }else{
+            console.log('user doesnt have the appropriate setting, using system default');
+            return defaultSettings[setting].value;
+        }
     };
 
     //WIP
@@ -183,10 +201,15 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
         return deferred.promise;
     };
 
-    obj.register = function(signupInfo){
+    obj.register = function(signupInfo, useDefaultSettings = true){
         const deferred = $q.defer();
 
+        if(useDefaultSettings){
+            signupInfo.settings = defaultSettings;
+        }
+
         console.log(signupInfo);
+
 
         let registerOptions = {
             url: '/users',
