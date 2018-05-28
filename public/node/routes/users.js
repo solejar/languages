@@ -210,6 +210,7 @@ router.route('/')
     let account = {
         userName: req.body.userName,
         password: req.body.password,
+        settings: req.body.settings,
         isAdmin: false,  //this should never be decided by user
         signupDate: (new Date()).toLocaleDateString(),
         email: req.body.email

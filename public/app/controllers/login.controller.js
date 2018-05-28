@@ -15,12 +15,13 @@ angular.module('lang').controller('loginCtrl',function(sharedProps,account, $mdD
 
     this.loginFailed = false;
     this.disableLogin = false;
+    this.disableSignup = false;
 
     this.disableLoginButton = function(form){
         return form.$invalid&&this.disableLogin;
     };
 
-    this.disableSignup = function(form){
+    this.disableSignupButton = function(form){
         return form.$invalid&&this.disableSignup;
     };
 
