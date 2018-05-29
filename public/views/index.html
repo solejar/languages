@@ -290,10 +290,14 @@
                     </div>
                 </div>
                 <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='profile'" layout-margin   layout="column" ng-init="profile.init()" ng-controller="profileCtrl as profile">
-                    {{'Profile page for: ' + profile.user.userName}}
-                    <div>
+                    {{'Card viewer'}}
+                    <div layout="row">
+
                         <md-button ng-click="profile.logout()">
                             {{'Logout'}}
+                        </md-button>
+                        <md-button class="md-warn" ng-click="profile.confirmCardDeletion($event)">
+                            {{'Delete card collection'}}
                         </md-button>
                     </div>
                 </div>

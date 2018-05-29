@@ -31,8 +31,10 @@ angular.module('lang').controller('adminCtrl',function(tester,$mdDialog,sharedPr
         };
 
         sharedProps.httpReq(options).then(function(result){
-            console.log('all accounts nuked succesfully!');
-            account.logout();
+            if(result.statusCode=='200'){
+                console.log('all accounts nuked succesfully!');
+                account.logout();
+            }else{ console.log('account removal unsuccessful');  }
 
         });
 

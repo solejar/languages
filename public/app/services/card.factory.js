@@ -2,6 +2,10 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
     const obj = {};
     let cards = [];
 
+    obj.clearCurrCards = function(){
+        card = [];
+    };
+
     obj.getCardsByType = function(type){
 
         if(!cards){
