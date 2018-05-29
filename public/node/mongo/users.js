@@ -77,8 +77,9 @@ exports.editUser = function(options,onResult){
         collection.findOneAndUpdate(query,newValues,function(err,documents){
             if(err) throw err;
             console.log('1 document updated');
+            //console.log(documents);
             database.close();
-            onResult({'statusCode': '200','content': documents[0]});
+            onResult({'statusCode': '200','content': documents.value});
         });
 
     });

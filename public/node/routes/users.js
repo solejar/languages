@@ -199,6 +199,7 @@ router.route('/')
 
     usersDB.editUser(options,function(result){
         res.statusCode=result.statusCode;
+        console.log(result);
         if(res.statusCode=='400'){
             console.log('something went wrong with editing the user');
         }

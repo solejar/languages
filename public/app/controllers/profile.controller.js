@@ -16,14 +16,15 @@ angular.module('lang').controller('profileCtrl',function(account,sharedProps,$md
         console.log('this users settings are:',this.settings);
     };
 
-    this.changeSettings = function(newSettings){
+    this.saveSettings = function(){
         let newInfo = {
-            settings: newSettings
+            settings: this.settings
         };
 
         let _id  = this.user._id;
 
         account.editUser(_id,newInfo).then(function(editedUser){
+            console.log(editedUser);
             account.setUser(editedUser);
         });
 

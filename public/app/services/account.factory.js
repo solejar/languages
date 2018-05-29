@@ -192,6 +192,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
         sharedProps.httpReq(options).then(function(result){
             if(result.statusCode=='200'){
                 //everything went well
+                console.log(result);
             }else if(result.statusCode=='400'){
                 //something went wrong
                 console.log('something went wrong when editing the user');

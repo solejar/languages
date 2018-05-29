@@ -26,7 +26,7 @@ exports.editCard = function(options,onResult){
             if(err) throw err;
             console.log('1 document updated');
             database.close();
-            onResult({'statusCode': '200','content': documents[0]});
+            onResult({'statusCode': '200','content': documents.value});
         });
 
 
