@@ -8,8 +8,10 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
     const defaultSettings = {
         'maxNewCards': {
             'value': 20,
-            'type': 'positiveInteger'
-        }
+            'type': 'positiveInteger',
+            'description': 'Max new cards per day'
+        },
+        
     };
 
     //remove authorization header, clear out session object

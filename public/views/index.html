@@ -312,7 +312,7 @@
                     <div layout="column">
                         <div layout="row" ng-repeat="(settingName,setting) in profile.settings">
                             <div>
-                                {{settingName + ':'}}
+                                {{setting.description + ':'}}
                             </div>
                             <div ng-switch="setting.type">
                                 <md-input-container ng-switch-when="positiveInteger">

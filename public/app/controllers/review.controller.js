@@ -1,14 +1,63 @@
 angular.module('lang').controller('reviewCtrl',function(account,sharedProps, review, cardFactory){
 
     //array of answer options for card reviewing
-    this.learningChoices = ['again','good','easy'];
-    this.reviewChoices = ['again','hard','good','easy'];
-    this.relearningChoices = ['again','good'];
+    //contains word description of answer
+    //and an object which represents what the card will look like if that answer is chosen
+    this.choices = {
+        'learning': [
+            {
+                description: 'again',
+                resultingCard: {}
+            },
+            {
+                description: 'good',
+                resultingCard: {}
+            },
+            {
+                description: 'easy',
+                resultingCard: {}
+            }
+        ],
+        'relearning': [
+            {
+                description: 'again',
+                resultingCard: {}
+            },
+            {
+                description: 'good',
+                resultingCard: {}
+            }
+        ],
+        'review': [
+            {
+                description: 'again',
+                resultingCard: {}
+            },
+            {
+                description: 'hard',
+                resultingCard: {}
+            },
+            {
+                description: 'good',
+                resultingCard: {}
+            },
+            {
+                description: 'easy',
+                resultingCard: {}
+            }
+        ]
+    };
 
-    this.currReviewIndex = 0;//signals that you must show top of array
+    //card currently being shown for review
+    this.currCard = {};
 
+    //review deck. eventually plan to expand to multiple decks
+    this.deck = [];
 
-    this.cards = [];
+    this.endOfDay = new Date();
+    this.reviewDone = false;
+
+    //this is the count for each card that belongs to these categories
     this.counts = {
         learning: 0,
         review: 0,
@@ -16,66 +65,94 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
     };
 
     this.init = function(){
-        this.loadCards();
-        this.counts.learning = cardFactory.countCards('learning');
-        this.counts.review = cardFactory.countCards('review');
-        this.counts.relearning = cardFactory.countCards('relearning');
         this.maxNewCards = account.getSetting('maxNewCards');
+        this.loadCards();
+        this.loadNextCard();
+        this.endOfDay.setHours(23,59,59,999);
+
+    };
+
+    //collects the relevant deck
+    //in the future, would like to make this accept a deck name and load the cards from that deck
+    this.loadCards = function(){
+
+        //load as many cards as the learning limit allows
+        let learningCards = cardFactory.getCardsByStage('learning',true);
+        if(this.maxNewCards && (this.maxNewCards<learningCards.length)){
+            learningCards = learningCards.splice(0,this.maxNewCards);
+        }
+
+        //load the other cards
+        let reviewCards = cardFactory.getCardsByStage('review',true);
+        let relearningCards = cardFactory.getCardsByStage('relearning',true);
+
+        this.counts.learning = learningCards.length;
+        this.counts.review = reviewCards.length;
+        this.counts.relearning = relearningCards.length;
+
+        let temp = learningCards.concat(reviewCards);
+        temp = temp.concat(relearningCards);
+
+        cards = cardFactory.markupCards(temp);
+
+        console.log(cards);
+
+        this.deck = cards;
+    };
+
+    //gets the next card, or if no new card, sets the review as being done
+    this.loadNextCard = function(){
+        if(this.deck.length==0){
+            this.reviewDone = true;
+            return;
+        }
+
+        this.currCard = this.deck.shift(); //pop first item off the top
+
+        let len = choices.length;
+        for(i=0;i<len;i++){
+            let answer = this.choices[this.currCard.stage][i].description;
+            let resultingCard;
+
+            if(card.stage=='learning'||card.stage=='relearning'){
+                resultingCard = review.learnCard(this.currCard,answer);
+            }else if(card.stage=='review'){
+                updatedCard = review.reviewCard(this.currCard,answer);
+            }
+
+            this.choices[this.currCard.stage][i].resultingCard = resultingCard;
+        }
     };
 
     //function called when user answers a card
-    this.submitChoice = function(card, answer,oldIndex){
-        let updatedCard;
-        if(card.stage=='learning'){
-            updatedCard = review.learnCard(card,answer);
-            if(updatedCard.stage=='review'){
-                this.counts.learning--;
-            }
+    this.submitChoice = function(card, resultingCard){
 
-        }else if(card.stage=='review'){
-            updatedCard = review.reviewCard(card,answer);
-            if(answer=='again'){
-                this.counts.relearning++;
-            }
-            this.counts.review--;
-        }else if(card.stage=='relearning'){
-            updatedCard = review.learnCard(card,answer);
-            if(updatedCard.stage=='review'){
-                this.counts.review--;
-            }
+        this.counts[card.stage]--;
+
+        cardFactory.editCard(resultingCard);
+
+        if(new Date(resultingCard.dueTime)<this.endOfDay){
+            this.reinsertCard(resultingCard);
         }
 
-        if(updatedCard.stage=='learning'||updatedCard.stage=='relearning'){
-            //all failed cards need to be reinserted.
-            //all learning cards keep getting reinserted.
-            this.reinsertCard(updatedCard,oldIndex);
-        }
-
-        this.currReviewIndex++;
     };
 
-    //sometimes
-    this.reinsertCard = function(updatedCard,oldIndex){
-        //get rid of the old version of the card in the local list
-        //console.log('presumably old card is ',this.cards[oldIndex]);
-        //console.log('card attempting to add is ',updatedCard);
-        this.cards.splice(oldIndex,1);
+    //if the card is still due today, add it to the queue.
+    this.reinsertCard = function(updatedCard){
 
         let index = 0;
-        let newDueDate = updatedCard.dueTime;
-        while(this.cards[index].dueTime-newDueDate>0){
+        let maxIndex = this.deck.length;
+
+        //keep going until you either hit the end or find a date later than the card to be inserted
+        while((index<maxIndex)){
             index++;
         }
 
         //and add the updated one where it belongs in order
-        this.cards.splice(index++,0,updatedCard);
+        this.deck.splice(index,0,updatedCard);
+
+        this.counts[updatedCard.stage]++;
     };
 
-    //called on startup
-    this.loadCards = function(){
-        let cards = cardFactory.getDueCards();
-        cards = cardFactory.markupCards(cards);
-        console.log(cards);
-        this.cards = cards;
-    };
+
 });

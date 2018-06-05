@@ -2,11 +2,14 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
     const obj = {};
     let cards = [];
 
+    let endOfDay = new Date();
+    endOfDay.setHours(23,59,59,999);
+
     obj.clearCurrCards = function(){
         card = [];
     };
 
-    obj.getCardsByType = function(type){
+    obj.getCardsByType = function(type,getOnlyDue=false){
 
         if(!cards){
             return [];
@@ -17,13 +20,18 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
         }else{
             //else only return cards of the desired types
             let filteredCards = cards.filter(card => card.type==type);
+            if(getOnlyDue){
+                filteredCards.filter(
+                    card => (new Date(card.dueTime))<endOfDay
+                );
+            }
             return filteredCards;
         }
 
 
     };
 
-    obj.getCardsByStage = function(stage){
+    obj.getCardsByStage = function(stage,getOnlyDue=false){
         if(!cards){
             return [];
         }
@@ -33,6 +41,11 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
         }else{
             //else only return cards of the desired types
             let filteredCards = cards.filter(card => card.stage==stage);
+            if(getOnlyDue){
+                filteredCards.filter(
+                    card => (new Date(card.dueTime))<endOfDay
+                );
+            }
             return filteredCards;
         }
     };
@@ -60,26 +73,6 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
         });
 
         return markupCards;
-    };
-
-    obj.getDueCards = function(){
-        let dueCards;
-        let currDate = new Date();
-
-        //filter out the due cards
-        dueCards = cards.filter(
-            card => (new Date(card.dueTime))<currDate
-        );
-
-        //for now toying with getting rid of this
-        //obj.shuffleDeck(dueCards);
-
-        //console.log('cards found are:', cards);
-        //console.log('date compare result: ', cards[0].dueTime<currDate);
-        //console.log('currDate:',currDate);
-        //console.log('dueDate:',cards[0].dueTime);
-        console.log('due cards were found to be:', dueCards);
-        return dueCards;
     };
 
     //I'm gonna try to make this obselete
@@ -120,6 +113,9 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
             sharedProps.httpReq(cardOptions).then(function(res){
                 if(res.statusCode=='200'){
                     cards = res.content;
+                    cards.sort(function(a,b){
+                        return new Date(b.date) - new Date(a.date);
+                    });
                     console.log(cards);
                 }else{
                     console.log('something went horribly wrong with fetching the cards!');

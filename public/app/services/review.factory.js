@@ -13,8 +13,6 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
     obj.reviewCard = function(card, answer){
         console.log('about to review a card, with answer: ', answer);
 
-        let dueDate;
-
         //get the current ease and review interval
         let easeFactor = card.easeFactor;
         let newEaseFactor;
@@ -55,18 +53,20 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
             newEaseFactor = 1.3;
         }
 
+        //encapsulate the new interval into a different function so that we can use it to display as a preview on the front
+        //this can probably be worked around better
         newInterval = newInterval*intervalModifier;
         //per Anki docs, new interval is always at least one day more than currInterval
         if(newInterval<(currInterval+1)){
             newInterval = currInterval + 1;
         }
 
+        let dueDate;
+
         dueDate = obj.calculateDueDate(newInterval, 'day');
 
         card.reviewInterval = newInterval;
         card.easeFactor = newEaseFactor;
-
-        card.difficulty = obj.calculateRanking(card.dueTime);
 
         if(card.stage=='relearning'){ //this means you messed up the review
             card.dueTime = new Date();
@@ -74,7 +74,9 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
             card.dueTime = dueDate;
         }
 
-        cardFactory.editCard(card);
+        card.difficulty = obj.calculateRanking(card.dueTime);
+
+        //cardFactory.editCard(card);
         return card;
     };
 
@@ -121,7 +123,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
 
         card.dueTime = dueDate;
 
-        cardFactory.editCard(card);
+        //cardFactory.editCard(card);
         return card;
 
     };
