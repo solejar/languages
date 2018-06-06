@@ -11,7 +11,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
             'type': 'positiveInteger',
             'description': 'Max new cards per day'
         },
-        
+
     };
 
     //remove authorization header, clear out session object

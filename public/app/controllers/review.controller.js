@@ -78,6 +78,7 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
 
         //load as many cards as the learning limit allows
         let learningCards = cardFactory.getCardsByStage('learning',true);
+
         if(this.maxNewCards && (this.maxNewCards<learningCards.length)){
             learningCards = learningCards.splice(0,this.maxNewCards);
         }
@@ -94,7 +95,6 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
         temp = temp.concat(relearningCards);
 
         cards = cardFactory.markupCards(temp);
-
         console.log(cards);
 
         this.deck = cards;
@@ -109,7 +109,7 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
 
         this.currCard = this.deck.shift(); //pop first item off the top
 
-        let len = choices.length;
+        let len =  this.choices.length;
         for(i=0;i<len;i++){
             let answer = this.choices[this.currCard.stage][i].description;
             let resultingCard;
@@ -134,6 +134,8 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
         if(new Date(resultingCard.dueTime)<this.endOfDay){
             this.reinsertCard(resultingCard);
         }
+
+        this.loadNextCard();
 
     };
 

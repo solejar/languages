@@ -4,7 +4,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
     //how to connect all of these to user account?
     const maxLearningStage = 1; //0 is first stage, so 2 total stages here
     const learningSteps = [1,10];
-    const initialInterval = 1; //1 day is default interval
+    const initialInterval = 1440; //1 day in min
     const initialEaseFactor = 2.5;
     const easyBonus = 1.3;
     const intervalModifier = 1;
@@ -26,7 +26,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
             newEaseFactor = easeFactor - 0.2; //makes card appear more frequently
             newInterval = failurePenalty*currInterval; //defaults to 0
             if(!newInterval){
-                newInterval = 1; //one is the default number of days, if interval was set to 0
+                newInterval = initialInterval; //one is the default number of days, if interval was set to 0
             }
 
             //change the card stage to reflect
@@ -53,17 +53,17 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
             newEaseFactor = 1.3;
         }
 
-        //encapsulate the new interval into a different function so that we can use it to display as a preview on the front
         //this can probably be worked around better
         newInterval = newInterval*intervalModifier;
+
         //per Anki docs, new interval is always at least one day more than currInterval
-        if(newInterval<(currInterval+1)){
-            newInterval = currInterval + 1;
+        if(newInterval<(currInterval+1440)){
+            newInterval = currInterval + 1440;
         }
 
-        let dueDate;
+        let dueTime;
 
-        dueDate = obj.calculateDueDate(newInterval, 'day');
+        dueTime = obj.calculateDueTime(newInterval);
 
         card.reviewInterval = newInterval;
         card.easeFactor = newEaseFactor;
@@ -71,18 +71,17 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
         if(card.stage=='relearning'){ //this means you messed up the review
             card.dueTime = new Date();
         }else{
-            card.dueTime = dueDate;
+            card.dueTime = dueTime;
         }
 
-        card.difficulty = obj.calculateRanking(card.dueTime);
+        card.howWellKnown = obj.calculateHowWellKnown(card.dueTime);
 
-        //cardFactory.editCard(card);
         return card;
     };
 
     obj.learnCard = function(card,answer){
 
-        let dueDate;
+        let dueTime;
 
         let currStage = card.learningStage;
         let newStage;
@@ -105,8 +104,8 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
                 card.reviewInterval = initialInterval;
                 card.easeFactor = initialEaseFactor;
 
-                dueDate = obj.calculateDueDate(card.reviewInterval,'day');
-                card.difficulty = obj.calculateRanking(card.dueTime);
+                dueTime = obj.calculateDueTime(card.reviewInterval);
+                card.howWellKnown = obj.calculateHowWellKnown(card.dueTime);
             }
 
             card.stage = 'review';
@@ -115,77 +114,58 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
         }else{
 
             let timeStep = learningSteps[newStage];
-            dueDate = obj.calculateDueDate(timeStep,'minute');
+            dueTime = obj.calculateDueTime(timeStep);
 
             card.learningStage = card.newStage;
 
         }
 
-        card.dueTime = dueDate;
+        card.dueTime = dueTime;
 
-        //cardFactory.editCard(card);
         return card;
 
     };
 
-    obj.calculateRanking = function(cardDueTime){
+    obj.calculateHowWellKnown = function(cardDueTime){
         let ranking;
 
         let currTime = new Date();
         let timeDiffDays =  (cardDueTime-currTime)/(24*60*60*1000);
 
+        //this is kind of arbitrary
         if(timeDiffDays<7){
-            ranking = 4;
-        }else if(timeDiffDays<31){
-            ranking = 3;
-        }else if(timeDiffDays<62){
-            ranking = 2;
-        }else{
             ranking = 1;
+        }else if(timeDiffDays<31){
+            ranking = 2;
+        }else if(timeDiffDays<62){
+            ranking = 3;
+        }else{
+            ranking = 4;
         }
 
         return ranking;
     };
 
-    const secondModifier = 1000;
-    const minuteModifier = 60*secondModifier;
-    const hourModifier = minuteModifier*60;
-    const dayModifier = hourModifier*24;
+    const minuteModifier = 60000; //amount of milliseconds in a minute, for date adjusting
 
     //plus minus range for random fuzz added to review interval
     const fuzzRange = 15;
 
     //put it in minutes
     const fuzzRangeMinutes = fuzzRange*minuteModifier;
-    obj.calculateDueDate = function(interval, unit){
+
+    //just make this in minutes all the time
+    obj.calculateDueTime = function(interval){
         let currDate = new Date();
 
-        let modifier;
-        if(unit == 'sec'){
-            modifier = secondModifier;
-        }else if (unit =='minute'){
-            modifier = minuteModifier;
-        }else if (unit =='hour'){
-            modifier = hourModifier;
-        }else if( unit =='day'){
-            modifier = dayModifier;
-        }else{
-            //just assume day
-            modifier = dayModifier;
-        }
-
         let baseTime = interval*modifier;
-        if(unit!='sec'&&unit!='minute'){
-            let fuzz = fuzzRangeMinutes*(Math.random()-0.5);
-            baseTime += fuzz;
-        }
+        let fuzz = fuzzRangeMinutes*(Math.random()-0.5);
+        baseTime += fuzz;
 
-        let newDueDate = new Date(currDate.getTime() + baseTime);
+        let newdueTime = new Date(currDate.getTime() + baseTime);
 
-        return newDueDate;
+        return newdueTime;
     };
-
-
 
     return obj;
 });

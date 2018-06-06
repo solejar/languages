@@ -2,6 +2,7 @@
 angular.module('lang').controller('profileCtrl',function(account,sharedProps,$mdDialog,cardFactory){
     this.logout = function(){
         account.logout();
+        cardFactory.clearCurrCards();
     };
 
     this.user = {

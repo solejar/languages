@@ -75,26 +75,6 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
         return markupCards;
     };
 
-    //I'm gonna try to make this obselete
-    obj.shuffleDeck = function(array){
-        let currentIndex = array.length, temporaryValue, randomIndex;
-
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-
-            // And swap it with the current element.
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-
-    };
-
-
     obj.loadCards = function(user){
         const deferred = $q.defer();
 
@@ -113,6 +93,7 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
             sharedProps.httpReq(cardOptions).then(function(res){
                 if(res.statusCode=='200'){
                     cards = res.content;
+                    console.log(res);
                     cards.sort(function(a,b){
                         return new Date(b.date) - new Date(a.date);
                     });

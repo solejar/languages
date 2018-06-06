@@ -459,14 +459,14 @@
                                                     <md-icon md-svg-icon="./images/relearning_icon.svg">
                                                     </md-icon>
                                                 </div>
-                                                <div flex="10" class="small-button" layout="column" layout-align="center"  ng-if="card.stage=='review'||card.stage=='relearning'" ng-switch="card.difficulty">
-                                                    <md-icon ng-switch-when="1" md-svg-icon="./images/difficultyIcon1_grey.svg">
+                                                <div flex="10" class="small-button" layout="column" layout-align="center"  ng-if="card.stage=='review'||card.stage=='relearning'" ng-switch="card.howWellKnown">
+                                                    <md-icon ng-switch-when="4" md-svg-icon="./images/difficultyIcon1_grey.svg">
                                                     </md-icon>
-                                                    <md-icon ng-switch-when="2" md-svg-icon="./images/difficultyIcon2_grey.svg">
+                                                    <md-icon ng-switch-when="3" md-svg-icon="./images/difficultyIcon2_grey.svg">
                                                     </md-icon>
-                                                    <md-icon ng-switch-when="3" md-svg-icon="./images/difficultyIcon3_grey.svg">
+                                                    <md-icon ng-switch-when="2" md-svg-icon="./images/difficultyIcon3_grey.svg">
                                                     </md-icon>
-                                                    <md-icon ng-switch-when="4" md-svg-icon="./images/difficultyIcon4_grey.svg">
+                                                    <md-icon ng-switch-when="1" md-svg-icon="./images/difficultyIcon4_grey.svg">
                                                     </md-icon>
                                                 </div>
                                                 <md-button ng-click="deck.removeCard(decliner.cards, $index)" class="md-raised md-warn small-button" >
@@ -504,14 +504,14 @@
                                                         <md-icon md-svg-icon="./images/pencil_edit_button.svg">
                                                         </md-icon>
                                                     </md-button>
-                                                    <div flex="10" class="small-button" layout="column" layout-align="center"  ng-if="card.stage=='review'||card.stage=='relearning'" ng-switch="card.difficulty">
-                                                        <md-icon ng-switch-when="1" md-svg-icon="./images/difficultyIcon1_grey.svg">
+                                                    <div flex="10" class="small-button" layout="column" layout-align="center"  ng-if="card.stage=='review'||card.stage=='relearning'" ng-switch="card.howWellKnown">
+                                                        <md-icon ng-switch-when="4" md-svg-icon="./images/difficultyIcon1_grey.svg">
                                                         </md-icon>
-                                                        <md-icon ng-switch-when="2" md-svg-icon="./images/difficultyIcon2_grey.svg">
+                                                        <md-icon ng-switch-when="3" md-svg-icon="./images/difficultyIcon2_grey.svg">
                                                         </md-icon>
-                                                        <md-icon ng-switch-when="3" md-svg-icon="./images/difficultyIcon3_grey.svg">
+                                                        <md-icon ng-switch-when="2" md-svg-icon="./images/difficultyIcon3_grey.svg">
                                                         </md-icon>
-                                                        <md-icon ng-switch-when="4" md-svg-icon="./images/difficultyIcon4_grey.svg">
+                                                        <md-icon ng-switch-when="1" md-svg-icon="./images/difficultyIcon4_grey.svg">
                                                         </md-icon>
                                                     </div>
 
@@ -697,7 +697,7 @@
                             </md-button>
                         </div>
                         <div layout="column" ng-if="review.showReview" ng-controller="deckCtrl as deck" flex="90">
-                            <div ng-if="$index==review.currReviewIndex" ng-repeat="card in review.cards" flex="100" layout="column" layout-margin>
+                            <div flex="100" layout="column" layout-margin>
 
                                 <div flex="80" layout="row" id="expanded-phrase" layout-align="center" layout-margin>
                                     <div layout="column" flex>
@@ -705,33 +705,33 @@
                                             <div flex="5" >
                                             </div>
                                             <div flex="25" layout="row" layout-align="start start">
-                                                <b flex style="margin-left: 5px;" ng-hide="card.markup.flipped">
+                                                <b flex style="margin-left: 5px;" ng-hide="review.currCard.markup.flipped">
                                                     {{'Front: '}}
                                                 </b>
-                                                <b flex style="margin-left: 5px;" ng-show="card.markup.flipped">
+                                                <b flex style="margin-left: 5px;" ng-show="review.currCard.markup.flipped">
                                                     {{'Back: '}}
                                                 </b>
                                                 <div layout="row" layout-align="end">
-                                                    <md-button class="small-button" ng-click="deck.starCard(card)">
-                                                        <md-icon ng-hide="card.starred" md-svg-icon="./images/star_w.svg">
+                                                    <md-button class="small-button" ng-click="deck.starCard(review.currCard)">
+                                                        <md-icon ng-hide="review.currCard.starred" md-svg-icon="./images/star_w.svg">
                                                         </md-icon>
-                                                        <md-icon ng-show="card.starred" md-svg-icon="./images/star_y.svg">
+                                                        <md-icon ng-show="review.currCard.starred" md-svg-icon="./images/star_y.svg">
                                                         </md-icon>
                                                         {{''}}
                                                     </md-button>
                                                 </div>
                                             </div>
-                                            <div flex="70" layout-align="start" layout="column" ng-if="!card.markup.flipped">
+                                            <div flex="70" layout-align="start" layout="column" ng-if="!review.currCard.markup.flipped">
                                                 <div flex="30" layout="column" layout-align="center" style="text-align: center; font-size: 1.5em; font-weight: bold;">
                                                     <span flex="50">
-                                                        {{card.front.content}}
+                                                        {{review.currCard.front.content}}
                                                     </span>
                                                 </div>
                                                 <div flex="10">
                                                 </div>
                                                 <div flex="55" layout="row" layout-align="center start">
                                                     <div flex="80" flex="50" layout="row" layout-align="center" layout-margin layout-wrap>
-                                                        <div flex="25" class="subcontent" layout="column" ng-repeat="subcontent in card.front.subcontents" layout-margin>
+                                                        <div flex="25" class="subcontent" layout="column" ng-repeat="subcontent in review.currCard.front.subcontents" layout-margin>
                                                             <b flex="15">
                                                                 {{subcontent.name +':'}}
                                                             </b>
@@ -744,17 +744,17 @@
                                                 <div flex="5">
                                                 </div>
                                             </div>
-                                            <div flex="70" layout-align="start" layout="column" ng-if="card.markup.flipped">
+                                            <div flex="70" layout-align="start" layout="column" ng-if="review.currCard.markup.flipped">
                                                 <div flex="30" layout="column" layout-align="center" style="text-align: center; font-size: 1.5em; font-weight: bold;">
                                                     <span flex="50">
-                                                        {{card.back.content}}
+                                                        {{review.currCard.back.content}}
                                                     </span>
                                                 </div>
                                                 <div flex="10">
                                                 </div>
                                                 <div flex="55" layout="row" layout-align="center start">
                                                     <div flex="80" layout="row" layout-align="center" layout-margin layout-wrap>
-                                                        <div flex="25" class="subcontent" layout="column" ng-repeat="subcontent in card.back.subcontents" layout-margin>
+                                                        <div flex="25" class="subcontent" layout="column" ng-repeat="subcontent in review.currCard.back.subcontents" layout-margin>
                                                             <b flex="15">
                                                                 {{subcontent.name +':'}}
                                                             </b>
@@ -774,30 +774,17 @@
                                 </div>
                                 <div flex="5">
                                 </div>
-                                <div layout="row" layout-align="center" flex="15" ng-if="!card.markup.flipped" >
-                                    <md-button class="md-raised" ng-click="deck.flipCard(card)">
+                                <div layout="row" layout-align="center" flex="15" ng-if="!review.currCard.markup.flipped" >
+                                    <md-button class="md-raised" ng-click="deck.flipCard(review.currCard)">
                                         {{'See Answer'}}
                                     </md-button>
                                 </div>
-                                <div layout="row" flex="15" ng-if="card.stage=='learning'&&card.markup.flipped" layout-align="center">
-                                    <md-button  ng-class="choice" ng-click="review.submitChoice(card,choice,review.currReviewIndex);" ng-repeat="choice in review.learningChoices">
-                                        {{choice}}
-                                    </md-button>
-                                </div>
-                                <div layout="row" ng-if="card.stage=='review'&&card.markup.flipped" flex="15" layout-align="center">
-                                    <md-button ng-class="choice" ng-click="review.submitChoice(card,choice,review.currReviewIndex);" ng-repeat="choice in review.reviewChoices">
-                                        {{choice}}
-                                    </md-button>
-                                </div>
-                                <div layout="row" ng-if="card.stage=='relearning'&&card.markup.flipped" flex="15" layout-align="center">
-                                    <md-button ng-class="choice" ng-click="review.submitChoice(card,choice,review.currReviewIndex);" ng-repeat="choice in review.relearningChoices">
-                                        {{choice}}
+                                <div layout="row" flex="15" ng-if="review.currCard.markup.flipped" layout-align="center">
+                                    <md-button ng-class="choice.description" ng-click="review.submitChoice(review.currCard,choice.resultingCard);" ng-repeat="choice in review.choices[review.currCard.stage]">
+                                        {{choice.description + '\n'+ choice.resultingCard.reviewInterval}}
                                     </md-button>
                                 </div>
                             </div>
-
-
-
                         </div>
                     </div>
 
