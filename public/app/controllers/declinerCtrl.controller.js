@@ -287,7 +287,7 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
                 };
 
                 card.stage = 'learning';
-                card.learningStage = 0;
+                card.learningStage = 1;
 
                 let user = account.getUser();
                 if(user){

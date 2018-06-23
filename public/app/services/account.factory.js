@@ -8,9 +8,104 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
     const defaultSettings = {
         'maxNewCards': {
             'value': 20,
-            'type': 'positiveInteger',
+            'type': 'select',
+            'choices': [
+                {'value': 10, 'display': 10},
+                {'value': 20, 'display': 20},
+                {'value': 40, 'display': 40},
+                {'value': 60, 'display': 60},
+                {'value': 80, 'display': 80},
+                {'value': 100, 'display': 100}
+            ],
             'description': 'Max new cards per day'
         },
+        'maxLearningStage': {
+            'value': 2,
+            'type': 'select',
+            'choices': [
+                {'value': 1, 'display': 1},
+                {'value': 2, 'display': 2},
+                {'value': 3, 'display': 3},
+                {'value': 4, 'display': 4},
+                {'value': 5, 'display': 5}
+            ],
+            'description': 'Total learning steps'
+        },
+        /*'learningSteps': {
+            'value': [ 1 , 10 ],
+            'units': [ 'mins', 'mins'],
+            'type': 'timeArray',
+            'description': 'Length of time between learning steps'
+        },*/
+        'firstLearningStep': {
+            'value': 1,
+            'type': 'select',
+            'choices': [
+                {'value': 1, 'display': 1},
+                {'value': 5, 'display': 5},
+                {'value': 10, 'display': 10},
+                {'value': 15, 'display': 15},
+                {'value': 20, 'display': 20}
+            ],
+            'description': 'Initial learning interval (mins)'
+        },
+        'initialInterval': {
+            'value': 1440,
+            'type': 'select',
+            'choices': [
+                {'value': 1440, 'display': 1},
+                {'value': 1440*2, 'display': 2},
+                {'value': 1440*4, 'display': 4},
+                {'value': 1440*7, 'display': 7},
+                {'value': 1440*14, 'display': 14}
+            ],
+            'description': 'Initial review interval (days)'
+        },
+        'initialEaseFactor': {
+            'value': 2.5,
+            'type': 'range',
+            'options': {
+                'floor': 1.3,
+                'ceil': 3.5,
+                'step': 0.2,
+                'precision': 1
+            },
+            'description': 'Initial card ease factor'
+        },
+        'intervalModifier': {
+            'value': 1,
+            'type': 'range',
+            'options': {
+                'floor': 1.0,
+                'ceil': 5.0,
+                'step': 0.2,
+                'precision': 1
+            },
+            'description': 'Factor by which to lengthen intervals'
+        },
+        'failurePenalty': {
+            'value': 0.0,
+            'type': 'range',
+            'options': {
+                'floor': 0.0,
+                'ceil': 1.0,
+                'step': 0.1,
+                'precision': 1
+            },
+            'description': 'Leniency on failure'
+        },
+        //look into the angular slider package
+        'easyBonus': {
+            'value': 1.3,
+            'type': 'range',
+            'options': {
+                'floor': 1.0,
+                'ceil': 2.0,
+                'step': 0.1,
+                'precision': 1
+            },
+            'description': 'Bonus for marking card \'easy\''
+        }
 
     };
 

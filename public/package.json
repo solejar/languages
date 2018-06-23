@@ -27,6 +27,7 @@
     "angular-aria": "^1.6.7",
     "angular-material": "^1.1.5",
     "angular-messages": "^1.6.7",
+    "angularjs-slider": "^6.5.1",
     "body-parser": "^1.18.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",

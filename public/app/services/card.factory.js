@@ -3,6 +3,7 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
     let cards = [];
 
     let endOfDay = new Date();
+    //this timing should eventually be a setting as well
     endOfDay.setHours(23,59,59,999);
 
     obj.clearCurrCards = function(){

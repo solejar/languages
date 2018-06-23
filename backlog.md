@@ -1,5 +1,18 @@
 # Backlog
 
+## Immediate
+
+- Update settings to all be in the account (1)
+- Finish cards (3)
+  - Fix markup on card editing (a)
+  - Add responsive sizing (b)
+  - Move to template (c)
+- Add mobile responsivity to the decliner (4) 
+- Add responsive sizing to the review page (5)
+- Add basic markup to the user page. (2)
+
+
+
 ## Decliner
 
 ### Functional

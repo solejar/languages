@@ -66,8 +66,10 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
 
     this.init = function(){
         this.maxNewCards = account.getSetting('maxNewCards');
+        review.loadSettings();
         this.loadCards();
         this.loadNextCard();
+        //this timing should eventually be a setting as well
         this.endOfDay.setHours(23,59,59,999);
 
     };

@@ -1,17 +1,34 @@
-angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
+angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, account){
     const obj = {};
 
     //how to connect all of these to user account?
-    const maxLearningStage = 1; //0 is first stage, so 2 total stages here
-    const learningSteps = [1,10];
-    const initialInterval = 1440; //1 day in min
-    const initialEaseFactor = 2.5;
-    const easyBonus = 1.3;
-    const intervalModifier = 1;
-    const failurePenalty = 0;
+
+    //if this works, remove it from the other functions
+    let firstLearningStep;
+    let maxLearningStage;
+    let initialInterval;
+    let initialEaseFactor;
+    let easyBonus;
+    let intervalModifier;
+    let failurePenalty;
+
+    obj.loadSettings = function(){
+        learningSteps = account.getSetting('learningSteps');
+        maxLearningStage = account.getSetting('maxLearningStage');
+        initialInterval = account.getSetting('initialInterval');
+        initialEaseFactor = account.getSetting('initialEaseFactor');
+        easyBonus = account.getSetting('easyBonus');
+        intervalModifier = account.getSetting('intervalModifier');
+        failurePenalty = account.getSetting('failurePenalty');
+    };
 
     obj.reviewCard = function(card, answer){
         console.log('about to review a card, with answer: ', answer);
+
+        let initialInterval = account.getSetting('initialInterval');
+        let easyBonus = account.getSetting('easyBonus');
+        let intervalModifier = account.getSetting('intervalModifier');
+        let failurePenalty = account.getSetting('failurePenalty');
 
         //get the current ease and review interval
         let easeFactor = card.easeFactor;
@@ -81,6 +98,14 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
 
     obj.learnCard = function(card,answer){
 
+        let maxLearningStage = account.getSetting('maxLearningStage');
+        let initialInterval = account.getSetting('initialInterval');
+        let firstLearningStep = account.getSetting('firstLearningStep');
+        let initialEaseFactor = account.getSetting('initialEaseFactor');
+
+        let currReviewInterval = card.reviewInterval;
+        let newReviewInterval;
+
         let dueTime;
 
         let currStage = card.learningStage;
@@ -88,11 +113,15 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
 
         //increment up learning stages with response
         if(answer == 'again'){
-            newStage = 0;
+            newStage = 1;
+            newReviewInterval = firstLearningStep;
         }else if(answer == 'good'){
             newStage = currStage + 1;
+            newReviewInterval = currReviewInterval*10;
+
         }else if(answer == 'easy'){
             newStage = maxLearningStage+1; //automatically graduate
+            newReviewInterval = currReviewInterval*100;
         }
 
         //if your response would take you past the total number of learning stages,
@@ -101,6 +130,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
         if(newStage>maxLearningStage){
 
             if(card.stage=='learning'){ //if it was a relearning card, it already has these values, and we don't need them
+
                 card.reviewInterval = initialInterval;
                 card.easeFactor = initialEaseFactor;
 
@@ -113,7 +143,8 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory){
 
         }else{
 
-            let timeStep = learningSteps[newStage];
+            //let timeStep = learningSteps[newStage];
+
             dueTime = obj.calculateDueTime(timeStep);
 
             card.learningStage = card.newStage;
