@@ -31,12 +31,6 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
             ],
             'description': 'Total learning steps'
         },
-        /*'learningSteps': {
-            'value': [ 1 , 10 ],
-            'units': [ 'mins', 'mins'],
-            'type': 'timeArray',
-            'description': 'Length of time between learning steps'
-        },*/
         'firstLearningStep': {
             'value': 1,
             'type': 'select',
@@ -125,7 +119,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
         if(session.user.settings[setting]){
             return session.user.settings[setting].value;
         }else{
-            console.log('user doesnt have the appropriate setting, using system default');
+            console.log('user doesnt have the setting: ' ,setting,' using system default');
             return defaultSettings[setting].value;
         }
     };

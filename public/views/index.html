@@ -79,12 +79,23 @@
         <md-content layout="column" class="background" flex="90" layout-align="start">
             <div flex="none" layout-align="end" layout="row" id="header" style="text-align: center; height: 50px" >
 
-                <md-button
-                    ng-show="header.isLoggedIn()"
-                    ng-click="header.changePage('profile')"
-                    style="text-transform: none;">
-                    {{'Hi, '+header.getUser().userName}}
-                </md-button>
+                <md-menu ng-show="header.isLoggedIn()">
+                    <md-button md-menu-origin ng-click="header.openProfileMenu($mdMenu, $event)" aria-label="Open profile interactions menu" style="text-transform: none;" >
+                        {{'Hi, '+header.getUser().userName}}
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button md-menu-align-target ng-click="header.changePage('profile')">
+                                {{'Go to profile'}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="header.logout()">
+                                {{'Logout'}}
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
                 <div ng-hide="header.isLoggedIn()||header.getCurrPage()=='login'">
                     <md-button  ng-click="header.changePage('login')">
                         Sign up
@@ -292,11 +303,6 @@
                     </div>
                 </div>
                 <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='profile'" layout-margin   layout="column" ng-init="profile.init()" ng-controller="profileCtrl as profile">
-                    <div layout="row" layout-align="end">
-                        <md-button ng-click="profile.logout()">
-                            {{'Logout'}}
-                        </md-button>
-                    </div>
 
                     <div layout="row">
 

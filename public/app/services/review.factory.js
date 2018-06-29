@@ -12,7 +12,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
 
     //load all of the new settings when appropriate
     obj.loadSettings = function(){
-        learningSteps = account.getSetting('learningSteps');
+        firstLearningStep = account.getSetting('firstLearningStep');
         maxLearningStage = account.getSetting('maxLearningStage');
         initialInterval = account.getSetting('initialInterval');
         initialEaseFactor = account.getSetting('initialEaseFactor');

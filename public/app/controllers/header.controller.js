@@ -21,6 +21,15 @@ angular.module('lang').controller('headerCtrl',function($window, account,sharedP
         }
     };
 
+    this.openProfileMenu = function($mdMenu,ev){
+        originatorEv = ev;
+        $mdMenu.open(ev);
+    };
+
+    this.logout = function(){
+        account.logout();
+    };
+
     //this function sets the labels on the upper nav bar
     //Russian display isn't fleshed out for whole app however.
     this.setLabels = function(){

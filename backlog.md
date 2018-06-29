@@ -81,9 +81,6 @@
 
 **Nonfunctional**
 
-- Add more comments
-- 
-
 
 
 ## Backend
