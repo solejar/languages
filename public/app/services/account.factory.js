@@ -68,7 +68,10 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
                 'floor': 1.3,
                 'ceil': 3.5,
                 'step': 0.2,
-                'precision': 1
+                'precision': 1,
+                'onEnd': function(){
+                    profile.settingsChanged=true;
+                }
             },
             'description': 'Initial card ease factor'
         },

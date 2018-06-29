@@ -5,6 +5,27 @@ angular.module('lang').controller('profileCtrl',function(account,sharedProps,$md
         cardFactory.clearCurrCards();
     };
 
+    this.areSettingsEqual = function(settings1,settings2){
+        if(settings1.length!=settings2.length){
+            return false;
+        }
+
+        let keys = Object.keys(settings1);
+
+        for(let i = 0;i<keys.length;i++){
+            let currKey = keys[i];
+            if(!settings2.hasOwnProperty(currKey)){
+                return false;
+            }
+
+            if(settings2[currKey].value!=settings1[currKey].value){
+                return false;
+            }
+        }
+
+        return true;
+    };
+
     this.user = {
         userName:  '',
         settings: {},
@@ -13,13 +34,14 @@ angular.module('lang').controller('profileCtrl',function(account,sharedProps,$md
 
     this.init = function(){
         this.user = account.getUser();
-        this.settings = this.user.settings;
-        console.log('this users settings are:',this.settings);
+        this.newSettings = JSON.parse(JSON.stringify(this.user.settings));
+        console.log('this users settings are:',JSON.parse(JSON.stringify(this.newSettings)));
+
     };
 
-    this.saveSettings = function(){
+    this.saveSettings = function(newSettings){
         let newInfo = {
-            settings: this.settings
+            settings: newSettings
         };
 
         let _id  = this.user._id;
@@ -27,8 +49,21 @@ angular.module('lang').controller('profileCtrl',function(account,sharedProps,$md
         account.editUser(_id,newInfo).then(function(editedUser){
             console.log(editedUser);
             account.setUser(editedUser);
-        });
+            this.user.settings = JSON.parse(JSON.stringify(newSettings));
 
+        }.bind(this));
+
+    };
+
+    this.clearSettings = function(){
+
+        //console.log('clear hit, user settings are:', JSON.parse(JSON.stringify(this.user.settings)));
+        this.newSettings = JSON.parse(JSON.stringify(this.user.settings));
+    };
+
+    this.resetDefaultSettings = function(){
+        this.user.settings = account.defaultSettings;
+        this.newSettings = JSON.parse(JSON.stringify(this.user.settings));
     };
 
     this.confirmCardDeletion = function(ev){

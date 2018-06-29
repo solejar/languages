@@ -312,9 +312,9 @@
                         {{'Settings'}}
                     </div>
 
-                    <div layout="row" flex layout-align="center" ng-repeat="(settingName,setting) in profile.settings">
+                    <div layout="row" flex layout-align="start" ng-repeat="(settingName,setting) in profile.newSettings">
 
-                        <div style="background-color: yellow;" flex="80" flex ng-switch="setting.type">
+                        <div  flex="80" flex ng-switch="setting.type">
                             <div ng-switch-when="range" layout-align="center" flex="100" layout="column">
                                 <div>
                                     {{setting.description + ':'}}
@@ -325,11 +325,11 @@
                                 </rzslider>
                             </div>
 
-                            <md-input-container  flex="100" style="background-color: green;" ng-switch-when="select" >
+                            <md-input-container  flex="100" style="width: 200px;" ng-switch-when="select" >
                                 <label >
                                 {{setting.description}}
                                 </label>
-                                <md-select ng-model="setting.value">
+                                <md-select  ng-model="setting.value">
                                     <md-option ng-repeat="choice in setting.choices" ng-value="choice.value" >
                                     {{choice.display}}
                                     </md-option>
@@ -339,11 +339,14 @@
                         </div>
                     </div>
                     <div layout="row" layout-align="space-around">
-                        <md-button md-raised ng-click="profile.saveSettings()">
+                        <md-button md-raised ng-disabled="profile.areSettingsEqual(profile.newSettings,profile.user.settings)" ng-click="profile.saveSettings(profile.newSettings)">
                             {{'Save'}}
                         </md-button>
-                        <md-button md-raised ng-click="profile.clearSettings()">
+                        <md-button md-raised ng-disabled="profile.areSettingsEqual(profile.newSettings,profile.user.settings)" ng-click="profile.clearSettings()">
                             {{'Clear'}}
+                        </md-button>
+                        <md-button md-raised ng-click="profile.resetDefaultSettings()">
+                            {{'Default'}}
                         </md-button>
                     </div>
 
