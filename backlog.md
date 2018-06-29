@@ -2,7 +2,6 @@
 
 ## Immediate
 
-- Update settings to all be in the account (1)
 - Finish cards (3)
   - Fix markup on card editing (a)
   - Add responsive sizing (b)
@@ -78,12 +77,11 @@
 
 **Functional** 
 
-- Due cards are currently shuffled. But they should be in order, with noise added. And I guess a limit to new cards per day? 
-  - Some parts of this are arbitrary, but I need to at least make sure that if you get it wrong, it gets put back into the pile immediately
-- Perhaps add the next interval under the choice?
+- Work on getting the next interval to display under the choice properly
 
 **Nonfunctional**
 
+- Add more comments
 - 
 
 
@@ -104,8 +102,7 @@
 
 
 
-
-##Testing
+## Testing
 
 * for each factory, come up with some specific test cases and assertions as time goes on
 
@@ -123,18 +120,23 @@
 
   ​
 
-##Profile
+## Profile
 
 **Functional**
 
-- some sort of viewport/link to other sections?
-- what view will be served to non-authenticated user?
+- Add change password functionality
+  - Ask for current password, then new passwords with confirmation
+- Add 'delete account' functionality
+- Add cardviewer (this is a biggie, do this after creating the card template)
 
 **Nonfunctional**
 
+- Improve markup
+- Improve responsiveness of sizing
 
 
-##Misc.
+
+## Misc.
 
 **Nonfunctional**
 
@@ -142,7 +144,7 @@
 
 
 
-##Admin
+## Admin
 
 * Move onto a deployment server
 * Design Docs/How-to
@@ -167,7 +169,7 @@
 
 
 
-##Out of Scope
+## Out of Scope
 
 * words with multiple forms of plurals
 * non-declinable, non-russian names.

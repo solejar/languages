@@ -472,7 +472,7 @@
                                                     </md-icon>
                                                     {{''}}
                                                 </md-button>
-                                                <md-button  class="small-button" ng-click="deck.editModeSwap(card,'expand')" ng-if="deck.enableEditMode(card)" >
+                                                <md-button  class="small-button" ng-click="deck.editModeSwap(card,'expand')" ng-if="deck.isEditingEnabled(card)" >
                                                     <md-icon md-svg-icon="./images/pencil_edit_button.svg">
                                                     </md-icon>
                                                 </md-button>
@@ -525,7 +525,7 @@
                                                         <md-icon md-svg-icon="./images/relearning_icon.svg">
                                                         </md-icon>
                                                     </div>
-                                                    <md-button class="small-button" ng-click="deck.editModeSwap(card,'expand')" ng-if="deck.enableEditMode(card)" >
+                                                    <md-button class="small-button" ng-click="deck.editModeSwap(card,'expand')" ng-if="deck.isEditingEnabled(card)" >
                                                         <md-icon md-svg-icon="./images/pencil_edit_button.svg">
                                                         </md-icon>
                                                     </md-button>

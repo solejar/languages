@@ -5,13 +5,18 @@ angular.module('lang').controller('profileCtrl',function(account,sharedProps,$md
         cardFactory.clearCurrCards();
     };
 
+    //a function to check if settings equal, to check if forms have changed
     this.areSettingsEqual = function(settings1,settings2){
+
+        //if lengths different, not equal
         if(settings1.length!=settings2.length){
             return false;
         }
 
         let keys = Object.keys(settings1);
 
+        //if key either doesn't exist twice
+        //or value of setting is different, return false
         for(let i = 0;i<keys.length;i++){
             let currKey = keys[i];
             if(!settings2.hasOwnProperty(currKey)){
@@ -23,23 +28,28 @@ angular.module('lang').controller('profileCtrl',function(account,sharedProps,$md
             }
         }
 
+        //else
         return true;
     };
 
+    //local object to store user info
     this.user = {
         userName:  '',
         settings: {},
         _id: ''
     };
 
+    //called on controller init, gets user and settings
     this.init = function(){
         this.user = account.getUser();
         this.newSettings = JSON.parse(JSON.stringify(this.user.settings));
-        console.log('this users settings are:',JSON.parse(JSON.stringify(this.newSettings)));
+        //console.log('this users settings are:',JSON.parse(JSON.stringify(this.newSettings)));
 
     };
 
+    //saves settings that have been adjusted by the user
     this.saveSettings = function(newSettings){
+
         let newInfo = {
             settings: newSettings
         };
@@ -49,23 +59,26 @@ angular.module('lang').controller('profileCtrl',function(account,sharedProps,$md
         account.editUser(_id,newInfo).then(function(editedUser){
             console.log(editedUser);
             account.setUser(editedUser);
+            //set user settings back to newsettings values
             this.user.settings = JSON.parse(JSON.stringify(newSettings));
 
         }.bind(this));
 
     };
 
+    //clear changes to settings in the view
     this.clearSettings = function(){
-
-        //console.log('clear hit, user settings are:', JSON.parse(JSON.stringify(this.user.settings)));
         this.newSettings = JSON.parse(JSON.stringify(this.user.settings));
     };
 
+    //reset settings to their default values
     this.resetDefaultSettings = function(){
-        this.user.settings = account.defaultSettings;
-        this.newSettings = JSON.parse(JSON.stringify(this.user.settings));
+        //save the values first
+        this.saveSettings(account.defaultSettings);
+        this.newSettings = JSON.parse(JSON.stringify(account.defaultSettings));
     };
 
+    //card deletion dialog
     this.confirmCardDeletion = function(ev){
         let confirm = $mdDialog.confirm()
             .title('Would you really like to delete all your cards?')
@@ -99,6 +112,7 @@ angular.module('lang').controller('profileCtrl',function(account,sharedProps,$md
         });
     };
 
+    //function to change your password
     this.changePassword = function(newPassword){
         let newInfo = {
             password: newPassword
@@ -111,6 +125,7 @@ angular.module('lang').controller('profileCtrl',function(account,sharedProps,$md
         });
     };
 
+    //function to remove the user (not yet implemented on the front)
     this.removeUser = function(){
 
         account.removeUser(this.user).then(function(result){

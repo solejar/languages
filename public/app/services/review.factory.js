@@ -1,8 +1,6 @@
 angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, account){
     const obj = {};
 
-    //how to connect all of these to user account?
-
     //if this works, remove it from the other functions
     let firstLearningStep;
     let maxLearningStage;
@@ -12,6 +10,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
     let intervalModifier;
     let failurePenalty;
 
+    //load all of the new settings when appropriate
     obj.loadSettings = function(){
         learningSteps = account.getSetting('learningSteps');
         maxLearningStage = account.getSetting('maxLearningStage');
@@ -22,13 +21,10 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
         failurePenalty = account.getSetting('failurePenalty');
     };
 
+    //move a card through the review stage
+    //returns a card with adjusted values based on given answer
     obj.reviewCard = function(card, answer){
         console.log('about to review a card, with answer: ', answer);
-
-        let initialInterval = account.getSetting('initialInterval');
-        let easyBonus = account.getSetting('easyBonus');
-        let intervalModifier = account.getSetting('intervalModifier');
-        let failurePenalty = account.getSetting('failurePenalty');
 
         //get the current ease and review interval
         let easeFactor = card.easeFactor;
@@ -70,7 +66,6 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
             newEaseFactor = 1.3;
         }
 
-        //this can probably be worked around better
         newInterval = newInterval*intervalModifier;
 
         //per Anki docs, new interval is always at least one day more than currInterval
@@ -80,6 +75,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
 
         let dueTime;
 
+        //based on the new interval, calculate the next time the card will be seen
         dueTime = obj.calculateDueTime(newInterval);
 
         card.reviewInterval = newInterval;
@@ -96,6 +92,8 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
         return card;
     };
 
+    //progress a card through its learning stage, based on your answer too it.
+    //returns a card, with the adjusted values
     obj.learnCard = function(card,answer){
 
         let maxLearningStage = account.getSetting('maxLearningStage');
@@ -143,11 +141,9 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
 
         }else{
 
-            //let timeStep = learningSteps[newStage];
-
             dueTime = obj.calculateDueTime(timeStep);
 
-            card.learningStage = card.newStage;
+            card.learningStage = newStage;
 
         }
 
@@ -157,6 +153,8 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
 
     };
 
+    //Comes up with numeric ranking from 1-4 which represents how well you know the word
+    //1 representing not very well, 4 representing quite well
     obj.calculateHowWellKnown = function(cardDueTime){
         let ranking;
 

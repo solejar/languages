@@ -1,4 +1,6 @@
 angular.module('lang').controller('deckCtrl',function(account,cardFactory){
+
+    //flips card from one side to the other
     this.changeCardFocus = function(card){
         card.markup.expanded = !card.markup.expanded;
         if(!card.markup.expanded){
@@ -7,6 +9,7 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
     };
 
 
+    //removes markup elements from cards, as they should not be saved
     this.pruneMarkup = function(card){
         let result = {
             _id: card._id,
@@ -19,6 +22,7 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
         return result;
     };
 
+    //edits a users card
     this.editCard = function(card){
         if (account.getUser()){
             let saveCard = this.pruneMarkup(card);
@@ -27,7 +31,8 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
         }
     };
 
-    this.enableEditMode = function(card){
+    //determines if card is editable
+    this.isEditingEnabled = function(card){
         if (account.getUser()&&card.markup){
             if(card.markup.edit){ //if card already in edit don't show button
                 return false;
@@ -40,6 +45,7 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
         }
     };
 
+    //save edits to a card to a users account
     this.saveEdits = function(card){
         this.editCard(card.temporary_edits).then(function(result){
             if(result.statusCode=='200'){
@@ -51,6 +57,7 @@ angular.module('lang').controller('deckCtrl',function(account,cardFactory){
 
     };
 
+    //switchs a card in/out of edit mode
     this.editModeSwap = function(card,markup){
         card.temporary_edits = {
             user_id: card.user_id,

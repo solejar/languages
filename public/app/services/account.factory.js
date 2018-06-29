@@ -119,6 +119,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
         sharedProps.setProperty('currPage','login');
     };
 
+    //gets a user's setting, if doesn't exist, use default
     obj.getSetting = function(setting){
 
         if(session.user.settings[setting]){
@@ -152,6 +153,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
         return deferred.promise;
     };
 
+    //attempts to login a user
     obj.login = function(loginInfo){
         const deferred = $q.defer();
 
@@ -239,6 +241,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
         session.token = newToken; //technically no need to store it here, but just in case
     };
 
+    //getters/setters for current user
     obj.getUser = function(){
         if(session.user){
             return session.user;
@@ -276,6 +279,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
         return deferred.promise;
     };
 
+    //edit a given users info
     obj.editUser = function(userID,newUserInfo){
 
         const deferred = $q.defer();
@@ -302,6 +306,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
         return deferred.promise;
     };
 
+    //attempt to register a user
     obj.register = function(signupInfo, useDefaultSettings = true){
         const deferred = $q.defer();
 
@@ -330,8 +335,6 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
         return deferred.promise;
 
     };
-
-
 
     return obj;
 });
