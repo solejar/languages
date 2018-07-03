@@ -31,7 +31,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
             ],
             'description': 'Total learning steps'
         },
-        'firstLearningStep': {
+        'initialLearningInterval': {
             'value': 1,
             'type': 'select',
             'choices': [
@@ -43,7 +43,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
             ],
             'description': 'Initial learning interval (mins)'
         },
-        'initialInterval': {
+        'initialReviewInterval': {
             'value': 1440,
             'type': 'select',
             'choices': [
@@ -80,7 +80,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
             },
             'description': 'Factor by which to lengthen intervals'
         },
-        'failurePenalty': {
+        /*'failurePenalty': {
             'value': 0.0,
             'type': 'range',
             'options': {
@@ -90,7 +90,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
                 'precision': 1
             },
             'description': 'Leniency on failure'
-        },
+        },*/
         //look into the angular slider package
         'easyBonus': {
             'value': 1.3,
@@ -116,7 +116,7 @@ angular.module('lang').factory('account',function(sharedProps,$q,$http,cardFacto
     //gets a user's setting, if doesn't exist, use default
     obj.getSetting = function(setting){
 
-        if(session.user.settings[setting]){
+        if(session.user&&session.user.settings[setting]){
             return session.user.settings[setting].value;
         }else{
             console.log('user doesnt have the setting: ' ,setting,' using system default');

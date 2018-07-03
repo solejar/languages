@@ -288,6 +288,8 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
 
                 card.stage = 'learning';
                 card.learningStage = 1;
+                card.reviewInterval = account.getSetting('initialLearningInterval');
+                console.log('trying to give a review interval of: ', card.reviewInterval);
 
                 let user = account.getUser();
                 if(user){

@@ -7,7 +7,7 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
     endOfDay.setHours(23,59,59,999);
 
     obj.clearCurrCards = function(){
-        card = [];
+        cards = [];
     };
 
     obj.getCardsByType = function(type,getOnlyDue=false){
@@ -159,18 +159,13 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
 
         let currentTime = new Date();
 
-        let data = {
-            user_id: user._id,
-            front: card.front,
-            back: card.back,
-            //learningStage: 0,
-            learningStage: card.learningStage,
-            stage: card.stage,
-            //stage: 'learning',
-            starred: false,
-            type: type, //did it come from declension?
-            dueTime: currentTime
-        };
+        let data = JSON.parse(JSON.stringify(card));
+
+        //take all user provided data then add this cookie cutter info
+        data.user_id= user._id;
+        data.starred = false;
+        data.type = type;
+        data.dueTime = currentTime;
 
         let options = {
           url: '/users/cards/',

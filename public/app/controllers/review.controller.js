@@ -96,8 +96,9 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
         let temp = learningCards.concat(reviewCards);
         temp = temp.concat(relearningCards);
 
+        //console.log('due cards premarkup: ', JSON.parse(JSON.stringify(temp)));
         cards = cardFactory.markupCards(temp);
-        console.log(cards);
+        console.log('due cards postmarkup: ',JSON.parse(JSON.stringify(cards)));
 
         this.deck = cards;
     };
@@ -111,19 +112,25 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
 
         this.currCard = this.deck.shift(); //pop first item off the top
 
-        let len =  this.choices.length;
+        let len =  this.choices[this.currCard.stage].length;
+
+        console.log('length of choices is: ', len);
+        console.log('these choices available: ', JSON.parse(JSON.stringify(this.choices[this.currCard.stage])));
+
         for(i=0;i<len;i++){
             let answer = this.choices[this.currCard.stage][i].description;
             let resultingCard;
 
-            if(card.stage=='learning'||card.stage=='relearning'){
+            if(this.currCard.stage=='learning'||this.currCard.stage=='relearning'){
                 resultingCard = review.learnCard(this.currCard,answer);
             }else if(card.stage=='review'){
                 updatedCard = review.reviewCard(this.currCard,answer);
             }
 
             this.choices[this.currCard.stage][i].resultingCard = resultingCard;
+            console.log('resulting choice object is: ',this.choices[this.currCard.stage][i]);
         }
+
     };
 
     //function called when user answers a card

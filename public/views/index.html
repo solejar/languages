@@ -709,7 +709,7 @@
                 <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.getCurrPage()=='readings'" >
                     You are on the Readings page! This page is still under development. Come back later for more :3
                 </div>
-                <div ng-controller="reviewCtrl as review" ng-init="review.init()" layout="column" flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.getCurrPage()=='study'" >
+                <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.getCurrPage()=='study'" ng-controller="reviewCtrl as review" ng-init="review.init()" layout="column" >
                     <div layout="column" flex="100">
                         <div  flex="10" layout="row" layout-align="center" layout-margin >
                             <span flex style="color: blue; text-align: center;">
@@ -812,7 +812,14 @@
                                 </div>
                                 <div layout="row" flex="15" ng-if="review.currCard.markup.flipped" layout-align="center">
                                     <md-button ng-class="choice.description" ng-click="review.submitChoice(review.currCard,choice.resultingCard);" ng-repeat="choice in review.choices[review.currCard.stage]">
-                                        {{choice.description + '\n'+ choice.resultingCard.reviewInterval}}
+                                        <div flex="100" layout="column">
+                                            <div style="height: 18px;">
+                                                {{choice.description}}
+                                            </div>
+                                            <div >
+                                                {{choice.resultingCard.reviewInterval | timeFilter}}
+                                            </div>
+                                        </div>
                                     </md-button>
                                 </div>
                             </div>

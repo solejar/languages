@@ -131,7 +131,7 @@ exports.insertCard = function(options,onResult){
                 onResult({'statusCode': '400','errMsg': err});
             }
             console.log("1 card inserted into db");
-            console.log(res);
+            console.log(res.ops);
             let response = {
                 'statusCode': '200',
                 'content': {"nInserted": "1"}

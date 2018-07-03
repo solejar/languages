@@ -25,18 +25,18 @@
     min-width: 36px;
 }
 .again {
-    white-space: pre-wrap;
+    /*white-space: pre-wrap;*/
     background-color: #ba190b;
 }
 .hard {
-    white-space: pre-wrap;
+    /*white-space: pre-wrap;*/
     background-color: #e8807a;
 }
 .good {
-    white-space: pre-wrap;
+    /*white-space: pre-wrap;*/
     background-color: #e2df6f;
 }
 .easy {
-    white-space: pre-wrap;
+    /*white-space: pre-wrap;*/
     background-color: #7fd847;
 }

@@ -98,7 +98,8 @@ angular.module('lang').controller('profileCtrl',function(account,sharedProps,$md
                 }
             };
 
-            sharedProps.httpReq(options,function(res){
+            sharedProps.httpReq(options).then(function(res){
+                //console.log('made http req to get rid of the card ', res)
                 if(res.statusCode =='200'){
                     console.log('cards successfully deleted');
                     cardFactory.clearCurrCards();

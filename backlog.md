@@ -12,6 +12,12 @@
 
 
 
+- Take a look at animateness
+  - When exceptions returns 'default', it seems to still lock animateness out anyway
+- её behaving very strangely
+
+
+
 ## Decliner
 
 ### Functional
