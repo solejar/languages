@@ -106,6 +106,7 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
     //gets the next card, or if no new card, sets the review as being done
     this.loadNextCard = function(){
         if(this.deck.length==0){
+            console.log('review done');
             this.reviewDone = true;
             return;
         }
@@ -123,7 +124,7 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
 
             if(this.currCard.stage=='learning'||this.currCard.stage=='relearning'){
                 resultingCard = review.learnCard(this.currCard,answer);
-            }else if(card.stage=='review'){
+            }else if(this.currCard.stage=='review'){
                 updatedCard = review.reviewCard(this.currCard,answer);
             }
 
@@ -141,6 +142,7 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
         cardFactory.editCard(resultingCard);
 
         if(new Date(resultingCard.dueTime)<this.endOfDay){
+            console.log('reinserting card');
             this.reinsertCard(resultingCard);
         }
 

@@ -93,6 +93,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
 
         newCard.howWellKnown = obj.calculateHowWellKnown(newCard.dueTime);
 
+        //console.log('resulting card for review should be: ', newCard);
         return newCard;
     };
 

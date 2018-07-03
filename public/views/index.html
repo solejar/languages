@@ -710,24 +710,39 @@
                     You are on the Readings page! This page is still under development. Come back later for more :3
                 </div>
                 <div flex flex-gt-md="50" flex-md="70" flex-sm="90" ng-if="header.getCurrPage()=='study'" ng-controller="reviewCtrl as review" ng-init="review.init()" layout="column" >
-                    <div layout="column" flex="100">
-                        <div  flex="10" layout="row" layout-align="center" layout-margin >
-                            <span flex style="color: blue; text-align: center;">
-                                {{review.counts.learning}}
-                            </span>
-                            <span style="color: red; text-align: center;" flex>
-                                {{review.counts.relearning}}
-                            </span>
-                            <span style="color: green; text-align: center;" flex>
-                                {{review.counts.review}}
-                            </span>
+                    <div layout="column" layout-align="space-around" flex="100">
+                        <div style="height: 65px;"  layout="row" layout-align="center" layout-margin >
+                            <div flex style="color: blue; text-align: center;" layout="column">
+                                <span >
+                                    Learn:
+                                </span>
+                                <span>
+                                    {{review.counts.learning}}
+                                </span>
+                            </div>
+                            <div flex style="color: red; text-align: center;" layout="column">
+                                <span >
+                                    Relearn:
+                                </span>
+                                <span>
+                                    {{review.counts.relearning}}
+                                </span>
+                            </div>
+                            <div flex style="color: green; text-align: center;" layout="column">
+                                <span >
+                                    Review:
+                                </span>
+                                <span>
+                                    {{review.counts.review}}
+                                </span>
+                            </div>
                         </div>
-                        <div ng-if="!review.showReview" layout="row" flex="90" layout-align="center center">
-                            <md-button ng-click="review.showReview=!review.showReview" class="md-raised md-primary">
+                        <div   ng-if="!review.showReview" layout="row" layout-align="center center">
+                            <md-button ng-click="review.showReview=true" ng-hide="review.reviewDone" class="md-raised md-primary">
                                 {{'Review Cards'}}
                             </md-button>
                         </div>
-                        <div layout="column" ng-if="review.showReview" ng-controller="deckCtrl as deck" flex="90">
+                        <div layout="column" ng-if="review.showReview&&(!review.reviewDone)" ng-controller="deckCtrl as deck" flex="90">
                             <div flex="100" layout="column" layout-margin>
 
                                 <div flex="80" layout="row" id="expanded-phrase" layout-align="center" layout-margin>
@@ -823,6 +838,9 @@
                                     </md-button>
                                 </div>
                             </div>
+                        </div>
+                        <div style="text-align: center;" ng-show="review.reviewDone">
+                            All done for now! Good job!
                         </div>
                     </div>
 

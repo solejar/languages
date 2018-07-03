@@ -10,7 +10,8 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
         cards = [];
     };
 
-    obj.getCardsByType = function(type,getOnlyDue=false){
+    //this needs to be reworked. it should do 2 separate filters, or something like that
+    obj.getCardsByType = function(type,getOnlyDue=true){
 
         if(!cards){
             return [];
@@ -20,19 +21,25 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
             return cards;
         }else{
             //else only return cards of the desired types
-            let filteredCards = cards.filter(card => card.type==type);
-            if(getOnlyDue){
-                filteredCards.filter(
-                    card => (new Date(card.dueTime))<endOfDay
-                );
-            }
+            let filteredCards = cards.filter(function(card){
+                if(card.type==type){
+                    if(getOnlyDue&&!(new Date(card.dueTime)<endOfDay)){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }else{
+                    return false;
+                }
+
+            });
+
             return filteredCards;
         }
 
-
     };
 
-    obj.getCardsByStage = function(stage,getOnlyDue=false){
+    obj.getCardsByStage = function(stage,getOnlyDue=true){
         if(!cards){
             return [];
         }
@@ -41,12 +48,19 @@ angular.module('lang').factory('cardFactory',function(sharedProps,$q){
             return cards;
         }else{
             //else only return cards of the desired types
-            let filteredCards = cards.filter(card => card.stage==stage);
-            if(getOnlyDue){
-                filteredCards.filter(
-                    card => (new Date(card.dueTime))<endOfDay
-                );
-            }
+            let filteredCards = cards.filter(function(card){
+                if(card.stage==stage){
+                    if(getOnlyDue&&!(new Date(card.dueTime)<endOfDay)){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }else{
+                    return false;
+                }
+
+            });
+
             return filteredCards;
         }
     };
