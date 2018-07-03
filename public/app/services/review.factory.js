@@ -79,7 +79,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
 
         newInterval = newInterval*intervalModifier;
 
-        newCard.reviewInterval = newInterval;
+        newCard.reviewInterval = Math.ceil(newInterval);
         newCard.easeFactor = newEaseFactor;
 
         if(newCard.stage=='relearning'){ //this means you messed up the review
@@ -87,7 +87,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
         }else{
             let dueTime;
             //based on the new interval, calculate the next time the card will be seen
-            dueTime = obj.calculateDueTime(newInterval);
+            dueTime = obj.calculateDueTime(newCard.reviewInterval);
             newCard.dueTime = dueTime;
         }
 
@@ -130,7 +130,7 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
 
             if(card.stage=='learning'){ //if it was a relearning card, it already has these values, and we don't need them
 
-                newCard.reviewInterval = initialReviewInterval;
+                newCard.reviewInterval = Math.ceil(initialReviewInterval);
                 newCard.easeFactor = initialEaseFactor;
 
                 dueTime = obj.calculateDueTime(newCard.reviewInterval);
@@ -144,10 +144,9 @@ angular.module('lang').factory('review',function(sharedProps,$q,cardFactory, acc
 
         }else{
 
-            dueTime = obj.calculateDueTime(newReviewInterval);
-
+            newCard.reviewInterval = Math.ceil(newReviewInterval);
             newCard.learningStage = newStage;
-            newCard.reviewInterval = newReviewInterval;
+            dueTime = obj.calculateDueTime(newCard.reviewInterval);
 
             newCard.dueTime = dueTime;
 
