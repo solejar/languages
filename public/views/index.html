@@ -606,15 +606,13 @@
 
                                         </div>
 
-                                        <form name="cardEditForm" flex layout="column" class="card" ng-if="card.markup.edit" layout-align="center space-around">
-                                            <div flex="5" >
-                                            </div>
-                                            <div flex="10" layout="row" layout-align="start start">
+                                        <div flex layout="column" class="card" ng-if="card.markup.edit" layout-align="center space-around">
+                                            <div flex="5" layout="row" layout-align="start start">
                                                 <b flex style="margin-left: 5px;">
                                                     {{'Front: '}}
                                                 </b>
                                                 <div flex="25" layout="row" layout-align"end">
-                                                    <md-button class="md-raised small-button" ng-click="deck.saveEdits(card)" ng-disabled="cardEditForm.$dirty">
+                                                    <md-button class="md-raised small-button" ng-click="deck.saveEdits(card)" >
                                                         <md-icon md-svg-icon="./images/save_k.svg">
                                                         </md-icon>
                                                     </md-button>
@@ -623,73 +621,54 @@
                                                     </md-button>
                                                 </div>
                                             </div>
-                                            <div flex="35" layout-align="start" layout="column">
+                                            <div flex="45" layout-align="start" layout="column">
                                                 <div flex="30" layout="row" layout-align="center" style="font-size: 1.5em; font-weight: bold;">
-                                                    <md-input-container flex="50">
-                                                        <label >
-                                                        {{'Main content'}}
-                                                        </label>
-                                                        <input ng-model="card.front.content" >
-
+                                                    <md-input-container  flex="50">
+                                                        <input aria-label="front content" ng-model="card.front.content" >
                                                     </md-input-container>
                                                 </div>
                                                 <div flex="70" layout="row" layout-align="center start">
-                                                    <div flex="90" flex="50" layout="row" layout-align="center" layout-margin layout-wrap>
-                                                        <div flex="25" class="subcontent" layout="column" ng-repeat="subcontent in card.front.subcontents" layout-margin>
+                                                    <div flex layout="row" layout-align="center" layout-margin layout-wrap>
+                                                        <div style="height: 80px;" flex="25" class="subcontent" layout="column" ng-repeat="subcontent in card.front.subcontents" layout-margin>
                                                             <div ng-if="0" flex="15" layout-align="end">
                                                                 <md-button class="md-raised md-warn small-button" ng-click="deck.removeSubcontent(card,'front',$index)">
                                                                     <md-icon md-svg-icon="./images/ex_k.svg">
                                                                     </md-icon>
                                                                 </md-button>
                                                             </div>
-                                                            <md-input-container flex="15">
-                                                                <label>
-                                                                {{'Name'}}
-                                                                </label>
-                                                                <input ng-model="subcontent.name">
+                                                            <md-input-container  flex="15">
+                                                                <input aria-label="front subcontent key" ng-model="subcontent.name">
                                                             </md-input-container>
-                                                            <md-input-container flex="30">
-                                                                <label>
-                                                                {{'Value'}}
-                                                                </label>
-                                                                <input ng-model="subcontent.value">
+                                                            <md-input-container  flex="30">
+                                                                <input aria-label="front subcontent value" ng-model="subcontent.value">
                                                             </md-input-container>
                                                         </div>
-                                                        <md-button class="md-raised small-button" ng-click="deck.addSubcontent(card,'front')" ng-disabled="cardEditForm.$dirty">
+                                                        <md-button class="md-raised small-button" ng-hide="true" ng-click="deck.addSubcontent(card,'front')" >
                                                             <md-icon md-svg-icon="./images/plus_k.svg">
                                                             </md-icon>
                                                         </md-button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div flex="10" layout="row" layout-align="start start">
+                                            <div flex="5" layout="row" layout-align="start start">
                                                 <b flex style="margin-left: 5px;">
                                                     {{'Back: '}}
                                                 </b>
                                             </div>
-                                            <div flex="35"  layout-align="start" layout="column">
+                                            <div flex="45"  layout-align="start" layout="column">
                                                 <div flex="30" layout="row" layout-align="center start" style="text-align: center; font-size: 1.5em; font-weight: bold;">
-                                                    <md-input-container flex="50">
-                                                        <label>
-                                                        {{'Main content'}}
-                                                        </label>
-                                                        <input ng-model="card.back.content" >
+                                                    <md-input-container  flex="50">
+                                                        <input aria-label="back maincontent" ng-model="card.back.content" >
                                                     </md-input-container>
                                                 </div>
                                                 <div flex="70" layout="row" layout-align="center start">
                                                     <div flex="90" flex="50" layout="row" layout-align="center" layout-margin layout-wrap>
                                                         <div flex="25" class="subcontent" layout="column" ng-repeat="subcontent in card.back.subcontents" layout-margin>
-                                                            <md-input-container flex="15">
-                                                                <label>
-                                                                {{'Name'}}
-                                                                </label>
-                                                                <input ng-model="subcontent.name">
+                                                            <md-input-container  flex="15">
+                                                                <input aria-label="back sub content key" ng-model="subcontent.name">
                                                             </md-input-container>
-                                                            <md-input-container flex="15">
-                                                                <label>
-                                                                {{'Value'}}
-                                                                </label>
-                                                                <input ng-model="subcontent.value">
+                                                            <md-input-container  flex="15">
+                                                                <input aria-label="back subcontent value" ng-model="subcontent.value">
                                                             </md-input-container>
                                                         </div>
                                                     </div>
@@ -697,7 +676,7 @@
 
                                             </div>
 
-                                        </form>
+                                        </div>
 
                                     </div>
                                 </div>

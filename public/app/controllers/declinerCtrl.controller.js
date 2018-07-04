@@ -28,7 +28,7 @@ angular.module('lang').controller('declinerCtrl',function( //keep an eye on this
 
     this.init = function(){
 
-        let tempCards = cardFactory.getCardsByType('declension');
+        let tempCards = cardFactory.getCardsByType('declension',getOnlyDue=false);
         //let cards = cardFactory.getCards('declension'); soon my friends!
         this.cards = cardFactory.markupCards(tempCards);
         console.log(this.cards);
