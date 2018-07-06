@@ -107,7 +107,7 @@
 
             </div>
             <div layout="row">
-                <div flex-gt-md="25" flex-md="15" flex-sm="5" hide-xs style="width: 550px" >
+                <div flex-gt-md="25" flex-md="15" flex-sm="5" hide-xs style="width: 550px;" >
                 </div>
                 <div flex flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='about'" >
                     Добро пожаловать на мое приложение!
@@ -357,7 +357,7 @@
                     </div>
 
                 </div>
-                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='declension'" layout-margin ng-init="decliner.init()" ng-controller="declinerCtrl as decliner" layout="column" >
+                <div flex-gt-md="50" flex-md="70" flex-sm="90" flex-xs="100" ng-if="header.getCurrPage()=='declension'" ng-init="decliner.init()" ng-controller="declinerCtrl as decliner" layout="column" >
                     <md-whiteframe ng-if="decliner.pageInitialized" style="background-color: #FAFAFA; overflow: auto"class="md-whiteframe-12dp" layout="column">
                         <div layout="column" flex="noshrink">
                             <md-toolbar>
@@ -458,16 +458,18 @@
                             <br>
                             <md-divider class="md-primary"></md-divider>
                         </div>
-                        <div id="tessellated-outputs" layout-margin>
-                            <md-whiteframe ng-controller="deckCtrl as deck" class="md-whiteframe-12dp secondary" layout="column" layout-margin>
-                                <div ng-repeat="card in decliner.cards">
-                                    <div flex="100"  layout-align="start center" style="background-color: #FFFFB3;" layout="row" ng-if="!card.markup.expanded">
-                                            <md-button class="small-button" ng-click="deck.changeCardFocus(card)">
+                        <div id="tessellated-outputs" >
+                            <md-whiteframe ng-controller="deckCtrl as deck" class="md-whiteframe-12dp secondary" layout="column" >
+                                <div ng-repeat="card in decliner.cards" layout="column">
+                                    <div style="height: 8px;" flex="5">
+                                    </div>
+                                    <div flex="95"  layout-align="start center" style="background-color: #FFFFB3;" layout="row" ng-if="!card.markup.expanded">
+                                            <md-button  class="small-button" ng-click="deck.changeCardFocus(card)">
                                                 <md-icon  md-svg-icon="./images/right-arrow_k.svg">
                                                 </md-icon>
                                                 {{''}}
                                             </md-button>
-                                            <div flex style="text-align: center; font-size: 1.17em; font-weight:bold; color: black" ng-hide="card.markup.expanded" ng-click="deck.changeCardFocus(card)">
+                                            <div flex style="text-align: center; font-size: 1.17em; font-weight:bold; color: black;" ng-click="deck.changeCardFocus(card)">
                                                 {{card.front.content}}
                                             </div>
                                             <div flex="30" layout="row" layout-align="end">
@@ -477,10 +479,6 @@
                                                     <md-icon ng-show="card.starred" md-svg-icon="./images/star_y.svg">
                                                     </md-icon>
                                                     {{''}}
-                                                </md-button>
-                                                <md-button  class="small-button" ng-click="deck.editModeSwap(card,'expand')" ng-if="deck.isEditingEnabled(card)" >
-                                                    <md-icon md-svg-icon="./images/pencil_edit_button.svg">
-                                                    </md-icon>
                                                 </md-button>
                                                 <div flex="10"  layout="column" layout-align="center" class="small-button" ng-if="card.stage=='learning'">
                                                     <md-icon md-svg-icon="./images/learning_icon.svg">
@@ -506,7 +504,7 @@
                                                 </md-button>
                                             </div>
                                         </div>
-                                    <div flex="100" layout="column" id="expanded-phrase" layout-align="center" ng-if="card.markup.expanded">
+                                    <div flex="95" layout="column" id="expanded-phrase" layout-align="center" ng-if="card.markup.expanded">
 
                                         <div flex="none" class="card" layout-align="start" id="expanded view"layout="column" ng-if="!card.markup.edit">
                                             <div flex="25" layout="row" layout-align="start start">
@@ -523,11 +521,11 @@
                                                         </md-icon>
                                                         {{''}}
                                                     </md-button>
-                                                    <div flex="10" layout="column" layout-align="center" class="small-button" ng-if="card.stage=='learning'">
+                                                    <div flex="5" layout="column" layout-align="center" class="small-button" ng-if="card.stage=='learning'">
                                                         <md-icon md-svg-icon="./images/learning_icon.svg">
                                                         </md-icon>
                                                     </div>
-                                                    <div flex="10" layout="column" layout-align="center" ng-if="card.stage=='relearning'"  class="small-button">
+                                                    <div flex="5" layout="column" layout-align="center" ng-if="card.stage=='relearning'"  class="small-button">
                                                         <md-icon md-svg-icon="./images/relearning_icon.svg">
                                                         </md-icon>
                                                     </div>
@@ -535,7 +533,7 @@
                                                         <md-icon md-svg-icon="./images/pencil_edit_button.svg">
                                                         </md-icon>
                                                     </md-button>
-                                                    <div flex="10" class="small-button" layout="column" layout-align="center"  ng-if="card.stage=='review'||card.stage=='relearning'" ng-switch="card.howWellKnown">
+                                                    <div flex="5" class="small-button" layout="column" layout-align="center"  ng-if="card.stage=='review'||card.stage=='relearning'" ng-switch="card.howWellKnown">
                                                         <md-icon ng-switch-when="4" md-svg-icon="./images/difficultyIcon1_grey.svg">
                                                         </md-icon>
                                                         <md-icon ng-switch-when="3" md-svg-icon="./images/difficultyIcon2_grey.svg">
@@ -565,7 +563,7 @@
                                                 <div flex="10">
                                                 </div>
                                                 <div flex="55" layout="row" layout-align="center start">
-                                                    <div flex="80" flex="50" layout="row" layout-align="center" layout-margin layout-wrap>
+                                                    <div flex-xs="100" flex-gt-xs="" style="background-color: white;" layout="row" layout-align="space-between center" layout-wrap>
                                                         <div flex="25" class="subcontent" layout="column" ng-repeat="subcontent in card.front.subcontents" layout-margin>
                                                             <b flex="15">
                                                                 {{subcontent.name +':'}}
@@ -679,6 +677,7 @@
                                         </div>
 
                                     </div>
+                                    <md-divider class="md-primary"></md-divider>
                                 </div>
                             </md-whiteframe>
                         </div>
@@ -826,7 +825,7 @@
 
 
                 </div>
-                <div flex-gt-md="25" flex-md="15" flex-sm="5" hide-xs style="width: 550px">
+                <div flex-gt-md="25" flex-md="15" flex-sm="5" hide-xs style="width: 550px;">
                 </div>
             </div>
         </md-content>
