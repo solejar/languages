@@ -555,7 +555,7 @@
                                                 </div>
                                             </div>
                                             <div flex="70" layout-align="start" layout="column" ng-if="!card.markup.flipped">
-                                                <div flex="30" layout="column" layout-align="center" style="text-align: center; font-size: 1.5em; font-weight: bold;">
+                                                <div flex="30" layout="column" class="content" layout-align="center" >
                                                     <span flex="50">
                                                         {{card.front.content}}
                                                     </span>
@@ -563,8 +563,8 @@
                                                 <div flex="10">
                                                 </div>
                                                 <div flex="55" layout="row" layout-align="center start">
-                                                    <div flex-xs="100" flex-gt-xs="" style="background-color: white;" layout="row" layout-align="space-between center" layout-wrap>
-                                                        <div flex="25" class="subcontent" layout="column" ng-repeat="subcontent in card.front.subcontents" layout-margin>
+                                                    <div flex-xs="100" flex-gt-xs="80" layout="row" layout-align="space-around center" layout-wrap>
+                                                        <div flex="25" class="subcontent" layout="column" layout-margin ng-repeat="subcontent in card.front.subcontents" >
                                                             <b flex="15">
                                                                 {{subcontent.name +':'}}
                                                             </b>

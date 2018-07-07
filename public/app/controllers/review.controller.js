@@ -125,7 +125,7 @@ angular.module('lang').controller('reviewCtrl',function(account,sharedProps, rev
             if(this.currCard.stage=='learning'||this.currCard.stage=='relearning'){
                 resultingCard = review.learnCard(this.currCard,answer);
             }else if(this.currCard.stage=='review'){
-                updatedCard = review.reviewCard(this.currCard,answer);
+                resultingCard = review.reviewCard(this.currCard,answer);
             }
 
             this.choices[this.currCard.stage][i].resultingCard = resultingCard;
